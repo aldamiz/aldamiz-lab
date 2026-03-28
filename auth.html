@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab — Gabi Aldamiz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 48px 40px;
+            max-width: 380px;
+            width: 100%;
+            margin: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+        .lock-icon { font-size: 2.5rem; margin-bottom: 16px; }
+        h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+        .desc { color: #86868b; font-size: 0.92rem; margin-bottom: 28px; }
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #d2d2d7;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fafafa;
+            margin-bottom: 16px;
+        }
+        input[type="password"]:focus { border-color: #0071e3; background: #fff; }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1d1d1f;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #333; }
+        .error { color: #d32f2f; font-size: 0.85rem; margin-top: 12px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="lock-icon">&#x1f510;</div>
+        <h1>Lab</h1>
+        <p class="desc">Gabi Aldamiz-echevarr&iacute;a</p>
+        <form id="authForm">
+            <input type="password" id="pw" placeholder="Contrase&ntilde;a" autofocus>
+            <button type="submit">Acceder</button>
+            <p class="error" id="error">Contrase&ntilde;a incorrecta</p>
+        </form>
+    </div>
+    <script>
+        async function sha256(str) {
+            var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+        }
+        var CORRECT_HASH = 'afb259b0841ed741fa7a3dbbb6a889a3e7b42b4229dda24b6b7947836b6209e6';
+        if (document.cookie.indexOf('lab_auth=1') !== -1) {
+            var params = new URLSearchParams(window.location.search);
+            window.location.replace(params.get('r') || 'index.html');
+        }
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var pw = document.getElementById('pw').value;
+            var hash = await sha256(pw);
+            if (hash === CORRECT_HASH) {
+                var expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+                document.cookie = 'lab_auth=1; expires=' + expires + '; path=/; SameSite=Lax';
+                var params = new URLSearchParams(window.location.search);
+                window.location.replace(params.get('r') || 'index.html');
+            } else {
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('pw').value = '';
+                document.getElementById('pw').focus();
+            }
+        });
+    </script>
+</body>
+</html>
