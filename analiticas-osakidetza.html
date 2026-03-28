@@ -1,792 +1,1306 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Batalla de Rande - Entrenos 2026</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolución Analíticas — Osakidetza</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --bg-primary: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-header: #1b365d;
+            --text-primary: #1a202c;
+            --text-secondary: #718096;
+            --text-on-dark: #ffffff;
+            --accent: #2b6cb0;
+            --positive: #38a169;
+            --negative: #e53e3e;
+            --warning: #dd6b20;
+            --neutral: #718096;
+            --gap: 16px;
+            --radius: 10px;
+        }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --ocean-deep: #0A1628;
-    --ocean-mid: #0F2942;
-    --ocean-light: #1A3A5C;
-    --sea-teal: #0EA5E9;
-    --sea-glow: #38BDF8;
-    --sea-soft: #BAE6FD;
-    --sea-ghost: #E0F2FE;
-    --foam: #F0F9FF;
-    --sand: #FEF3C7;
-    --sand-dark: #F59E0B;
-    --coral: #F43F5E;
-    --coral-soft: #FFE4E6;
-    --green: #10B981;
-    --green-soft: #D1FAE5;
-    --purple: #8B5CF6;
-    --white: #FFFFFF;
-    --gray-50: #F8FAFC;
-    --gray-100: #F1F5F9;
-    --gray-200: #E2E8F0;
-    --gray-300: #CBD5E1;
-    --gray-400: #94A3B8;
-    --gray-500: #64748B;
-    --gray-600: #475569;
-    --gray-700: #334155;
-    --gray-800: #1E293B;
-  }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
 
-  html { scroll-behavior: smooth; }
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--gap);
+        }
 
-  body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--gray-50);
-    color: var(--gray-800);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--bg-header), #2a4a7f);
+            color: var(--text-on-dark);
+            padding: 24px 28px;
+            border-radius: var(--radius);
+            margin-bottom: var(--gap);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
 
-  .hero {
-    background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 40%, var(--ocean-light) 70%, var(--sea-teal) 100%);
-    color: white;
-    padding: 60px 24px 50px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%; right: -20%;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0; height: 6px;
-    background: linear-gradient(90deg, var(--sea-teal), var(--sea-glow), var(--sand-dark), var(--coral));
-  }
-  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
-  .hero-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-size: 12px; font-weight: 600;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    margin-bottom: 20px; color: var(--sea-soft);
-  }
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 900; line-height: 1.1;
-    margin-bottom: 12px; letter-spacing: -0.02em;
-  }
-  .hero h1 span { color: var(--sea-glow); }
-  .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 600px; font-weight: 300; }
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px; margin-top: 36px;
-  }
-  .hero-stat {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px; padding: 16px 18px;
-  }
-  .hero-stat .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-  .hero-stat .value { font-size: 1.5rem; font-weight: 800; color: white; }
-  .hero-stat .unit { font-size: 0.75rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-left: 2px; }
+        .dashboard-header h1 { font-size: 22px; font-weight: 700; }
+        .dashboard-header .subtitle { font-size: 13px; opacity: 0.8; margin-top: 4px; }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+        .filters {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-  .section {
-    background: white; border-radius: 20px; padding: 36px; margin-top: 28px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-    border: 1px solid var(--gray-200);
-  }
-  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-  .section-icon {
-    width: 40px; height: 40px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-  }
-  .section-icon.blue { background: var(--sea-ghost); }
-  .section-icon.green { background: var(--green-soft); }
-  .section-icon.coral { background: var(--coral-soft); }
-  .section-icon.purple { background: #EDE9FE; }
-  .section h2 { font-size: 1.25rem; font-weight: 800; color: var(--gray-800); letter-spacing: -0.01em; }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-  .chart-container { width: 100%; overflow-x: auto; margin: 20px 0 8px; }
-  .chart-container canvas { max-height: 320px; }
+        .filter-group label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
 
-  .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  .data-table thead th {
-    background: var(--gray-50); padding: 10px 14px; text-align: left;
-    font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
-    letter-spacing: 0.8px; color: var(--gray-500); border-bottom: 2px solid var(--gray-200);
-  }
-  .data-table tbody td {
-    padding: 10px 14px; border-bottom: 1px solid var(--gray-100);
-    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
-  }
-  .data-table tbody tr:hover { background: var(--foam); }
-  .data-table .week-cell { font-family: 'Inter', sans-serif; font-weight: 500; color: var(--gray-700); }
-  .data-table .vol-cell { font-weight: 600; color: var(--ocean-mid); }
-  .data-table .pct-cell { color: var(--gray-500); }
-  .pct-up { color: var(--green) !important; font-weight: 600; }
-  .pct-down { color: var(--coral) !important; font-weight: 600; }
-  .peak-row { background: var(--sea-ghost) !important; }
-  .peak-row .vol-cell { color: var(--sea-teal) !important; font-weight: 800; }
+        .filter-group select {
+            padding: 6px 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-on-dark);
+            font-size: 13px;
+            cursor: pointer;
+        }
 
-  .vol-bar-wrap { display: flex; align-items: center; gap: 10px; }
-  .vol-bar {
-    height: 6px; border-radius: 3px;
-    background: linear-gradient(90deg, var(--sea-teal), var(--sea-glow));
-    transition: width 0.3s; min-width: 2px;
-  }
+        .filter-group select option {
+            background: var(--bg-header);
+            color: var(--text-on-dark);
+        }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 20px 0; }
-  .kpi { background: var(--gray-50); border-radius: 14px; padding: 18px; border: 1px solid var(--gray-200); }
-  .kpi .kpi-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-500); margin-bottom: 6px; }
-  .kpi .kpi-value { font-size: 1.6rem; font-weight: 800; color: var(--gray-800); }
-  .kpi .kpi-note { font-size: 0.75rem; color: var(--gray-400); margin-top: 4px; }
+        /* KPI Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
 
-  .phase-timeline { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
-  .phase { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--gray-100); }
-  .phase:last-child { border-bottom: none; }
-  .phase-marker {
-    width: 36px; height: 36px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 0.8rem; flex-shrink: 0; color: white;
-  }
-  .phase-content { flex: 1; }
-  .phase-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
-  .phase-detail { font-size: 0.85rem; color: var(--gray-600); line-height: 1.6; }
-  .phase-vol {
-    display: inline-block; background: var(--sea-ghost); color: var(--sea-teal);
-    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600;
-    padding: 2px 8px; border-radius: 6px; margin-top: 6px;
-  }
+        .kpi-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--accent);
+        }
 
-  .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
-  .insight { border-radius: 14px; padding: 20px; border-left: 4px solid; }
-  .insight.good { background: var(--green-soft); border-color: var(--green); }
-  .insight.warn { background: var(--sand); border-color: var(--sand-dark); }
-  .insight.risk { background: var(--coral-soft); border-color: var(--coral); }
-  .insight.info { background: var(--sea-ghost); border-color: var(--sea-teal); }
-  .insight .insight-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
-  .insight .insight-text { font-size: 0.83rem; color: var(--gray-600); line-height: 1.6; }
+        .kpi-card.alert { border-left-color: var(--negative); }
+        .kpi-card.warning { border-left-color: var(--warning); }
+        .kpi-card.ok { border-left-color: var(--positive); }
 
-  .footer { text-align: center; padding: 40px 24px 50px; color: var(--gray-400); font-size: 0.8rem; }
-  .footer .motto { font-size: 1.1rem; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
+        .kpi-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
 
-  .loading-overlay {
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--gray-50);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 9999; transition: opacity 0.4s;
-  }
-  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
-  .loading-spinner {
-    width: 48px; height: 48px; border: 4px solid var(--gray-200);
-    border-top-color: var(--sea-teal); border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { margin-top: 16px; font-weight: 600; color: var(--gray-500); }
-  .error-banner {
-    background: var(--coral-soft); border: 1px solid var(--coral);
-    border-radius: 12px; padding: 16px 20px; margin: 28px 0;
-    color: var(--gray-800); font-size: 0.9rem; display: none;
-  }
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+        }
 
-  @media (max-width: 640px) {
-    .section { padding: 24px 18px; }
-    .hero { padding: 40px 18px 36px; }
-    .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  }
-</style>
+        .kpi-range {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .kpi-status {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .status-normal { color: var(--positive); }
+        .status-high { color: var(--negative); }
+        .status-low { color: var(--warning); }
+
+        /* Charts */
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .chart-container.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-container h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-container h3 .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .badge-normal { background: #c6f6d5; color: #276749; }
+        .badge-alert { background: #fed7d7; color: #9b2c2c; }
+        .badge-warning { background: #feebc8; color: #9c4221; }
+
+        .chart-container canvas {
+            max-height: 300px;
+        }
+
+        /* Category sections */
+        .category-section {
+            margin-bottom: calc(var(--gap) * 1.5);
+        }
+
+        .category-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--bg-header);
+            padding: 10px 0;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: var(--gap);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-title .icon { font-size: 20px; }
+
+        /* Data table */
+        .table-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            overflow-x: auto;
+            margin-bottom: var(--gap);
+        }
+
+        .table-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table thead th {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 2px solid #e2e8f0;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table thead th:hover { color: var(--text-primary); background: #f7fafc; }
+
+        .data-table tbody td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tbody tr:hover { background: #f7fafc; }
+
+        .val-high { color: var(--negative); font-weight: 600; }
+        .val-low { color: var(--warning); font-weight: 600; }
+        .val-normal { color: var(--positive); }
+
+        /* Footer */
+        .dashboard-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Legend for reference ranges */
+        .legend-bar {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 10px 16px;
+            background: #edf2f7;
+            border-radius: 6px;
+            margin-bottom: var(--gap);
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-normal { background: var(--positive); }
+        .dot-high { background: var(--negative); }
+        .dot-low { background: var(--warning); }
+        .dot-range { background: #cbd5e0; }
+
+        /* Tooltip area for reference range info */
+        .ref-range-band {
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; align-items: flex-start; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .filters { display: none; }
+            .chart-container { break-inside: avoid; }
+        }
+    </style>
 </head>
 <body>
+<div class="dashboard-container">
 
-<!-- Loading overlay -->
-<div class="loading-overlay" id="loader">
-  <div class="loading-spinner"></div>
-  <div class="loading-text">Cargando datos de Google Sheets...</div>
+    <header class="dashboard-header">
+        <div>
+            <h1>Evolución Analíticas de Sangre</h1>
+            <div class="subtitle">Osakidetza — Carpeta de Salud | 2009 – 2025</div>
+        </div>
+        <div class="filters">
+            <div class="filter-group">
+                <label>Categoría</label>
+                <select id="filter-category" onchange="dashboard.applyFilters()">
+                    <option value="all">Todas</option>
+                    <option value="bioquimica">Bioquímica General</option>
+                    <option value="lipidos">Perfil Lipídico</option>
+                    <option value="hepatico">Perfil Hepático</option>
+                    <option value="renal">Función Renal</option>
+                    <option value="tiroides">Tiroides</option>
+                    <option value="hematologia">Hematología</option>
+                    <option value="hierro">Metabolismo Hierro</option>
+                    <option value="electrolitos">Electrolitos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Valor fuera de rango</label>
+                <select id="filter-status" onchange="dashboard.applyFilters()">
+                    <option value="all">Todos</option>
+                    <option value="abnormal">Solo alterados</option>
+                    <option value="normal">Solo normales</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <div class="legend-bar">
+        <span style="font-weight:600;">Leyenda:</span>
+        <div class="legend-item"><div class="legend-dot dot-normal"></div> Dentro de rango</div>
+        <div class="legend-item"><div class="legend-dot dot-high"></div> Por encima del rango</div>
+        <div class="legend-item"><div class="legend-dot dot-low"></div> Por debajo del rango</div>
+        <div class="legend-item"><div class="legend-dot dot-range"></div> Rango de referencia (área sombreada en gráficos)</div>
+    </div>
+
+    <!-- KPI Summary Cards -->
+    <div id="kpi-row" class="kpi-row"></div>
+
+    <!-- Charts rendered dynamically -->
+    <div id="charts-container"></div>
+
+    <!-- Detailed data table -->
+    <div id="table-container"></div>
+
+    <footer class="dashboard-footer">
+        Datos extraídos de Osakidetza Carpeta Berria · Última actualización: 26 Mar 2026 · Generado automáticamente
+        <br><button onclick="document.getElementById('recipe-modal').style.display='flex'" style="margin-top:8px;background:none;border:1px solid #a0aec0;border-radius:6px;padding:4px 14px;font-size:12px;color:#4a5568;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#2b6cb0';this.style.color='#2b6cb0'" onmouseout="this.style.borderColor='#a0aec0';this.style.color='#4a5568'">📋 View recipe</button>
+    </footer>
 </div>
 
-<!-- ═══ HERO ═══ -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge">Entrenos</div>
-    <h1>Batalla de <span>Rande</span> — Entrenos 2026</h1>
-    <p class="hero-sub">Travesía Islas Cíes → Isla de San Simón · Una de las travesías de nado en aguas abiertas más difíciles de Europa.</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="label">Distancia</div>
-        <div class="value">27<span class="unit">km</span></div>
-      </div>
-      <div class="hero-stat">
-        <div class="label">Tiempo límite</div>
-        <div class="value">~10<span class="unit">h</span></div>
-      </div>
-      <div class="hero-stat">
-        <div class="label">Agua</div>
-        <div class="value">13–15<span class="unit">°C</span></div>
-      </div>
-      <div class="hero-stat">
-        <div class="label">Tu ritmo</div>
-        <div class="value">1:53<span class="unit">/100m</span></div>
-      </div>
-      <div class="hero-stat">
-        <div class="label">ETA</div>
-        <div class="value">~8:30<span class="unit">h</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="error-banner" id="errorBanner"></div>
-
-  <!-- ═══ KPIs ═══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon blue">📊</div>
-      <h2 id="kpiTitle">Resumen de preparación</h2>
-    </div>
-    <div class="kpi-grid" id="kpiGrid"></div>
-  </div>
-
-  <!-- ═══ CHART ═══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon blue">🌊</div>
-      <h2>Volumen semanal (km)</h2>
-    </div>
-    <div class="chart-container">
-      <canvas id="volChart"></canvas>
-    </div>
-    <p style="font-size:0.78rem; color:var(--gray-400); margin-top:8px;">La línea roja punteada marca los 27 km de la prueba. Las barras <span style="color:var(--sand-dark);font-weight:600;">naranjas</span> son semanas con viaje o compromiso.</p>
-  </div>
-
-  <!-- ═══ DIAGNÓSTICO ═══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon coral">🔍</div>
-      <h2>Diagnóstico: ¿Dónde estás hoy?</h2>
-    </div>
-    <div class="insight-grid" id="insights"></div>
-  </div>
-
-  <!-- ═══ DATOS COMPLETOS ═══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon blue">📋</div>
-      <h2>Datos completos de volumen</h2>
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="data-table" id="dataTable">
-        <thead>
-          <tr>
-            <th>Semana</th>
-            <th>Vol (km)</th>
-            <th style="width:25%;">Visual</th>
-            <th>vs. año ant.</th>
-            <th>Notas</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══ FACTORES CLAVE ═══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon purple">🎯</div>
-      <h2>Lo que te va a ganar (o perder) la carrera</h2>
-    </div>
-    <div class="phase-timeline">
-      <div class="phase">
-        <div class="phase-marker" style="background:var(--coral);">1°</div>
-        <div class="phase-content">
-          <div class="phase-title">Economía de brazada</div>
-          <div class="phase-detail">A 1:53/100m durante 8+ horas, cada ineficiencia se multiplica por ~14.000 brazadas. Distancia por brazada (DPS) estable, codo alto, no luchar contra el agua. Esto es el factor #1.</div>
+<!-- Recipe modal -->
+<div id="recipe-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:24px;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:12px;max-width:800px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid #e2e8f0;">
+            <div>
+                <h2 style="font-size:18px;font-weight:700;color:#1b365d;margin:0;">📋 Recipe — Blood Test Evolution Dashboard</h2>
+                <p style="font-size:12px;color:#718096;margin:4px 0 0;">The seed to reproduce this dashboard with your own data</p>
+            </div>
+            <button onclick="document.getElementById('recipe-modal').style.display='none'" style="background:none;border:none;font-size:24px;cursor:pointer;color:#a0aec0;padding:0 4px;line-height:1;" title="Close">&times;</button>
         </div>
-      </div>
-      <div class="phase">
-        <div class="phase-marker" style="background:var(--sand-dark);">2°</div>
-        <div class="phase-content">
-          <div class="phase-title">Estrategia energética</div>
-          <div class="phase-detail">No es una prueba de velocidad, es una prueba de glucógeno. Metabolismo aeróbico puro (Z2-Z3 bajo). El fallo suele ser energético antes que muscular. Los avituallamientos son tu lifeline.</div>
+        <div id="recipe-content" style="padding:24px;overflow-y:auto;font-family:'SF Mono',Monaco,Consolas,'Liberation Mono',monospace;font-size:12.5px;line-height:1.7;color:#2d3748;white-space:pre-wrap;word-wrap:break-word;"></div>
+        <div style="padding:12px 24px;border-top:1px solid #e2e8f0;display:flex;gap:8px;justify-content:flex-end;">
+            <button onclick="navigator.clipboard.writeText(document.getElementById('recipe-content').textContent).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy recipe',1500)})" style="padding:6px 16px;border:1px solid #e2e8f0;border-radius:6px;background:#f7fafc;font-size:12px;cursor:pointer;color:#4a5568;">Copy recipe</button>
+            <button onclick="document.getElementById('recipe-modal').style.display='none'" style="padding:6px 16px;border:none;border-radius:6px;background:#2b6cb0;font-size:12px;cursor:pointer;color:#fff;">Close</button>
         </div>
-      </div>
-      <div class="phase">
-        <div class="phase-marker" style="background:var(--sea-teal);">3°</div>
-        <div class="phase-content">
-          <div class="phase-title">Gestión del ritmo</div>
-          <div class="phase-detail">Salir demasiado fuerte = error clásico. Debes ser capaz de hacer negative split relativo. Z2 alto / Z3 bajo constante. Los primeros 10 km deberían sentirse "demasiado fáciles".</div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-marker" style="background:var(--green);">4°</div>
-        <div class="phase-content">
-          <div class="phase-title">Resistencia estructural</div>
-          <div class="phase-detail">Hombros, escápula, core. 8+ horas de carga repetitiva. Si algo se inflama o se fatiga, tu técnica colapsa y el ritmo cae en cadena. Prevención > tratamiento.</div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-marker" style="background:var(--purple);">5°</div>
-        <div class="phase-content">
-          <div class="phase-title">13–15°C + mental</div>
-          <div class="phase-detail">Agua fría = pérdida progresiva de calor, rigidez, impacto en eficiencia. Con neopreno mejoras flotabilidad y térmica pero cambia mecánica. Y luego está lo mental: 8+ horas de monotonía + fatiga.</div>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- ═══ FASES ═══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon green">📈</div>
-      <h2>Fases de tu preparación</h2>
-    </div>
-    <div class="phase-timeline" id="phases"></div>
-  </div>
-</div>
-
-<!-- ═══ FOOTER ═══ -->
-<div class="footer">
-  <div class="motto">Islas Cíes → San Simón. 27 km. Tú puedes. 🌊</div>
-  <span id="footerDate"></span>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════
-const SHEET_ID = '1JtFrZiJj20n7nXqZuLqsWX2loP5fV-85zwga842y44s';
-const GID = '1618423594';
-// Use JSONP (script tag) instead of fetch() to bypass CORS when opened as file://
-const JSONP_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${GID}&tqx=responseHandler:handleSheetData`;
-
-// Known notes for specific weeks (date string fragment → note)
-const WEEK_NOTES = {
-  'nov 10': 'Londres',
-  'november 10': 'Londres',
-  'nov 17': 'Madrid',
-  'november 17': 'Madrid',
-  'jan 26': 'Oporto',
-  'january 26': 'Oporto',
-  'feb 16': 'Nápoles',
-  'february 16': 'Nápoles',
-  'feb 23': 'Cumple María',
-  'february 23': 'Cumple María',
-};
-
-// ═══════════════════════════════════════════════════════
-// WEEK LABEL → short label
-// ═══════════════════════════════════════════════════════
-const MONTH_MAP = {
-  'january':'Ene','jan':'Ene','february':'Feb','feb':'Feb','march':'Mar','mar':'Mar',
-  'april':'Abr','apr':'Abr','may':'May','june':'Jun','jun':'Jun',
-  'july':'Jul','jul':'Jul','august':'Ago','aug':'Ago','september':'Sep','sept':'Sep','sep':'Sep',
-  'october':'Oct','oct':'Oct','november':'Nov','nov':'Nov','december':'Dic','dec':'Dic'
-};
-
-function shortLabel(raw) {
-  const s = raw.toLowerCase().replace(/,?\s*2026/i, '').replace(/,?\s*2025/i, '').trim();
-  // e.g. "october 6th" → "6 Oct"
-  const m = s.match(/^(\w+)\s+(\d+)/);
-  if (m) {
-    const month = MONTH_MAP[m[1]] || m[1];
-    return m[2] + ' ' + month;
-  }
-  return raw;
-}
-
-// Check if a week is Oct 6 or later (using the raw week string)
-function isOctOrLater(raw) {
-  const s = raw.toLowerCase();
-  const monthOrder = ['january','jan','february','feb','march','mar','april','apr','may','june','jun',
-    'july','jul','august','aug','september','sept','sep','october','oct','november','nov','december','dec'];
-  const octIdx = monthOrder.indexOf('october');
-  for (let i = 0; i < monthOrder.length; i++) {
-    if (s.startsWith(monthOrder[i])) {
-      return i >= octIdx;
-    }
-  }
-  return false;
-}
-
-// Parse month index (0-11)
-const MONTHS_LIST = [
-  ['jan','january'], ['feb','february'], ['mar','march'], ['apr','april'],
-  ['may'], ['jun','june'], ['jul','july'], ['aug','august'],
-  ['sep','sept','september'], ['oct','october'], ['nov','november'], ['dec','december']
-];
-function monthIndex(raw) {
-  const s = raw.toLowerCase();
-  for (let i = 0; i < MONTHS_LIST.length; i++) {
-    for (const m of MONTHS_LIST[i]) {
-      if (s.startsWith(m)) return i;
-    }
-  }
-  return -1;
-}
-
-// Parse to sortable YYYYMMDD to filter from a specific date onwards
-function parseSortableDate(raw) {
-  const s = raw.toLowerCase();
-  const mi = monthIndex(s);
-  if (mi === -1) return 0;
-  // Extract year if present; if absent, infer: Jul-Dec=2025, Jan-Jun=2026
-  let year = 2025;
-  const ym = s.match(/20\d{2}/);
-  if (ym) { year = parseInt(ym[0]); }
-  else { year = mi >= 6 ? 2025 : 2026; }
-  // Extract day number
-  const dayMatch = s.match(/(\d+)/);
-  const day = dayMatch ? parseInt(dayMatch[1]) : 1;
-  return year * 10000 + (mi + 1) * 100 + day; // e.g. 20251006 for Oct 6 2025
-}
-
-function getNote(raw) {
-  const s = raw.toLowerCase().replace(/,?\s*2026/i, '').replace(/,?\s*2025/i, '').trim();
-  for (const [key, val] of Object.entries(WEEK_NOTES)) {
-    // Match month + day number
-    const km = key.match(/^(\w+)\s+(\d+)/);
-    const sm = s.match(/^(\w+)\s+(\d+)/);
-    if (km && sm && sm[2] === km[2]) {
-      // Check if month matches
-      const kMonth = km[1].toLowerCase();
-      const sMonth = sm[1].toLowerCase();
-      if (sMonth.startsWith(kMonth) || kMonth.startsWith(sMonth)) return val;
-    }
-  }
-  return '';
-}
-
-// ═══════════════════════════════════════════════════════
-// PROCESS GOOGLE VIZ JSON RESPONSE
-// ═══════════════════════════════════════════════════════
-function processGvizData(json) {
-  const table = json.table;
-  const cols = table.cols;  // column definitions
-  const rows = table.rows;  // data rows
-
-  // Each row has .c array of cells; each cell has .v (value) and optionally .f (formatted)
-  const data = [];
-  for (let i = 0; i < rows.length; i++) {
-    const cells = rows[i].c;
-    const week = cells[0] ? (cells[0].f || cells[0].v || '') : '';
-    const vol = cells[1] ? parseFloat(cells[1].v) : NaN;
-    const volPrev = cells[2] ? parseFloat(cells[2].v) : NaN;
-    const pctRaw = cells[6] ? (cells[6].f || String(cells[6].v) || '') : '';
-
-    if (!week || isNaN(vol)) continue;
-
-    // Filter: only from Oct 6 2025 onwards
-    const sortDate = parseSortableDate(week);
-    if (sortDate < 20251006) continue;
-
-    // Calculate %
-    let pct = null;
-    if (pctRaw && pctRaw !== '0.00%' && pctRaw !== '0') {
-      const parsed = parseFloat(String(pctRaw).replace('%', '').replace(',', '.'));
-      if (!isNaN(parsed) && parsed !== 0) pct = parsed;
-    }
-    if (pct === null && !isNaN(volPrev) && volPrev === 0 && vol > 0) {
-      pct = -1; // sin referencia
-    } else if (pct === null && !isNaN(volPrev) && volPrev > 0) {
-      pct = (vol / volPrev) * 100;
-    }
-
-    let note = getNote(week);
-    if (pct === -1 && !note) note = '0 km año ant.';
-
-    data.push({
-      w: shortLabel(week),
-      wRaw: week,
-      v: vol,
-      p: pct,
-      n: note
-    });
-  }
-
-  return data;
-}
-
-// ═══════════════════════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════════════════════
-let chartInstance = null;
-
-function render(data) {
-  // ── KPIs ──
-  const totalVol = data.reduce((s, d) => s + d.v, 0);
-  const peakWeek = data.reduce((max, d) => d.v > max.v ? d : max, data[0]);
-  const avg = totalVol / data.length;
-  const last3 = data.filter(d => d.v > 0).slice(-3);
-  const trend = last3.map(d => d.v);
-  const trendRound = trend.map(v => Math.round(v));
-  const trendDir = trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2] ? '↑ Build' : '→ Estable';
-  const trendColor = trendDir.includes('Build') ? 'var(--green)' : 'var(--gray-500)';
-
-  const firstWeek = data[0]?.w || '';
-  const lastWeek = data[data.length - 1]?.w || '';
-
-  document.getElementById('kpiTitle').textContent = `Resumen de preparación · ${firstWeek} – ${lastWeek}`;
-
-  document.getElementById('kpiGrid').innerHTML = `
-    <div class="kpi">
-      <div class="kpi-label">Vol. total acumulado</div>
-      <div class="kpi-value" style="color:var(--sea-teal);">~${Math.round(totalVol)} km</div>
-      <div class="kpi-note">${data.length} semanas de entreno</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Semana pico</div>
-      <div class="kpi-value">${Math.round(peakWeek.v)} km</div>
-      <div class="kpi-note">${peakWeek.w}</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Media semanal</div>
-      <div class="kpi-value">${Math.round(avg)} km</div>
-      <div class="kpi-note">${firstWeek} – ${lastWeek}</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Tendencia reciente</div>
-      <div class="kpi-value" style="color:${trendColor};">${trendDir}</div>
-      <div class="kpi-note">${trendRound.join(' → ')}</div>
-    </div>
-  `;
-
-  // ── Chart ──
-  const ctx = document.getElementById('volChart').getContext('2d');
-  if (chartInstance) chartInstance.destroy();
-  const maxVol = peakWeek.v;
-
-  chartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: data.map(d => d.w),
-      datasets: [
-        {
-          label: 'Volumen (km)',
-          data: data.map(d => d.v),
-          backgroundColor: data.map(d => {
-            if (d.n && d.n !== '0 km año ant.') return 'rgba(245,158,11,0.6)';
-            if (d.v >= 25) return 'rgba(14,165,233,0.85)';
-            if (d.v >= 18) return 'rgba(14,165,233,0.6)';
-            if (d.v >= 10) return 'rgba(14,165,233,0.4)';
-            return 'rgba(14,165,233,0.2)';
-          }),
-          borderRadius: 4,
-          borderSkipped: false,
-        },
-        {
-          label: 'Distancia Rande (27 km)',
-          data: data.map(() => 27),
-          type: 'line',
-          borderColor: 'rgba(244,63,94,0.5)',
-          borderDash: [6, 4],
-          borderWidth: 2,
-          pointRadius: 0,
-          fill: false,
+// ═══════════════════════════════════════════════════════════
+// DATA: Each analítica is a date entry with measured values
+// ═══════════════════════════════════════════════════════════
+const ANALÍTICAS = [
+    {
+        date: "2025-07-08",
+        label: "JUL 2025",
+        source: "Medicina Interna CEX — Hospital Basurto",
+        doctor: "Dr. Ramírez Navarro",
+        values: {
+            glucosa: 85, urea: 43, creatinina: 1.08, filtracion_glomerular: 77, urato: 5.1,
+            colesterol: 182, trigliceridos: 41, hdl: 78, ldl: 96, colesterol_no_hdl: 104,
+            ast: 30, alt: 32, ggt: 12, fosfatasa_alcalina: 68, bilirrubina: 0.3,
+            calcio: 9.2, fosfato: 2.4, magnesio: 2.23, proteinas: 6.7, albumina: 4.1,
+            sodio: 143, potasio: 4.4, cloruro: 102, pcr: 0.95, ck: 275, ldh: 195,
+            hierro: 99, transferrina: 281, sat_transferrina: 25, ferritina: 32,
+            tsh: 7.43, t4_libre: 0.97,
+            vitamina_b12: 391, folato: 6.7,
+            hematies: 4.59, hemoglobina: 14.7, hematocrito: 43.4, vcm: 94.6,
+            chcm: 33.9, hcm: 32.0, ade: 14.6, plaquetas: 233, vpm: 9.7,
+            leucocitos: 5.49, neutrofilos_pct: 46.5, linfocitos_pct: 42.8,
+            monocitos_pct: 8.7, eosinofilos_pct: 1.5, vsg: 5
         }
-      ]
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 16, font: { size: 11, family: 'Inter' } } },
-        tooltip: {
-          backgroundColor: '#0A1628',
-          titleFont: { family: 'Inter', weight: '600' },
-          bodyFont: { family: 'JetBrains Mono' },
-          padding: 12, cornerRadius: 8,
-          callbacks: {
-            label: function(ctx2) {
-              if (ctx2.datasetIndex === 1) return 'Objetivo: 27 km';
-              const d = data[ctx2.dataIndex];
-              const note = d && d.n ? ' · ' + d.n : '';
-              return Math.round(ctx2.parsed.y) + ' km' + note;
-            }
-          }
+    {
+        date: "2025-03-28",
+        label: "MAR 2025",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Lecube Angulo, Cristina",
+        values: {
+            glucosa: 87, creatinina: 0.96, filtracion_glomerular: 89,
+            colesterol: 195, trigliceridos: 34, hdl: 92, ldl: 97, colesterol_no_hdl: 103,
+            alt: 29, ggt: 12, fosfatasa_alcalina: 76, bilirrubina: 0.6,
+            albumina: 4.8, sodio: 138, potasio: 4.6, cloruro: 101,
+            pcr: 0.8, ck: 171,
+            hierro: 93, transferrina: 305, sat_transferrina: 22, ferritina: 25,
+            tsh: 6.62,
+            hematies: 5.10, hemoglobina: 16.1, hematocrito: 47.7, vcm: 93.5,
+            chcm: 33.8, hcm: 31.6, ade: 13.6, plaquetas: 256,
+            leucocitos: 5.08, neutrofilos_pct: 44.8, linfocitos_pct: 44.7,
+            monocitos_pct: 8.7, eosinofilos_pct: 1.4, vsg: 4
         }
-      },
-      scales: {
-        y: { beginAtZero: true, max: Math.ceil(maxVol / 5) * 5 + 5, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11, family: 'JetBrains Mono' }, callback: v => Math.round(v) + ' km' } },
-        x: { grid: { display: false }, ticks: { font: { size: 9, family: 'Inter' }, maxRotation: 60 } }
-      }
+    },
+    {
+        date: "2024-05-31",
+        label: "MAY 2024",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            creatinina: 1.04, filtracion_glomerular: 82,
+            alt: 24,
+            hierro: 117, transferrina: 271, sat_transferrina: 31, ferritina: 41,
+            tsh: 4.01, t4_libre: 1.28,
+            vitamina_b12: 409, folato: 11.5,
+            hematies: 4.49, hemoglobina: 14.7, hematocrito: 44.0, vcm: 98.0,
+            chcm: 33.4, hcm: 32.7, ade: 13.2, plaquetas: 206,
+            leucocitos: 4.34, neutrofilos_pct: 49.7, linfocitos_pct: 39.9,
+            monocitos_pct: 7.6, eosinofilos_pct: 2.1
+        }
+    },
+    {
+        date: "2024-01-16",
+        label: "ENE 2024",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dr. Miranda García, Iñigo",
+        values: {
+            glucosa: 80, creatinina: 1.07, filtracion_glomerular: 79,
+            colesterol: 211, trigliceridos: 46, hdl: 84, ldl: 118, colesterol_no_hdl: 127,
+            alt: 25, ggt: 12,
+            hierro: 173, transferrina: 273, sat_transferrina: 45, ferritina: 48,
+            tsh: 7.46, t4_libre: 1.18,
+            hematies: 5.16, hemoglobina: 16.7, hematocrito: 48.0, vcm: 93.0,
+            chcm: 34.8, hcm: 32.4, ade: 13.0, plaquetas: 269,
+            leucocitos: 5.49, neutrofilos_pct: 41.1, linfocitos_pct: 47.5,
+            monocitos_pct: 9.1, eosinofilos_pct: 1.6
+        }
+    },
+    {
+        date: "2023-06-19",
+        label: "JUN 2023",
+        source: "Medicina Familiar (AP) — C.S. Balmaseda",
+        doctor: "Dr. Campayo Pérez, Juan Miguel",
+        values: {
+            tsh: 6.48
+        }
+    },
+    {
+        date: "2022-12-01",
+        label: "DIC 2022",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            glucosa: 74, creatinina: 0.76, filtracion_glomerular: 90, urato: 4.8,
+            colesterol: 189, trigliceridos: 98, hdl: 73, ldl: 96, colesterol_no_hdl: 116,
+            ast: 19, alt: 18, ggt: 9, fosfatasa_alcalina: 69,
+            albumina: 4.1, sodio: 141, potasio: 4.3, cloruro: 102,
+            pcr: 0.61, hierro: 63, transferrina: 248, sat_transferrina: 18, ferritina: 51,
+            tsh: 9.72, vitamina_b12: 265, folato: 5.4,
+            hematies: 5.12, hemoglobina: 15.8, hematocrito: 47.7, vcm: 93.2,
+            chcm: 33.1, hcm: 30.9, ade: 14.4, plaquetas: 231,
+            leucocitos: 5.22, neutrofilos_pct: 46.0, linfocitos_pct: 43.3,
+            monocitos_pct: 8.4, eosinofilos_pct: 1.7
+        }
+    },
+    {
+        date: "2021-06-04",
+        label: "JUN 2021",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            glucosa: 87, creatinina: 0.80, filtracion_glomerular: 90,
+            colesterol: 165, trigliceridos: 83, hdl: 73, ldl: 75, colesterol_no_hdl: 92,
+            alt: 24, ggt: 11,
+            hierro: 37, transferrina: 285, sat_transferrina: 9, ferritina: 21,
+            tsh: 8.58, vitamina_b12: 152, folato: 5.3,
+            hematies: 4.74, hemoglobina: 14.5, hematocrito: 44.5, vcm: 93.9,
+            chcm: 32.6, hcm: 30.6, ade: 14.4, plaquetas: 257, vpm: 10.1,
+            leucocitos: 7.84, neutrofilos_pct: 53.50, linfocitos_pct: 36.90,
+            monocitos_pct: 7.80, eosinofilos_pct: 1.30
+        }
+    },
+    {
+        date: "2020-06-08",
+        label: "JUN 2020",
+        source: "Urgencias Traumatología (URG) — Hospital Galdakao-Usansolo",
+        doctor: "Dra. Ela Santiago, María Auxiliadora",
+        values: {
+            glucosa: 99, urea: 28, creatinina: 0.92, sodio: 142, potasio: 4.4,
+            hematies: 4.78, hemoglobina: 14.2, hematocrito: 43.5, vcm: 91.0,
+            hcm: 29.7, chcm: 32.6, ade: 13.9, plaquetas: 263, vpm: 9.5,
+            leucocitos: 11.84, neutrofilos_pct: 82.60, linfocitos_pct: 11.70,
+            monocitos_pct: 5.30, eosinofilos_pct: 0.10
+        }
+    },
+    {
+        date: "2019-09-30",
+        label: "SEP 2019",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            hierro: 79, transferrina: 283, sat_transferrina: 20, ferritina: 40,
+            tsh: 8.78
+        }
+    },
+    {
+        date: "2019-07-04",
+        label: "JUL 2019",
+        source: "Medicina Familiar + Aparato Digestivo — C.S. Albia / Amb. Dr. Areilza",
+        doctor: "Dra. Moraga Loinaz / Dr. Ruiz Eguiluz Pablo",
+        values: {
+            tsh: 10.90, t4_libre: 0.96,
+            pcr: 2.70, hierro: 61, transferrina: 274, sat_transferrina: 16, ferritina: 33,
+            hematies: 5.25, hemoglobina: 16.5, hematocrito: 49.7, vcm: 94.7,
+            chcm: 33.2, hcm: 31.4, ade: 13.2, plaquetas: 260, vpm: 9.5,
+            leucocitos: 8.00, neutrofilos_pct: 51.3, linfocitos_pct: 38.4,
+            monocitos_pct: 8.8, eosinofilos_pct: 1.1
+        }
+    },
+    {
+        date: "2019-03-13",
+        label: "MAR 2019",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. Pérez de Arenaza López de Subijana, Aitor",
+        values: {
+            glucosa: 84, urea: 24, creatinina: 0.91, filtracion_glomerular: 90, urato: 5.2,
+            colesterol: 191, trigliceridos: 97, hdl: 50, ldl: 122, colesterol_no_hdl: 141,
+            ast: 20, alt: 36, ggt: 25, fosfatasa_alcalina: 78, bilirrubina: 0.5,
+            calcio: 9.2, fosfato: 3.1, albumina: 4.3, sodio: 144, potasio: 4.1,
+            pcr: 2.32, hierro: 102, transferrina: 256, sat_transferrina: 28, ferritina: 34,
+            vitamina_b12: 199, folato: 4.5,
+            hematies: 5.35, hemoglobina: 16.6, hematocrito: 47.9, vcm: 89.5,
+            chcm: 34.7, hcm: 31.0, ade: 13.5, plaquetas: 264, vpm: 9.3,
+            leucocitos: 7.79, neutrofilos_pct: 52.4, linfocitos_pct: 35.8,
+            monocitos_pct: 9.2, eosinofilos_pct: 2.1, vsg: 5
+        }
+    },
+    {
+        date: "2018-10-02",
+        label: "OCT 2018",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            glucosa: 94, creatinina: 1.03, filtracion_glomerular: 86, urato: 6.00,
+            colesterol: 195, hdl: 51, ldl: 128, colesterol_no_hdl: 144, trigliceridos: 81,
+            albumina: 4.41, bilirrubina: 0.38, ast: 22, alt: 38, ggt: 26, fosfatasa_alcalina: 85,
+            tsh: 9.94, hematies: 5.58, hemoglobina: 16.2, hematocrito: 50.0, vcm: 89.6,
+            hcm: 29.0, chcm: 32.4, ade: 15.4, plaquetas: 257, vpm: 9.5,
+            leucocitos: 6.4, neutrofilos_pct: 50.1, linfocitos_pct: 40.1,
+            monocitos_pct: 7.6, eosinofilos_pct: 1.6, vsg: 5
+        }
+    },
+    {
+        date: "2018-03-06",
+        label: "MAR 2018",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. Ruiz Eguiluz Pablo",
+        values: {
+            pcr: 0.28, ferritina: 15,
+            hematies: 5.92, hemoglobina: 13.4, hematocrito: 45.2, vcm: 76.4,
+            hcm: 22.6, chcm: 29.6, ade: 23.6, plaquetas: 388, vpm: 9.3,
+            leucocitos: 8.2, neutrofilos_pct: 51.7, linfocitos_pct: 37.7,
+            monocitos_pct: 8.3, eosinofilos_pct: 1.7
+        }
+    },
+    {
+        date: "2018-01-12",
+        label: "ENE 2018",
+        source: "Aparato Digestivo — Hospital Universitario Basurto",
+        doctor: "Dra. Deiss Pascual, Laura",
+        values: {
+            hierro: 26, ferritina: 9, transferrina: 308, sat_transferrina: 7,
+            hematies: 5.12, hemoglobina: 10.8, hematocrito: 36.4, vcm: 71.1,
+            hcm: 21.1, chcm: 29.7, ade: 17.9, plaquetas: 365, vpm: 9.5,
+            leucocitos: 5.4, neutrofilos_pct: 54.2, linfocitos_pct: 34.7,
+            monocitos_pct: 8.8, eosinofilos_pct: 1.7
+        }
+    },
+    {
+        date: "2017-03-06",
+        label: "MAR 2017",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. Ruiz Eguiluz Pablo",
+        values: {
+            pcr: 0.3, ferritina: 3, folato: 3.1, vitamina_b12: 248.1,
+            hematies: 5.19, hemoglobina: 11.6, hematocrito: 38.6, vcm: 74.4,
+            hcm: 22.4, chcm: 30.1, ade: 18.6, plaquetas: 384, vpm: 9.4,
+            leucocitos: 6.9, neutrofilos_pct: 51.4, linfocitos_pct: 38,
+            monocitos_pct: 8.1, eosinofilos_pct: 1.9
+        }
+    },
+    {
+        date: "2016-11-14",
+        label: "NOV 2016",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. De Eguia Fernández de Agu",
+        values: {
+            glucosa: 97, urea: 33, creatinina: 1.06, filtracion_glomerular: 84, urato: 5.80,
+            colesterol: 174, albumina: 4.36, bilirrubina: 0.42,
+            ast: 20, alt: 26, ggt: 23, fosfatasa_alcalina: 72,
+            fosfato: 2.80, calcio: 9.53, sodio: 149.0, potasio: 4.68,
+            hierro: 34, ferritina: 7, folato: 4.8, vitamina_b12: 282.5,
+            tsh: 8.12, t4_libre: 1.03,
+            hematies: 5.36, hemoglobina: 11.9, hematocrito: 40.4, vcm: 75.4,
+            hcm: 22.2, chcm: 29.5, ade: 18.5, plaquetas: 370, vpm: 9.8,
+            leucocitos: 7.1, neutrofilos_pct: 45.7, linfocitos_pct: 43.1,
+            monocitos_pct: 9.2, eosinofilos_pct: 1.4
+        }
+    },
+    {
+        date: "2016-05-11",
+        label: "MAY 2016",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            hierro: 35, ferritina: 6, folato: 2.2, vitamina_b12: 248.9,
+            hematies: 5.35, hemoglobina: 12.0, hematocrito: 39.8, vcm: 74.4,
+            hcm: 22.4, chcm: 30.2, ade: 17.6, plaquetas: 368, vpm: 9.6
+        }
+    },
+    {
+        date: "2016-04-25",
+        label: "ABR 2016",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            glucosa: 95, creatinina: 0.92, filtracion_glomerular: 90, urato: 4.90,
+            colesterol: 170, trigliceridos: 97, hdl: 50, ldl: 101, colesterol_no_hdl: 120,
+            albumina: 4.16, proteinas: 6.95, alt: 23, ggt: 20, fosfatasa_alcalina: 75,
+            fosfato: 2.91, calcio: 9.05, sodio: 146, potasio: 4.58,
+            tsh: 8.42, t4_libre: 0.98,
+            hematies: 5.17, hemoglobina: 12.0, hematocrito: 39.0, vcm: 75.4,
+            hcm: 23.2, chcm: 30.8, ade: 17.2, plaquetas: 368, vpm: 9.8,
+            leucocitos: 7.3, neutrofilos_pct: 45.4, linfocitos_pct: 43.2,
+            monocitos_pct: 8.7, eosinofilos_pct: 2.2, vsg: 11
+        }
+    },
+    {
+        date: "2014-11-05",
+        label: "NOV 2014",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Sin médico codificado",
+        values: {
+            glucosa: 92, urea: 29, creatinina: 0.97, urato: 4.99,
+            colesterol: 180, trigliceridos: 87, hdl: 52, ldl: 111, colesterol_no_hdl: 128,
+            alt: 32, ggt: 22, sodio: 148, potasio: 5.18,
+            tsh: 7.90, t4_libre: 1.13,
+            hematies: 5.38, hemoglobina: 13.2, hematocrito: 43.6, vcm: 81.0,
+            chcm: 30.3, hcm: 24.5, ade: 16.6, plaquetas: 330, vpm: 10,
+            leucocitos: 8.4, neutrofilos_pct: 52.2, linfocitos_pct: 37.4,
+            monocitos_pct: 8.0, eosinofilos_pct: 1.9
+        }
+    },
+    {
+        date: "2012-11-30",
+        label: "NOV 2012",
+        source: "Otorrinolaringología (CEX) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dr. Fernández-Lastr Romarateg",
+        values: {
+            glucosa: 87, urea: 30, creatinina: 0.84, filtracion_glomerular: 60, urato: 4.20,
+            colesterol: 176, albumina: 4.64, bilirrubina: 0.52,
+            ast: 19, alt: 29, ggt: 16, fosfatasa_alcalina: 88,
+            fosfato: 3.15, calcio: 9.73, sodio: 141, potasio: 4.53,
+            hierro: 87, pcr: 0.3,
+            hematies: 5.04, hemoglobina: 13.5, hematocrito: 41.8, vcm: 82.9,
+            hcm: 26.8, chcm: 32.3, ade: 15.5, plaquetas: 302, vpm: 9,
+            leucocitos: 9.3, neutrofilos_pct: 60.3, linfocitos_pct: 28.4,
+            monocitos_pct: 9.8, eosinofilos_pct: 1.2, vsg: 14
+        }
+    },
+    {
+        date: "2012-01-25",
+        label: "ENE 2012",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            glucosa: 94, creatinina: 0.96, urato: 5.41,
+            colesterol: 177, trigliceridos: 60, hdl: 55, ldl: 110, colesterol_no_hdl: 122,
+            alt: 31, ggt: 18,
+            tsh: 6.29, t4_libre: 1.17,
+            vitamina_b12: 365.8, folato: 7.0,
+            hematies: 5.28, hemoglobina: 14.4, hematocrito: 43.9, vcm: 83.1,
+            chcm: 32.8, hcm: 27.3, ade: 15.7, plaquetas: 292, vpm: 10,
+            leucocitos: 6.2, neutrofilos_pct: 45.2, linfocitos_pct: 41.4,
+            monocitos_pct: 11.2, eosinofilos_pct: 1.9
+        }
+    },
+    {
+        date: "2010-03-12",
+        label: "MAR 2010",
+        source: "Endocrinología (CEX) — Amb. Bombero Etxaniz",
+        doctor: "Dra. Isusquiza Echezarreta Ana",
+        values: {
+            glucosa: 81, creatinina: 0.74, filtracion_glomerular: 60, urato: 3.93,
+            colesterol: 172, hdl: 45, ldl: 103, colesterol_no_hdl: 127, trigliceridos: 118,
+            hematies: 4.94, hemoglobina: 15.1, hematocrito: 45.4, vcm: 91.9,
+            hcm: 30.6, chcm: 33.3, ade: 13.7, plaquetas: 290, vpm: 9.9,
+            leucocitos: 10.3, neutrofilos_pct: 56.5, linfocitos_pct: 33.9,
+            monocitos_pct: 8.1, eosinofilos_pct: 1.3
+        }
+    },
+    {
+        date: "2009-05-29",
+        label: "MAY 2009",
+        source: "Atención Primaria — Amb. Bombero Etxaniz",
+        doctor: "Sin médico codificado",
+        values: {
+            glucosa: 98, creatinina: 0.88, urato: 4.14,
+            colesterol: 165, trigliceridos: 60, hdl: 50, ldl: 103, colesterol_no_hdl: 115,
+            alt: 30, ggt: 14,
+            tsh: 6.39, t4_libre: 1.22,
+            hematies: 4.99, hemoglobina: 15.1, hematocrito: 44.7, vcm: 89.6,
+            chcm: 33.8, hcm: 30.3, ade: 13.6, plaquetas: 271, vpm: 9.4,
+            leucocitos: 7.5, neutrofilos_pct: 43.2, linfocitos_pct: 40.5,
+            monocitos_pct: 13.3, eosinofilos_pct: 2.6, vsg: 7
+        }
     }
-  });
+];
 
-  // ── Phases (auto-generated) ──
-  const phases = generatePhases(data);
-  document.getElementById('phases').innerHTML = phases;
+// ═══════════════════════════════════════════════════════════
+// REFERENCE RANGES & METADATA for each parameter
+// ═══════════════════════════════════════════════════════════
+const PARAMS = {
+    glucosa:             { name: "Glucosa", unit: "mg/dL", min: 70, max: 110, category: "bioquimica", important: true },
+    urea:                { name: "Urea", unit: "mg/dL", min: 10, max: 50, category: "renal" },
+    creatinina:          { name: "Creatinina", unit: "mg/dL", min: 0.4, max: 1.2, category: "renal", important: true },
+    filtracion_glomerular: { name: "Filtración Glomerular (CKD-EPI)", unit: "mL/min/1.73m²", min: 70, max: 120, category: "renal", important: true },
+    urato:               { name: "Urato (Ácido Úrico)", unit: "mg/dL", min: 3.4, max: 7.0, category: "bioquimica" },
+    colesterol:          { name: "Colesterol Total", unit: "mg/dL", min: 100, max: 200, category: "lipidos", important: true },
+    trigliceridos:       { name: "Triglicéridos", unit: "mg/dL", min: 20, max: 150, category: "lipidos", important: true },
+    hdl:                 { name: "Colesterol HDL", unit: "mg/dL", min: 40, max: 999, category: "lipidos", important: true },
+    ldl:                 { name: "Colesterol LDL (calc.)", unit: "mg/dL", min: 0, max: 130, category: "lipidos", important: true },
+    colesterol_no_hdl:   { name: "Colesterol no-HDL", unit: "mg/dL", min: 0, max: 160, category: "lipidos" },
+    ast:                 { name: "AST / GOT", unit: "U/L", min: 5, max: 37, category: "hepatico", important: true },
+    alt:                 { name: "ALT / GPT", unit: "U/L", min: 5, max: 41, category: "hepatico", important: true },
+    ggt:                 { name: "GGT", unit: "U/L", min: 11, max: 71, category: "hepatico" },
+    fosfatasa_alcalina:  { name: "Fosfatasa Alcalina", unit: "U/L", min: 40, max: 129, category: "hepatico" },
+    bilirrubina:         { name: "Bilirrubina", unit: "mg/dL", min: 0, max: 1.2, category: "hepatico" },
+    calcio:              { name: "Calcio", unit: "mg/dL", min: 8.4, max: 10.4, category: "electrolitos" },
+    fosfato:             { name: "Fosfato", unit: "mg/dL", min: 2.7, max: 4.5, category: "electrolitos" },
+    magnesio:            { name: "Magnesio", unit: "mg/dL", min: 1.7, max: 2.55, category: "electrolitos" },
+    proteinas:           { name: "Proteínas Totales", unit: "g/dL", min: 6.5, max: 8.3, category: "bioquimica" },
+    albumina:            { name: "Albúmina", unit: "g/dL", min: 3.5, max: 5.5, category: "bioquimica" },
+    sodio:               { name: "Sodio", unit: "mEq/L", min: 135, max: 145, category: "electrolitos" },
+    potasio:             { name: "Potasio", unit: "mEq/L", min: 3.5, max: 5.1, category: "electrolitos", important: true },
+    cloruro:             { name: "Cloruro", unit: "mEq/L", min: 95, max: 106, category: "electrolitos" },
+    pcr:                 { name: "PCR (Proteína C Reactiva)", unit: "mg/L", min: 0, max: 5, category: "bioquimica" },
+    ck:                  { name: "CK (Creatina Quinasa)", unit: "U/L", min: 0, max: 195, category: "bioquimica" },
+    ldh:                 { name: "LDH", unit: "U/L", min: 135, max: 250, category: "bioquimica" },
+    hierro:              { name: "Hierro", unit: "µg/dL", min: 59, max: 158, category: "hierro" },
+    transferrina:        { name: "Transferrina", unit: "mg/dL", min: 200, max: 380, category: "hierro" },
+    sat_transferrina:    { name: "Sat. Transferrina", unit: "%", min: 20, max: 40, category: "hierro" },
+    ferritina:           { name: "Ferritina", unit: "ng/mL", min: 30, max: 400, category: "hierro", important: true },
+    tsh:                 { name: "TSH", unit: "mU/L", min: 0.27, max: 4.2, category: "tiroides", important: true },
+    t4_libre:            { name: "T4 Libre", unit: "ng/dL", min: 0.8, max: 1.8, category: "tiroides", important: true },
+    vitamina_b12:        { name: "Vitamina B12", unit: "pg/mL", min: 197, max: 771, category: "bioquimica" },
+    folato:              { name: "Folato", unit: "ng/mL", min: 2.8, max: 17, category: "bioquimica" },
+    hematies:            { name: "Hematíes", unit: "×10⁶/µL", min: 4.5, max: 5.99, category: "hematologia" },
+    hemoglobina:         { name: "Hemoglobina", unit: "g/dL", min: 13, max: 18, category: "hematologia", important: true },
+    hematocrito:         { name: "Hematocrito", unit: "%", min: 39, max: 53, category: "hematologia" },
+    vcm:                 { name: "VCM", unit: "fL", min: 80, max: 99, category: "hematologia" },
+    chcm:                { name: "CHCM", unit: "g/dL", min: 32, max: 36, category: "hematologia" },
+    hcm:                 { name: "HCM", unit: "pg", min: 27, max: 32, category: "hematologia" },
+    ade:                 { name: "ADE (Ancho Distr. Eritr.)", unit: "%", min: 11, max: 15.1, category: "hematologia" },
+    plaquetas:           { name: "Plaquetas", unit: "×10³/µL", min: 135, max: 450, category: "hematologia", important: true },
+    vpm:                 { name: "VPM", unit: "fL", min: 9, max: 13, category: "hematologia" },
+    leucocitos:          { name: "Leucocitos", unit: "×10³/µL", min: 4.5, max: 11, category: "hematologia", important: true },
+    neutrofilos_pct:     { name: "Neutrófilos %", unit: "%", min: 43, max: 65, category: "hematologia" },
+    neutrofilos:         { name: "Neutrófilos", unit: "×10³/µL", min: 1.5, max: 7, category: "hematologia" },
+    linfocitos_pct:      { name: "Linfocitos %", unit: "%", min: 20.5, max: 45.5, category: "hematologia" },
+    linfocitos:          { name: "Linfocitos", unit: "×10³/µL", min: 1, max: 4, category: "hematologia" },
+    monocitos_pct:       { name: "Monocitos %", unit: "%", min: 0, max: 15, category: "hematologia" },
+    eosinofilos_pct:     { name: "Eosinófilos %", unit: "%", min: 0, max: 5, category: "hematologia" },
+    vsg:                 { name: "VSG", unit: "mm", min: 0, max: 30, category: "hematologia" }
+};
 
-  // ── Insights (auto-generated) ──
-  const insights = generateInsights(data, peakWeek, avg, trend);
-  document.getElementById('insights').innerHTML = insights;
+// ═══════════════════════════════════════════════════════════
+// CATEGORY metadata
+// ═══════════════════════════════════════════════════════════
+const CATEGORIES = {
+    bioquimica:   { name: "Bioquímica General", icon: "🧪", order: 1 },
+    lipidos:      { name: "Perfil Lipídico", icon: "❤️", order: 2 },
+    hepatico:     { name: "Perfil Hepático", icon: "🫁", order: 3 },
+    renal:        { name: "Función Renal", icon: "🫘", order: 4 },
+    tiroides:     { name: "Tiroides", icon: "🦋", order: 5 },
+    hematologia:  { name: "Hematología", icon: "🩸", order: 6 },
+    hierro:       { name: "Metabolismo del Hierro", icon: "⚙️", order: 7 },
+    electrolitos: { name: "Electrolitos y Minerales", icon: "⚡", order: 8 }
+};
 
-  // ── Table ──
-  const tbody = document.querySelector('#dataTable tbody');
-  tbody.innerHTML = '';
-  data.forEach(d => {
-    const isPeak = d.v >= maxVol;
-    const pctClass = d.p != null && d.p !== -1 ? (d.p >= 100 ? 'pct-up' : 'pct-down') : '';
-    const pctText = d.p === -1 ? 'sin ref.' : (d.p != null ? d.p.toFixed(1) + '%' : '—');
-    const barW = (d.v / maxVol * 100).toFixed(0);
-    const noteStyle = d.n ? 'font-family:Inter,sans-serif;font-size:0.75rem;color:var(--gray-500);font-style:italic;' : '';
-    const tr = document.createElement('tr');
-    if (isPeak) tr.className = 'peak-row';
-    tr.innerHTML = `
-      <td class="week-cell">${d.w}</td>
-      <td class="vol-cell">${Math.round(d.v)}</td>
-      <td><div class="vol-bar-wrap"><div class="vol-bar" style="width:${barW}%"></div></div></td>
-      <td class="pct-cell ${pctClass}">${pctText}</td>
-      <td style="${noteStyle}">${d.n || ''}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+const COLORS = ['#4C72B0','#DD8452','#55A868','#C44E52','#8172B3','#937860','#DA8BC3','#8C8C8C','#CCB974','#64B5CD'];
 
-  // ── Footer ──
-  const now = new Date();
-  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  document.getElementById('footerDate').textContent =
-    `Datos cargados en vivo · ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()} a las ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-}
-
-// ═══════════════════════════════════════════════════════
-// AUTO-GENERATE PHASES
-// ═══════════════════════════════════════════════════════
-function generatePhases(data) {
-  // Group by month
-  const groups = {};
-  data.forEach(d => {
-    const m = d.w.split(' ')[1] || 'Otro';
-    if (!groups[m]) groups[m] = [];
-    groups[m].push(d);
-  });
-
-  const colors = ['var(--sea-teal)','var(--sand-dark)','var(--green)','var(--coral)','var(--purple)','var(--gray-500)','var(--sea-glow)'];
-  let html = '';
-  let idx = 0;
-
-  for (const [month, weeks] of Object.entries(groups)) {
-    const vols = weeks.map(w => w.v);
-    const avg = Math.round(vols.reduce((a,b) => a+b, 0) / vols.length);
-    const peak = Math.round(Math.max(...vols));
-    const notes = weeks.filter(w => w.n && w.n !== '0 km año ant.').map(w => w.n);
-    const noteText = notes.length > 0 ? ` · ${notes.join(', ')}` : '';
-    const trendText = vols.length >= 2 ? ` (${vols.map(v => Math.round(v)).join(' → ')})` : '';
-
-    html += `
-      <div class="phase">
-        <div class="phase-marker" style="background:${colors[idx % colors.length]};">${idx + 1}</div>
-        <div class="phase-content">
-          <div class="phase-title">${month}${noteText}</div>
-          <div class="phase-detail">Volúmenes semanales${trendText}.</div>
-          <div class="phase-vol">Prom: ${avg} km/sem · Pico: ${peak} km</div>
-        </div>
-      </div>`;
-    idx++;
-  }
-  return html;
-}
-
-// ═══════════════════════════════════════════════════════
-// AUTO-GENERATE INSIGHTS
-// ═══════════════════════════════════════════════════════
-function generateInsights(data, peakWeek, avg, trend) {
-  const weeksAbove20 = data.filter(d => d.v >= 20).length;
-  const pctAbove20 = ((weeksAbove20 / data.length) * 100).toFixed(0);
-  const travelWeeks = data.filter(d => d.n && d.n !== '0 km año ant.');
-  const lastVal = trend[trend.length - 1] || 0;
-
-  let html = '';
-
-  // Peak vs race distance
-  html += `<div class="insight good">
-    <div class="insight-title">✅ Volumen pico = distancia de carrera</div>
-    <div class="insight-text">Tu semana más alta fue ${Math.round(peakWeek.v)} km (${peakWeek.w}), prácticamente idéntica a los 27 km de la prueba. Tu cuerpo ya sabe lo que es moverse esa distancia en una semana.</div>
-  </div>`;
-
-  // Trend
-  if (trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2]) {
-    html += `<div class="insight good">
-      <div class="insight-title">✅ Tendencia ascendente</div>
-      <div class="insight-text">Las últimas semanas muestran un build limpio: ${trend.map(v => Math.round(v)).join(' → ')}. Si mantienes esta trayectoria, llegarás en buena forma.</div>
-    </div>`;
-  }
-
-  // Travel impact
-  if (travelWeeks.length > 0) {
-    const names = travelWeeks.map(w => w.n).join(', ');
-    html += `<div class="insight warn">
-      <div class="insight-title">⚠️ Viajes y compromisos impactan</div>
-      <div class="insight-text">Semanas con ${names} muestran caídas de volumen. Para Rande necesitas bloques largos sin cortes. Planifica los entrenos alrededor de tus viajes.</div>
-    </div>`;
-  }
-
-  // Consistency
-  html += `<div class="insight info">
-    <div class="insight-title">💡 ${pctAbove20}% de semanas ≥ 20 km</div>
-    <div class="insight-text">${weeksAbove20} de ${data.length} semanas superaron los 20 km. La media general es ${Math.round(avg)} km/sem. Para una prueba de 27 km, cuantas más seianas por encima de 20, mejor.</div>
-  </div>`;
-
-  // Pace
-  html += `<div class="insight good">
-    <div class="insight-title">✅ Ritmo 1:53/100m = colchón amplio</div>
-    <div class="insight-text">A 1:53/100m el tiempo estimado es ~8h30, lo que te deja ~1h30 de margen sobre el límite de 10h. Incluso con corrientes, avituallamientos y fatiga, tienes espacio para gestionar con calma.</div>
-  </div>`;
-
-  return html;
-}
-
-// ═══════════════════════════════════════════════════════
-// JSONP CALLBACK & INIT
-// ═══════════════════════════════════════════════════════
-// Global callback for Google Sheets JSONP response
-function handleSheetData(response) {
-  try {
-    if (response.status === 'error') {
-      throw new Error('Google Sheets respondió con error. ¿Está compartido como público?');
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD CLASS
+// ═══════════════════════════════════════════════════════════
+class Dashboard {
+    constructor() {
+        this.data = ANALÍTICAS;
+        this.charts = {};
+        this.init();
     }
-    const data = processGvizData(response);
-    if (data.length === 0) throw new Error('No se encontraron datos desde octubre.');
-    render(data);
-  } catch (err) {
-    const banner = document.getElementById('errorBanner');
-    banner.style.display = 'block';
-    banner.textContent = '❌ Error cargando datos: ' + err.message;
-    console.error(err);
-  } finally {
-    document.getElementById('loader').classList.add('hidden');
-  }
+
+    init() {
+        this.renderKPIs();
+        this.renderCharts();
+        this.renderTable();
+    }
+
+    getStatus(key, value) {
+        const p = PARAMS[key];
+        if (!p) return 'normal';
+        if (value > p.max) return 'high';
+        if (value < p.min) return 'low';
+        return 'normal';
+    }
+
+    getStatusLabel(status) {
+        if (status === 'high') return '↑ Alto';
+        if (status === 'low') return '↓ Bajo';
+        return '✓ Normal';
+    }
+
+    applyFilters() {
+        // Destroy existing charts
+        Object.values(this.charts).forEach(c => c.destroy());
+        this.charts = {};
+        this.renderKPIs();
+        this.renderCharts();
+        this.renderTable();
+    }
+
+    getFilteredParams() {
+        const cat = document.getElementById('filter-category').value;
+        const stat = document.getElementById('filter-status').value;
+
+        return Object.entries(PARAMS).filter(([key, p]) => {
+            if (cat !== 'all' && p.category !== cat) return false;
+            if (stat !== 'all') {
+                // Check latest value
+                const latest = this.data[0];
+                if (!latest || latest.values[key] === undefined) return false;
+                const s = this.getStatus(key, latest.values[key]);
+                if (stat === 'abnormal' && s === 'normal') return false;
+                if (stat === 'normal' && s !== 'normal') return false;
+            }
+            return true;
+        });
+    }
+
+    renderKPIs() {
+        const container = document.getElementById('kpi-row');
+        if (!this.data.length) { container.innerHTML = '<p>No hay datos</p>'; return; }
+
+        const latest = this.data[0]; // Most recent
+        // Show KPIs for important/abnormal values
+        const alertValues = [];
+        const importantValues = [];
+
+        Object.entries(PARAMS).forEach(([key, p]) => {
+            const val = latest.values[key];
+            if (val === undefined) return;
+            const status = this.getStatus(key, val);
+            if (status !== 'normal') alertValues.push({ key, ...p, val, status });
+            else if (p.important) importantValues.push({ key, ...p, val, status });
+        });
+
+        let html = '';
+
+        // Alert values first
+        alertValues.forEach(v => {
+            const cssClass = v.status === 'high' ? 'alert' : 'warning';
+            html += `
+                <div class="kpi-card ${cssClass}">
+                    <div class="kpi-label">${v.name}</div>
+                    <div class="kpi-value">${v.val} <span style="font-size:13px;font-weight:400;">${v.unit}</span></div>
+                    <div class="kpi-range">Ref: ${v.min} – ${v.max}</div>
+                    <div class="kpi-status status-${v.status}">${this.getStatusLabel(v.status)}</div>
+                </div>`;
+        });
+
+        // Then important normal values (up to 6)
+        importantValues.slice(0, 6).forEach(v => {
+            html += `
+                <div class="kpi-card ok">
+                    <div class="kpi-label">${v.name}</div>
+                    <div class="kpi-value">${v.val} <span style="font-size:13px;font-weight:400;">${v.unit}</span></div>
+                    <div class="kpi-range">Ref: ${v.min} – ${v.max}</div>
+                    <div class="kpi-status status-normal">${this.getStatusLabel('normal')}</div>
+                </div>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+    renderCharts() {
+        const container = document.getElementById('charts-container');
+        container.innerHTML = '';
+
+        const filteredParams = this.getFilteredParams();
+        const dates = this.data.map(d => d.date).reverse();
+        const labels = this.data.map(d => d.label).reverse();
+
+        // Group by category
+        const grouped = {};
+        filteredParams.forEach(([key, p]) => {
+            if (!grouped[p.category]) grouped[p.category] = [];
+            grouped[p.category].push([key, p]);
+        });
+
+        // Sort categories by order
+        const sortedCats = Object.entries(grouped).sort((a, b) =>
+            (CATEGORIES[a[0]]?.order || 99) - (CATEGORIES[b[0]]?.order || 99)
+        );
+
+        sortedCats.forEach(([catKey, params]) => {
+            const cat = CATEGORIES[catKey];
+
+            const section = document.createElement('div');
+            section.className = 'category-section';
+            section.innerHTML = `<div class="category-title"><span class="icon">${cat.icon}</span> ${cat.name}</div>`;
+
+            const chartRow = document.createElement('div');
+            chartRow.className = 'chart-row';
+
+            params.forEach(([key, p]) => {
+                const values = this.data.map(d => d.values[key]).reverse();
+                if (values.every(v => v === undefined)) return;
+
+                const status = this.getStatus(key, values[values.length - 1]);
+                const badgeClass = status === 'normal' ? 'badge-normal' : status === 'high' ? 'badge-alert' : 'badge-warning';
+
+                const div = document.createElement('div');
+                div.className = 'chart-container';
+                const canvasId = `chart-${key}`;
+                div.innerHTML = `
+                    <h3>${p.name} <span class="badge ${badgeClass}">${this.getStatusLabel(status)}</span></h3>
+                    <canvas id="${canvasId}"></canvas>`;
+                chartRow.appendChild(div);
+
+                // Render chart after DOM insertion
+                setTimeout(() => {
+                    const ctx = document.getElementById(canvasId);
+                    if (!ctx) return;
+
+                    // Build reference range band
+                    const refMin = new Array(labels.length).fill(p.min);
+                    const refMax = new Array(labels.length).fill(p.max);
+
+                    this.charts[canvasId] = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Rango máx.',
+                                    data: refMax,
+                                    borderColor: 'transparent',
+                                    backgroundColor: 'rgba(203,213,224,0.3)',
+                                    fill: '+1',
+                                    pointRadius: 0,
+                                    borderWidth: 0,
+                                    order: 2
+                                },
+                                {
+                                    label: 'Rango mín.',
+                                    data: refMin,
+                                    borderColor: 'rgba(160,174,192,0.5)',
+                                    borderDash: [4, 4],
+                                    backgroundColor: 'transparent',
+                                    fill: false,
+                                    pointRadius: 0,
+                                    borderWidth: 1,
+                                    order: 2
+                                },
+                                {
+                                    label: p.name,
+                                    data: values,
+                                    borderColor: status === 'normal' ? '#38a169' : status === 'high' ? '#e53e3e' : '#dd6b20',
+                                    backgroundColor: (status === 'normal' ? '#38a169' : status === 'high' ? '#e53e3e' : '#dd6b20') + '20',
+                                    borderWidth: 2.5,
+                                    fill: false,
+                                    tension: 0.3,
+                                    pointRadius: values.length === 1 ? 6 : 4,
+                                    pointHoverRadius: 7,
+                                    pointBackgroundColor: status === 'normal' ? '#38a169' : status === 'high' ? '#e53e3e' : '#dd6b20',
+                                    order: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (ctx) => {
+                                            if (ctx.datasetIndex < 2) return null;
+                                            return `${p.name}: ${ctx.parsed.y} ${p.unit} (ref: ${p.min}–${p.max})`;
+                                        }
+                                    },
+                                    filter: (item) => item.datasetIndex >= 2
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 11 } }
+                                },
+                                y: {
+                                    beginAtZero: false,
+                                    suggestedMin: p.min * 0.8,
+                                    suggestedMax: p.max * 1.2,
+                                    ticks: {
+                                        font: { size: 11 },
+                                        callback: (v) => `${v} ${p.unit}`
+                                    },
+                                    grid: { color: '#f0f0f0' }
+                                }
+                            }
+                        }
+                    });
+                }, 0);
+            });
+
+            section.appendChild(chartRow);
+            container.appendChild(section);
+        });
+
+        // Add summary note
+        if (this.data.length > 0) {
+            const note = document.createElement('div');
+            note.style.cssText = 'background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:16px;margin-bottom:16px;font-size:13px;color:#2a4365;';
+            note.innerHTML = `<strong>📊 Datos extraídos:</strong> ${this.data.length} analíticas (${this.data.map(d=>d.label).join(', ')}).
+                <br>Evolución de 16 años (2009–2025). Hallazgos clave:
+                <br>• <strong>TSH elevada sostenida</strong>: 6.39→6.29→7.90→8.42→<strong>10.90</strong>→7.43 mU/L — hipotiroidismo subclínico crónico (Hashimoto, Anti-TPO 305-498 UI/mL).
+                <br>• <strong>Anemia ferropénica severa</strong> en 2016-2018: hemoglobina 12.0→10.8, VCM 75.4→71.1, ferritina 9 ng/mL, hierro 26 µg/dL. Recuperada en 2025 (Hb 14.7, VCM 94.6).`;
+            container.insertBefore(note, container.firstChild);
+        }
+    }
+
+    renderTable() {
+        const container = document.getElementById('table-container');
+        const filteredParams = this.getFilteredParams();
+
+        if (!filteredParams.length) { container.innerHTML = ''; return; }
+
+        const dates = this.data.map(d => d.label);
+
+        let html = `<div class="table-section"><h3>Tabla Completa de Valores</h3>
+            <table class="data-table">
+            <thead><tr>
+                <th>Parámetro</th>
+                <th>Unidad</th>
+                <th>Ref. Mín.</th>
+                <th>Ref. Máx.</th>`;
+        dates.forEach(d => html += `<th>${d}</th>`);
+        html += `<th>Estado</th></tr></thead><tbody>`;
+
+        filteredParams.forEach(([key, p]) => {
+            html += `<tr><td style="font-weight:500;">${p.name}</td><td>${p.unit}</td><td>${p.min}</td><td>${p.max}</td>`;
+            this.data.forEach(d => {
+                const v = d.values[key];
+                if (v === undefined) {
+                    html += '<td>—</td>';
+                } else {
+                    const s = this.getStatus(key, v);
+                    const cls = s === 'high' ? 'val-high' : s === 'low' ? 'val-low' : 'val-normal';
+                    html += `<td class="${cls}">${v}</td>`;
+                }
+            });
+            const latestVal = this.data[0]?.values[key];
+            const latestStatus = latestVal !== undefined ? this.getStatus(key, latestVal) : 'normal';
+            const statusLabel = this.getStatusLabel(latestStatus);
+            html += `<td class="${latestStatus === 'high' ? 'val-high' : latestStatus === 'low' ? 'val-low' : 'val-normal'}">${statusLabel}</td>`;
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+    }
 }
 
-// Load data via JSONP (works from file:// and https://)
-(function init() {
-  const script = document.createElement('script');
-  script.src = JSONP_URL;
-  script.onerror = function() {
-    document.getElementById('loader').classList.add('hidden');
-    const banner = document.getElementById('errorBanner');
-    banner.style.display = 'block';
-    banner.textContent = '❌ Error cargando datos: no se pudo conectar con Google Sheets. Verifica tu conexión a internet.';
-  };
-  document.body.appendChild(script);
-})();
+const dashboard = new Dashboard();
 </script>
 
+<script id="recipe-source" type="text/plain">
+╔══════════════════════════════════════════════════════════════════════════╗
+║  RECIPE — Blood Test Evolution Dashboard                               ║
+║  Version: 1.0 · Created: 2026-03-25                                   ║
+║                                                                        ║
+║  This block is the "seed" of this dashboard. It contains everything    ║
+║  needed to reproduce it from scratch with different data, or to        ║
+║  extend it with new blood test results. Think of it as a Dockerfile    ║
+║  for this HTML — the blueprint lives inside the artifact itself.       ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+## What this dashboard does
+
+Visualizes the evolution of blood test parameters over time using Chart.js.
+Each parameter gets its own line chart with a shaded reference range band.
+KPI cards highlight abnormal values. Filters allow slicing by category and
+status. A summary table shows all values across all dates.
+
+## Architecture
+
+Single self-contained HTML file. No build step, no server.
+
+Dependencies (loaded from CDN):
+  - Chart.js 4.5.1:
+    https://cdn.jsdelivr.net/npm/chart.js@4.5.1
+    integrity: sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ
+  - chartjs-adapter-date-fns 3.0.0:
+    https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0
+    integrity: sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws
+
+## Data format
+
+The dashboard reads from a single JS constant: `const ANALÍTICAS = [...]`
+
+Each entry is one blood test report:
+
+    {
+        date: "YYYY-MM-DD",          // ISO date, used for sorting
+        label: "MMM YYYY",           // Display label (e.g. "JUL 2025")
+        source: "Service — Location", // Where the test was done
+        doctor: "Dr./Dra. Name",     // Requesting physician
+        values: {
+            glucosa: 85,             // Only include parameters present in that report
+            creatinina: 1.08,        // Missing parameters render as "—" in the table
+            tsh: 7.43,              // and are simply skipped in charts
+            // ... any subset of the ~50 defined parameters
+        }
+    }
+
+IMPORTANT: The array must be sorted by date DESCENDING (newest first).
+Entries with partial data are fine — e.g. a thyroid-only panel with just
+{tsh: 10.90, t4_libre: 0.96} works perfectly.
+
+## Parameter registry
+
+Each parameter is defined in `const PARAMS = {...}` with:
+
+    key: {
+        name: "Display Name",      // Shown in charts and table
+        unit: "unit",               // Shown on Y-axis and tooltips
+        min: number,                // Reference range lower bound
+        max: number,                // Reference range upper bound
+        category: "category_key",   // Groups parameters in the UI
+        important: true|false       // If true, shown as KPI card when normal
+    }
+
+Current parameters (~50):
+
+  bioquimica:   glucosa, urea, proteinas, albumina, pcr, ck, ldh,
+                vitamina_b12, folato, urato
+  lipidos:      colesterol, trigliceridos, hdl, ldl, colesterol_no_hdl
+  hepatico:     ast, alt, ggt, fosfatasa_alcalina, bilirrubina
+  renal:        creatinina, filtracion_glomerular, urato
+  tiroides:     tsh, t4_libre
+  hematologia:  hematies, hemoglobina, hematocrito, vcm, chcm, hcm, ade,
+                plaquetas, vpm, leucocitos, neutrofilos_pct, linfocitos_pct,
+                monocitos_pct, eosinofilos_pct, vsg
+  hierro:       hierro, transferrina, sat_transferrina, ferritina
+  electrolitos: calcio, fosfato, magnesio, sodio, potasio, cloruro
+
+To add a new parameter: add it to PARAMS, then include its values in the
+ANALÍTICAS entries. The dashboard auto-discovers and renders it.
+
+## Categories
+
+Defined in `const CATEGORIES = {...}`. Each has a name, icon, and sort order.
+To add a category: add it to CATEGORIES and assign its `order`, then set
+`category: "your_key"` on the relevant parameters in PARAMS.
+
+## How the dashboard renders
+
+1. KPI cards: Scans the MOST RECENT entry. Parameters outside reference
+   range get red/orange "alert" cards. Important in-range parameters get
+   green "ok" cards (up to 6).
+
+2. Charts: Groups parameters by category, sorted by category order.
+   Each parameter gets a Chart.js line chart with:
+   - Shaded band between ref min and max (gray, 30% opacity)
+   - Dashed line at ref min
+   - Value line colored by status of the LATEST value:
+     green (#38a169) = normal, red (#e53e3e) = high, orange (#dd6b20) = low
+   - Tension 0.3 for smooth curves
+   - Y-axis auto-scaled to 80%-120% of reference range
+
+3. Clinical info box: Inserted at the top of the charts container.
+   Manually written summary of key findings. Update this when adding data.
+
+4. Table: Full matrix of all parameters × all dates, color-coded per cell.
+
+## How to reproduce with your own data
+
+1. Copy this entire HTML file.
+2. Replace the ANALÍTICAS array with your own blood test data.
+   - Use the key names from PARAMS for each value.
+   - Include date, label, source, doctor for each entry.
+   - Sort newest-first.
+3. If your lab uses different reference ranges, update PARAMS min/max.
+4. If your lab reports parameters not in PARAMS, add new entries.
+5. Update the clinical findings info box (search for "Hallazgos clave"
+   in the renderCharts method) with your own interpretation.
+6. Update the header subtitle date range and footer update date.
+
+## Unit conversion notes
+
+Some labs change units over time for the same parameter. Normalize before
+inserting into ANALÍTICAS. Known conversions:
+
+  T4 Libre: pmol/L → ng/dL: divide by 12.87
+            (ref [10.3-26.0 pmol/L] ≈ [0.8-2.0 ng/dL])
+
+  Glucose:  mmol/L → mg/dL: multiply by 18.018
+
+  Creatinine: µmol/L → mg/dL: divide by 88.42
+
+  Cholesterol: mmol/L → mg/dL: multiply by 38.67
+
+  Triglycerides: mmol/L → mg/dL: multiply by 88.57
+
+Always store values in the units specified in PARAMS.
+
+## Extraction from Osakidetza (Basque public health portal)
+
+If the data source is Osakidetza's Carpeta Berria portal:
+
+  URL: https://micarpetasaludberria.osakidetza.eus/informes-y-analiticas
+
+  Portal navigation:
+  - Results are paginated (8 per page). Use > and >> buttons.
+  - Each item is a tab. Click to expand → eye icon opens PDF in new tab.
+  - Only items labeled "Analítica" contain blood data.
+
+  PDF reading (Chrome viewer):
+  - Chrome's PDF viewer does NOT support text extraction (get_page_text).
+    Read values visually from screenshots.
+  - Scrolling doesn't work. Navigate pages via the page number input:
+    triple-click → type number → Enter.
+  - Zoom out (click - button 2-3x) to see more content per screenshot.
+  - Two PDF formats exist:
+    (A) "layout" — older, Laboratorios. Bilingual Euskera/Castellano.
+    (B) "BAS_INFORME RESULTADOS" — newer, Hospital format.
+
+  Lab name mapping (Spanish/Basque → JS key):
+    Glukosa/Glucosa → glucosa
+    Kreatinina/Creatinina → creatinina
+    Azido urikoa/Ácido úrico → urato
+    Kolesterol totala/Colesterol total → colesterol
+    ALT/GPT → alt
+    AST/GOT → ast
+    Srm-Tirotropina (TSH) → tsh
+    Srm-Tiroxina libre (T4L) → t4_libre
+    Hematieak/Hematíes → hematies
+    Leukozitoak/Leucocitos → leucocitos
+    Plaketak/Plaquetas → plaquetas
+    Burdina/Hierro → hierro
+    Sodioa/Sodio → sodio
+    Potasioa/Potasio → potasio
+    Kaltzoa guztira/Calcio total → calcio
+    Fosforoa/Fósforo → fosfato
+    V.S.G. → vsg
+
+## Extending this dashboard
+
+To add new features, the Dashboard class in the script block has three
+render methods: renderKPIs(), renderCharts(), renderTable(). Each reads
+from this.data (= ANALÍTICAS) and PARAMS. Adding a trend indicator,
+sparklines, or PDF export would go here.
+
+## License
+
+This dashboard template is free to use and modify.
+</script>
+
+<script>
+// Populate recipe modal from the inline text/plain block
+document.getElementById('recipe-content').textContent =
+    document.getElementById('recipe-source').textContent;
+</script>
 </body>
 </html>
