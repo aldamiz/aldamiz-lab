@@ -254,8 +254,8 @@
         };
 
         const SECTION_ICONS = {
-            'Salud': '🩸',
-            'Utilities': '🔧'
+            'Salud': '&#x1FA78;',
+            'Utilities': '&#x1F527;'
         };
 
         const dropZone = document.getElementById('dropZone');
@@ -363,7 +363,7 @@
                         <div class="page-title">${title}</div>
                         <div class="page-desc">${subtitle}</div>
                     </div>
-                    <span class="page-arrow">›</span>
+                    <span class="page-arrow">&rsaquo;</span>
                 </a>
             </li>`;
         }
@@ -372,7 +372,7 @@
             const indexData = await ghGet('index.html');
             if (!indexData) throw new Error('No se pudo leer index.html');
 
-            let html = atob(indexData.content);
+            let html = decodeURIComponent(escape(atob(indexData.content)));
             const icon = SECTION_ICONS[section] || '📄';
             const newEntry = buildIndexEntry(filePath, icon, title, subtitle);
 
