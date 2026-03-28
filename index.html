@@ -1,162 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lab — Gabi Aldamiz</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-  :root {
-    --bg: #0a0c10;
-    --surface: #13161e;
-    --surface-2: #1a1e2a;
-    --border: #252a3a;
-    --text: #e8eaf0;
-    --text-muted: #7a7f94;
-    --green: #10b981;
-    --blue: #3b82f6;
-    --purple: #8b5cf6;
-    --orange: #f59e0b;
-    --cyan: #06b6d4;
-    --r: 14px;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
-  .container { max-width: 720px; margin: 0 auto; padding: 60px 20px 80px; }
-
-  /* Header */
-  .header { text-align: center; margin-bottom: 56px; }
-  .header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; }
-  .header h1 span { background: linear-gradient(135deg, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .header p { color: var(--text-muted); font-size: 0.92rem; }
-
-  /* Section */
-  .section { margin-bottom: 40px; }
-  .section-title {
-    font-size: 0.76rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 14px;
-    padding-bottom: 8px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-icon { font-size: 14px; }
-
-  /* Cards */
-  .report-card {
-    display: flex; align-items: center; gap: 16px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--r); padding: 20px 24px;
-    margin-bottom: 10px; text-decoration: none; color: var(--text);
-    transition: border-color 0.2s, background 0.2s, transform 0.15s;
-  }
-  .report-card:hover {
-    border-color: rgba(139,92,246,0.4);
-    background: var(--surface-2);
-    transform: translateY(-1px);
-  }
-  .card-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
-  }
-  .card-icon.purple { background: rgba(139,92,246,0.1); }
-  .card-icon.green { background: rgba(16,185,129,0.1); }
-  .card-icon.blue { background: rgba(59,130,246,0.1); }
-  .card-icon.orange { background: rgba(245,158,11,0.1); }
-  .card-icon.cyan { background: rgba(6,182,212,0.1); }
-  .card-body { flex: 1; min-width: 0; }
-  .card-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
-  .card-desc { color: var(--text-muted); font-size: 0.82rem; }
-  .card-meta {
-    display: flex; align-items: center; gap: 8px;
-    flex-shrink: 0;
-  }
-  .badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 10px; border-radius: 20px;
-    font-size: 0.7rem; font-weight: 600;
-  }
-  .badge.public { background: rgba(16,185,129,0.08); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
-  .badge.private { background: rgba(245,158,11,0.08); color: var(--orange); border: 1px solid rgba(245,158,11,0.25); }
-  .arrow { color: var(--text-muted); font-size: 18px; transition: transform 0.2s; }
-  .report-card:hover .arrow { transform: translateX(3px); color: var(--text); }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center; padding: 32px; color: var(--text-muted);
-    font-size: 0.86rem; font-style: italic;
-    background: var(--surface); border: 1px dashed var(--border);
-    border-radius: var(--r);
-  }
-
-  /* Footer */
-  .footer {
-    text-align: center; color: var(--text-muted); font-size: 0.78rem;
-    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab — Gabi Aldamiz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #86868b;
+            font-size: 1.05rem;
+            margin-bottom: 40px;
+        }
+        .page-list {
+            list-style: none;
+        }
+        .page-list li {
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: box-shadow 0.2s;
+        }
+        .page-list li:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .page-list a {
+            display: flex;
+            align-items: center;
+            padding: 20px 24px;
+            text-decoration: none;
+            color: inherit;
+            gap: 16px;
+        }
+        .page-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .page-info {
+            flex: 1;
+        }
+        .page-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+        .page-desc {
+            color: #86868b;
+            font-size: 0.88rem;
+        }
+        .page-arrow {
+            color: #86868b;
+            font-size: 1.2rem;
+        }
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #86868b;
+            margin-bottom: 12px;
+            margin-top: 32px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            color: #86868b;
+            font-size: 0.82rem;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
+    <div class="container">
+        <h1>Lab</h1>
+        <p class="subtitle">Dashboards y reportes — Gabi Aldamiz</p>
 
-  <div class="header">
-    <h1><span>Lab</span></h1>
-    <p>Reports y dashboards — Gabi Aldamiz-echevarría</p>
-  </div>
+        <div class="section-label">Reportes p&uacute;blicos</div>
+        <ul class="page-list">
+            <li>
+                <a href="analiticas-osakidetza.html">
+                    <span class="page-icon">🏥</span>
+                    <div class="page-info">
+                        <div class="page-title">Anal&iacute;ticas Osakidetza</div>
+                        <div class="page-desc">Dashboard de anal&iacute;ticas sanitarias</div>
+                    </div>
+                    <span class="page-arrow">›</span>
+                </a>
+            </li>
+            <li>
+                <a href="batalla-de-rande-analysis.html">
+                    <span class="page-icon">🏊</span>
+                    <div class="page-info">
+                        <div class="page-title">Batalla de Rande</div>
+                        <div class="page-desc">An&aacute;lisis de la traves&iacute;a</div>
+                    </div>
+                    <span class="page-arrow">›</span>
+                </a>
+            </li>
+            <li>
+                <a href="totalenergies-dashboard.html">
+                    <span class="page-icon">🔥</span>
+                    <div class="page-info">
+                        <div class="page-title">TotalEnergies Dashboard</div>
+                        <div class="page-desc">Facturas y consumo de gas</div>
+                    </div>
+                    <span class="page-arrow">›</span>
+                </a>
+            </li>
+        </ul>
 
-  <!-- PERSONAL -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">👤</span> Personal</div>
+        <div class="section-label">Privados</div>
+        <ul class="page-list">
+            <li>
+                <a href="private/mi-red-dashboard.html">
+                    <span class="page-icon">🔒</span>
+                    <div class="page-info">
+                        <div class="page-title">Mi Red WiFi</div>
+                        <div class="page-desc">Dashboard de red dom&eacute;stica (protegido)</div>
+                    </div>
+                    <span class="page-arrow">›</span>
+                </a>
+            </li>
+        </ul>
 
-    <a href="batalla-de-rande-analysis.html" class="report-card">
-      <div class="card-icon purple">⚔️</div>
-      <div class="card-body">
-        <div class="card-title">Batalla de Rande — Análisis de Preparación</div>
-        <div class="card-desc">Análisis y preparación para la travesía</div>
-      </div>
-      <div class="card-meta">
-        <span class="badge public">Público</span>
-        <span class="arrow">→</span>
-      </div>
-    </a>
-
-    <a href="analiticas-osakidetza.html" class="report-card">
-      <div class="card-icon purple">🩸</div>
-      <div class="card-body">
-        <div class="card-title">Evolución Analíticas de Sangre — Osakidetza</div>
-        <div class="card-desc">Dashboard interactivo con 16 años de analíticas (2009–2025). KPIs, gráficos de tendencia y tabla comparativa.</div>
-      </div>
-      <div class="card-meta">
-        <span class="badge public">Público</span>
-        <span class="arrow">→</span>
-      </div>
-    </a>
-
-  </div>
-
-  <!-- CASA -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">🏠</span> Casa</div>
-
-    <a href="private/mi-red-dashboard.html" class="report-card">
-      <div class="card-icon green">📶</div>
-      <div class="card-body">
-        <div class="card-title">Mi Red — Dashboard de Control</div>
-        <div class="card-desc">Router, WiFi, dispositivos y seguridad de la red doméstica</div>
-      </div>
-      <div class="card-meta">
-        <span class="badge private">🔒 Protegido</span>
-        <span class="arrow">→</span>
-      </div>
-    </a>
-
-  </div>
-
-  <div class="footer">
-    <p>Lab — Gabi Aldamiz · Última actualización: 24 marzo 2026</p>
-  </div>
-
-</div>
+        <footer>
+            lab.aldamiz.com
+        </footer>
+    </div>
 </body>
 </html>
