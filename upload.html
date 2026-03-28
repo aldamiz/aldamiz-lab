@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload — Lab Aldamiz</title>
+    <title>Upload &mdash; Lab Aldamiz</title>
     <script src="/guard.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,6 +33,63 @@
             border-radius: 16px;
             padding: 32px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .token-banner {
+            background: #fffbeb;
+            border: 1.5px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .token-banner p {
+            font-size: 0.92rem;
+            color: #92400e;
+            margin-bottom: 12px;
+        }
+        .token-banner input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #d2d2d7;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: monospace;
+            outline: none;
+            margin-bottom: 10px;
+        }
+        .token-banner input:focus {
+            border-color: #f59e0b;
+        }
+        .token-banner button {
+            padding: 10px 24px;
+            background: #1d1d1f;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .token-banner button:hover { background: #333; }
+        .token-saved {
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: #166534;
+        }
+        .token-saved button {
+            background: none;
+            border: none;
+            color: #86868b;
+            cursor: pointer;
+            font-size: 0.82rem;
+            text-decoration: underline;
         }
         .drop-zone {
             border: 2px dashed #d2d2d7;
@@ -185,8 +242,19 @@
         <p class="subtitle">Sube archivos HTML a lab.aldamiz.com</p>
 
         <div class="upload-card">
+            <div class="token-banner" id="tokenBanner" style="display:none;">
+                <p>Primera vez? Pega tu GitHub token para conectar con el repositorio. Solo tienes que hacerlo una vez.</p>
+                <input type="text" id="tokenInput" placeholder="github_pat_...">
+                <button id="tokenSave">Guardar token</button>
+            </div>
+
+            <div class="token-saved" id="tokenSaved" style="display:none;">
+                Token configurado &check;
+                <button id="tokenChange">Cambiar</button>
+            </div>
+
             <div class="drop-zone" id="dropZone">
-                <div class="drop-zone-icon">📄</div>
+                <div class="drop-zone-icon">&#x1F4C4;</div>
                 <div class="drop-zone-text">
                     Arrastra un archivo HTML aqu&iacute; o <strong>haz clic para seleccionar</strong>
                 </div>
@@ -194,7 +262,7 @@
             </div>
 
             <div class="file-info" id="fileInfo">
-                <span class="file-icon">📄</span>
+                <span class="file-icon">&#x1F4C4;</span>
                 <div class="file-details">
                     <div class="file-name" id="fileName"></div>
                     <div class="file-size" id="fileSize"></div>
@@ -212,7 +280,7 @@
                 <div class="form-group">
                     <label>Carpeta</label>
                     <select id="destFolder">
-                        <option value="">/ (p&uacute;blico)</option>
+                        <option value="">/ (ra&iacute;z)</option>
                         <option value="private/">private/</option>
                     </select>
                 </div>
@@ -246,8 +314,18 @@
     </div>
 
     <script>
+        function getToken() {
+            return localStorage.getItem('lab_gh_token') || '';
+        }
+        function setToken(t) {
+            localStorage.setItem('lab_gh_token', t);
+        }
+        function removeToken() {
+            localStorage.removeItem('lab_gh_token');
+        }
+
         const CONFIG = {
-            token: 'x1uIeudaQPHJ3XASAfymu7dhdXmKU0prExOAfLUWzD37xSLnbmtS3PXFGqk_QzokHVHH8Nka0Y4W4FBA11_tap_buhtig'.split('').reverse().join(''),
+            get token() { return getToken(); },
             owner: 'aldamiz',
             repo: 'aldamiz-lab',
             branch: 'main'
@@ -257,6 +335,36 @@
             'Salud': '&#x1FA78;',
             'Utilities': '&#x1F527;'
         };
+
+        const tokenBanner = document.getElementById('tokenBanner');
+        const tokenSaved = document.getElementById('tokenSaved');
+        const tokenInput = document.getElementById('tokenInput');
+        const tokenSaveBtn = document.getElementById('tokenSave');
+        const tokenChangeBtn = document.getElementById('tokenChange');
+
+        function showTokenUI() {
+            if (getToken()) {
+                tokenBanner.style.display = 'none';
+                tokenSaved.style.display = 'flex';
+            } else {
+                tokenBanner.style.display = 'block';
+                tokenSaved.style.display = 'none';
+            }
+        }
+        showTokenUI();
+
+        tokenSaveBtn.addEventListener('click', function() {
+            var t = tokenInput.value.trim();
+            if (!t) return;
+            setToken(t);
+            tokenInput.value = '';
+            showTokenUI();
+        });
+
+        tokenChangeBtn.addEventListener('click', function() {
+            removeToken();
+            showTokenUI();
+        });
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -300,8 +408,7 @@
             fileSize.textContent = formatSize(file.size);
             fileInfo.classList.add('visible');
             destName.value = file.name;
-            // Pre-fill title from filename
-            const baseName = file.name.replace(/\.html?$/i, '').replace(/[-_]/g, ' ');
+            var baseName = file.name.replace(/\.html?$/i, '').replace(/[-_]/g, ' ');
             indexTitle.value = baseName.charAt(0).toUpperCase() + baseName.slice(1);
             btnUpload.disabled = false;
             status.style.display = 'none';
@@ -328,92 +435,81 @@
             status.innerHTML = msg;
         }
 
-        // GitHub API helpers
         async function ghGet(path) {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`, {
-                headers: { 'Authorization': `Bearer ${CONFIG.token}` }
+            var res = await fetch('https://api.github.com/repos/' + CONFIG.owner + '/' + CONFIG.repo + '/contents/' + path + '?ref=' + CONFIG.branch, {
+                headers: { 'Authorization': 'Bearer ' + CONFIG.token }
             });
             if (!res.ok) return null;
             return res.json();
         }
 
         async function ghPut(path, content, sha, message) {
-            const body = { message, content, branch: CONFIG.branch };
+            var body = { message: message, content: content, branch: CONFIG.branch };
             if (sha) body.sha = sha;
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`, {
+            var res = await fetch('https://api.github.com/repos/' + CONFIG.owner + '/' + CONFIG.repo + '/contents/' + path, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${CONFIG.token}`,
+                    'Authorization': 'Bearer ' + CONFIG.token,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
             });
             if (!res.ok) {
-                const err = await res.json();
+                var err = await res.json();
                 throw new Error(err.message || 'GitHub API error');
             }
             return res.json();
         }
 
         function buildIndexEntry(href, icon, title, subtitle) {
-            return `            <li>
-                <a href="${href}">
-                    <span class="page-icon">${icon}</span>
-                    <div class="page-info">
-                        <div class="page-title">${title}</div>
-                        <div class="page-desc">${subtitle}</div>
-                    </div>
-                    <span class="page-arrow">&rsaquo;</span>
-                </a>
-            </li>`;
+            return '            <li>\n                <a href="' + href + '">\n                    <span class="page-icon">' + icon + '</span>\n                    <div class="page-info">\n                        <div class="page-title">' + title + '</div>\n                        <div class="page-desc">' + subtitle + '</div>\n                    </div>\n                    <span class="page-arrow">&rsaquo;</span>\n                </a>\n            </li>';
         }
 
         async function updateIndex(filePath, title, subtitle, section) {
-            const indexData = await ghGet('index.html');
+            var indexData = await ghGet('index.html');
             if (!indexData) throw new Error('No se pudo leer index.html');
 
-            let html = decodeURIComponent(escape(atob(indexData.content)));
-            const icon = SECTION_ICONS[section] || '📄';
-            const newEntry = buildIndexEntry(filePath, icon, title, subtitle);
+            var html = decodeURIComponent(escape(atob(indexData.content)));
+            var icon = SECTION_ICONS[section] || '&#x1F4C4;';
+            var newEntry = buildIndexEntry(filePath, icon, title, subtitle);
 
-            // Find the section and insert before closing </ul>
-            const sectionRegex = new RegExp(
-                `(<div class="section-label">${section}</div>\\s*<ul class="page-list">)([\\s\\S]*?)(\\s*</ul>)`
+            var sectionRegex = new RegExp(
+                '(<div class="section-label">' + section + '</div>\\s*<ul class="page-list">)([\\s\\S]*?)(\\s*</ul>)'
             );
-            const match = html.match(sectionRegex);
+            var match = html.match(sectionRegex);
 
             if (match) {
-                // Check if entry already exists for this file
-                if (html.includes(`href="${filePath}"`)) {
-                    // Replace existing entry
-                    const entryRegex = new RegExp(
-                        `\\s*<li>\\s*<a href="${filePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">[\\s\\S]*?</li>`
+                if (html.indexOf('href="' + filePath + '"') !== -1) {
+                    var entryRegex = new RegExp(
+                        '\\s*<li>\\s*<a href="' + filePath.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&') + '">[\\s\\S]*?</li>'
                     );
                     html = html.replace(entryRegex, '\n' + newEntry);
                 } else {
-                    // Add new entry before </ul>
-                    html = html.replace(sectionRegex, `$1$2\n${newEntry}$3`);
+                    html = html.replace(sectionRegex, '$1$2\n' + newEntry + '$3');
                 }
             } else {
-                // Section doesn't exist — create it before the upload link
-                const uploadLink = html.indexOf('<div style="margin-top: 40px;');
+                var uploadLink = html.indexOf('<div style="margin-top: 40px;');
                 if (uploadLink > -1) {
-                    const newSection = `\n        <div class="section-label">${section}</div>\n        <ul class="page-list">\n${newEntry}\n        </ul>\n\n`;
+                    var newSection = '\n        <div class="section-label">' + section + '</div>\n        <ul class="page-list">\n' + newEntry + '\n        </ul>\n\n';
                     html = html.slice(0, uploadLink) + newSection + '        ' + html.slice(uploadLink);
                 }
             }
 
-            const updatedContent = btoa(unescape(encodeURIComponent(html)));
-            await ghPut('index.html', updatedContent, indexData.sha, `Update index: add ${title}`);
+            var updatedContent = btoa(unescape(encodeURIComponent(html)));
+            await ghPut('index.html', updatedContent, indexData.sha, 'Update index: add ' + title);
         }
 
         btnUpload.addEventListener('click', async () => {
             if (!selectedFile) return;
+            if (!getToken()) {
+                showStatus('Primero configura tu GitHub token arriba', 'error');
+                return;
+            }
 
-            const path = destFolder.value + destName.value;
-            const title = indexTitle.value.trim();
-            const subtitle = indexSubtitle.value.trim();
-            const section = indexSection.value;
+            var path = destFolder.value + destName.value;
+            var title = indexTitle.value.trim();
+            var subtitle = indexSubtitle.value.trim();
+            var section = indexSection.value;
 
             if (!title) {
                 showStatus('Introduce un t\u00edtulo para el index', 'error');
@@ -423,20 +519,18 @@
             btnUpload.disabled = true;
 
             try {
-                // Step 1: Inject guard.js into file, then upload
                 showStatus('Subiendo ' + path + '...', 'loading');
-                const content = await readFileAndInjectGuard(selectedFile);
-                const existing = await ghGet(path);
-                const sha = existing ? existing.sha : null;
-                await ghPut(path, content, sha, sha ? `Update ${path}` : `Add ${path}`);
+                var content = await readFileAndInjectGuard(selectedFile);
+                var existing = await ghGet(path);
+                var sha = existing ? existing.sha : null;
+                await ghPut(path, content, sha, sha ? 'Update ' + path : 'Add ' + path);
 
-                // Step 2: Update index
                 showStatus('Actualizando index...', 'loading');
                 await updateIndex(path, title, subtitle, section);
 
-                const liveUrl = `https://lab.aldamiz.com/${path}`;
+                var liveUrl = 'https://lab.aldamiz.com/' + path;
                 showStatus(
-                    `Subido y a\u00f1adido al index.<br><a href="${liveUrl}" target="_blank">${liveUrl}</a>`,
+                    'Subido y a\u00f1adido al index.<br><a href="' + liveUrl + '" target="_blank">' + liveUrl + '</a>',
                     'success'
                 );
                 clearFile();
@@ -446,27 +540,12 @@
             }
         });
 
-        function readFileAsBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const base64 = reader.result.split(',')[1];
-                    resolve(base64);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Read HTML file, inject guard.js if not present, return base64
         function readFileAndInjectGuard(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    let html = reader.result;
-                    // Only inject if not already present
+            return new Promise(function(resolve, reject) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var html = reader.result;
                     if (html.indexOf('guard.js') === -1) {
-                        // Inject after <head> or at the very start
                         if (html.indexOf('<head>') !== -1) {
                             html = html.replace('<head>', '<head>\n    <script src="/guard.js"><\/script>');
                         } else if (html.indexOf('<HEAD>') !== -1) {
