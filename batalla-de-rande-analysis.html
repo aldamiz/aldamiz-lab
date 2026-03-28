@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batalla de Rande - Entrenos 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ocean-deep: #0A1628;
+    --ocean-mid: #0F2942;
+    --ocean-light: #1A3A5C;
+    --sea-teal: #0EA5E9;
+    --sea-glow: #38BDF8;
+    --sea-soft: #BAE6FD;
+    --sea-ghost: #E0F2FE;
+    --foam: #F0F9FF;
+    --sand: #FEF3C7;
+    --sand-dark: #F59E0B;
+    --coral: #F43F5E;
+    --coral-soft: #FFE4E6;
+    --green: #10B981;
+    --green-soft: #D1FAE5;
+    --purple: #8B5CF6;
+    --white: #FFFFFF;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-500: #64748B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 40%, var(--ocean-light) 70%, var(--sea-teal) 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, var(--sea-teal), var(--sea-glow), var(--sand-dark), var(--coral));
+  }
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 20px; color: var(--sea-soft);
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900; line-height: 1.1;
+    margin-bottom: 12px; letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: var(--sea-glow); }
+  .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 600px; font-weight: 300; }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px; margin-top: 36px;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 16px 18px;
+  }
+  .hero-stat .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .hero-stat .value { font-size: 1.5rem; font-weight: 800; color: white; }
+  .hero-stat .unit { font-size: 0.75rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-left: 2px; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  .section {
+    background: white; border-radius: 20px; padding: 36px; margin-top: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid var(--gray-200);
+  }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .section-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .section-icon.blue { background: var(--sea-ghost); }
+  .section-icon.green { background: var(--green-soft); }
+  .section-icon.coral { background: var(--coral-soft); }
+  .section-icon.purple { background: #EDE9FE; }
+  .section h2 { font-size: 1.25rem; font-weight: 800; color: var(--gray-800); letter-spacing: -0.01em; }
+
+  .chart-container { width: 100%; overflow-x: auto; margin: 20px 0 8px; }
+  .chart-container canvas { max-height: 320px; }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .data-table thead th {
+    background: var(--gray-50); padding: 10px 14px; text-align: left;
+    font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--gray-500); border-bottom: 2px solid var(--gray-200);
+  }
+  .data-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--gray-100);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  }
+  .data-table tbody tr:hover { background: var(--foam); }
+  .data-table .week-cell { font-family: 'Inter', sans-serif; font-weight: 500; color: var(--gray-700); }
+  .data-table .vol-cell { font-weight: 600; color: var(--ocean-mid); }
+  .data-table .pct-cell { color: var(--gray-500); }
+  .pct-up { color: var(--green) !important; font-weight: 600; }
+  .pct-down { color: var(--coral) !important; font-weight: 600; }
+  .peak-row { background: var(--sea-ghost) !important; }
+  .peak-row .vol-cell { color: var(--sea-teal) !important; font-weight: 800; }
+
+  .vol-bar-wrap { display: flex; align-items: center; gap: 10px; }
+  .vol-bar {
+    height: 6px; border-radius: 3px;
+    background: linear-gradient(90deg, var(--sea-teal), var(--sea-glow));
+    transition: width 0.3s; min-width: 2px;
+  }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 20px 0; }
+  .kpi { background: var(--gray-50); border-radius: 14px; padding: 18px; border: 1px solid var(--gray-200); }
+  .kpi .kpi-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-500); margin-bottom: 6px; }
+  .kpi .kpi-value { font-size: 1.6rem; font-weight: 800; color: var(--gray-800); }
+  .kpi .kpi-note { font-size: 0.75rem; color: var(--gray-400); margin-top: 4px; }
+
+  .phase-timeline { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+  .phase { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--gray-100); }
+  .phase:last-child { border-bottom: none; }
+  .phase-marker {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.8rem; flex-shrink: 0; color: white;
+  }
+  .phase-content { flex: 1; }
+  .phase-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .phase-detail { font-size: 0.85rem; color: var(--gray-600); line-height: 1.6; }
+  .phase-vol {
+    display: inline-block; background: var(--sea-ghost); color: var(--sea-teal);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600;
+    padding: 2px 8px; border-radius: 6px; margin-top: 6px;
+  }
+
+  .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
+  .insight { border-radius: 14px; padding: 20px; border-left: 4px solid; }
+  .insight.good { background: var(--green-soft); border-color: var(--green); }
+  .insight.warn { background: var(--sand); border-color: var(--sand-dark); }
+  .insight.risk { background: var(--coral-soft); border-color: var(--coral); }
+  .insight.info { background: var(--sea-ghost); border-color: var(--sea-teal); }
+  .insight .insight-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
+  .insight .insight-text { font-size: 0.83rem; color: var(--gray-600); line-height: 1.6; }
+
+  .footer { text-align: center; padding: 40px 24px 50px; color: var(--gray-400); font-size: 0.8rem; }
+  .footer .motto { font-size: 1.1rem; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
+
+  .loading-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--gray-50);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 9999; transition: opacity 0.4s;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loading-spinner {
+    width: 48px; height: 48px; border: 4px solid var(--gray-200);
+    border-top-color: var(--sea-teal); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { margin-top: 16px; font-weight: 600; color: var(--gray-500); }
+  .error-banner {
+    background: var(--coral-soft); border: 1px solid var(--coral);
+    border-radius: 12px; padding: 16px 20px; margin: 28px 0;
+    color: var(--gray-800); font-size: 0.9rem; display: none;
+  }
+
+  @media (max-width: 640px) {
+    .section { padding: 24px 18px; }
+    .hero { padding: 40px 18px 36px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loader">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Cargando datos de Google Sheets...</div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Entrenos</div>
+    <h1>Batalla de <span>Rande</span> — Entrenos 2026</h1>
+    <p class="hero-sub">Travesía Islas Cíes → Isla de San Simón · Una de las travesías de nado en aguas abiertas más difíciles de Europa.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="label">Distancia</div>
+        <div class="value">27<span class="unit">km</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Tiempo límite</div>
+        <div class="value">~10<span class="unit">h</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Agua</div>
+        <div class="value">13–15<span class="unit">°C</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Tu ritmo</div>
+        <div class="value">1:53<span class="unit">/100m</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">ETA</div>
+        <div class="value">~8:30<span class="unit">h</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="error-banner" id="errorBanner"></div>
+
+  <!-- ═══ KPIs ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">📊</div>
+      <h2 id="kpiTitle">Resumen de preparación</h2>
+    </div>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </div>
+
+  <!-- ═══ CHART ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">🌊</div>
+      <h2>Volumen semanal (km)</h2>
+    </div>
+    <div class="chart-container">
+      <canvas id="volChart"></canvas>
+    </div>
+    <p style="font-size:0.78rem; color:var(--gray-400); margin-top:8px;">La línea roja punteada marca los 27 km de la prueba. Las barras <span style="color:var(--sand-dark);font-weight:600;">naranjas</span> son semanas con viaje o compromiso.</p>
+  </div>
+
+  <!-- ═══ DIAGNÓSTICO ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon coral">🔍</div>
+      <h2>Diagnóstico: ¿Dónde estás hoy?</h2>
+    </div>
+    <div class="insight-grid" id="insights"></div>
+  </div>
+
+  <!-- ═══ DATOS COMPLETOS ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">📋</div>
+      <h2>Datos completos de volumen</h2>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="data-table" id="dataTable">
+        <thead>
+          <tr>
+            <th>Semana</th>
+            <th>Vol (km)</th>
+            <th style="width:25%;">Visual</th>
+            <th>vs. año ant.</th>
+            <th>Notas</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ FACTORES CLAVE ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon purple">🎯</div>
+      <h2>Lo que te va a ganar (o perder) la carrera</h2>
+    </div>
+    <div class="phase-timeline">
+      <div class="phase">
+        <div class="phase-marker" style="background:var(--coral);">1°</div>
+        <div class="phase-content">
+          <div class="phase-title">Economía de brazada</div>
+          <div class="phase-detail">A 1:53/100m durante 8+ horas, cada ineficiencia se multiplica por ~14.000 brazadas. Distancia por brazada (DPS) estable, codo alto, no luchar contra el agua. Esto es el factor #1.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-marker" style="background:var(--sand-dark);">2°</div>
+        <div class="phase-content">
+          <div class="phase-title">Estrategia energética</div>
+          <div class="phase-detail">No es una prueba de velocidad, es una prueba de glucógeno. Metabolismo aeróbico puro (Z2-Z3 bajo). El fallo suele ser energético antes que muscular. Los avituallamientos son tu lifeline.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-marker" style="background:var(--sea-teal);">3°</div>
+        <div class="phase-content">
+          <div class="phase-title">Gestión del ritmo</div>
+          <div class="phase-detail">Salir demasiado fuerte = error clásico. Debes ser capaz de hacer negative split relativo. Z2 alto / Z3 bajo constante. Los primeros 10 km deberían sentirse "demasiado fáciles".</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-marker" style="background:var(--green);">4°</div>
+        <div class="phase-content">
+          <div class="phase-title">Resistencia estructural</div>
+          <div class="phase-detail">Hombros, escápula, core. 8+ horas de carga repetitiva. Si algo se inflama o se fatiga, tu técnica colapsa y el ritmo cae en cadena. Prevención > tratamiento.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-marker" style="background:var(--purple);">5°</div>
+        <div class="phase-content">
+          <div class="phase-title">13–15°C + mental</div>
+          <div class="phase-detail">Agua fría = pérdida progresiva de calor, rigidez, impacto en eficiencia. Con neopreno mejoras flotabilidad y térmica pero cambia mecánica. Y luego está lo mental: 8+ horas de monotonía + fatiga.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FASES ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon green">📈</div>
+      <h2>Fases de tu preparación</h2>
+    </div>
+    <div class="phase-timeline" id="phases"></div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+  <div class="motto">Islas Cíes → San Simón. 27 km. Tú puedes. 🌊</div>
+  <span id="footerDate"></span>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+const SHEET_ID = '1JtFrZiJj20n7nXqZuLqsWX2loP5fV-85zwga842y44s';
+const GID = '1618423594';
+// Use JSONP (script tag) instead of fetch() to bypass CORS when opened as file://
+const JSONP_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${GID}&tqx=responseHandler:handleSheetData`;
+
+// Known notes for specific weeks (date string fragment → note)
+const WEEK_NOTES = {
+  'nov 10': 'Londres',
+  'november 10': 'Londres',
+  'nov 17': 'Madrid',
+  'november 17': 'Madrid',
+  'jan 26': 'Oporto',
+  'january 26': 'Oporto',
+  'feb 16': 'Nápoles',
+  'february 16': 'Nápoles',
+  'feb 23': 'Cumple María',
+  'february 23': 'Cumple María',
+};
+
+// ═══════════════════════════════════════════════════════
+// WEEK LABEL → short label
+// ═══════════════════════════════════════════════════════
+const MONTH_MAP = {
+  'january':'Ene','jan':'Ene','february':'Feb','feb':'Feb','march':'Mar','mar':'Mar',
+  'april':'Abr','apr':'Abr','may':'May','june':'Jun','jun':'Jun',
+  'july':'Jul','jul':'Jul','august':'Ago','aug':'Ago','september':'Sep','sept':'Sep','sep':'Sep',
+  'october':'Oct','oct':'Oct','november':'Nov','nov':'Nov','december':'Dic','dec':'Dic'
+};
+
+function shortLabel(raw) {
+  const s = raw.toLowerCase().replace(/,?\s*2026/i, '').replace(/,?\s*2025/i, '').trim();
+  // e.g. "october 6th" → "6 Oct"
+  const m = s.match(/^(\w+)\s+(\d+)/);
+  if (m) {
+    const month = MONTH_MAP[m[1]] || m[1];
+    return m[2] + ' ' + month;
+  }
+  return raw;
+}
+
+// Check if a week is Oct 6 or later (using the raw week string)
+function isOctOrLater(raw) {
+  const s = raw.toLowerCase();
+  const monthOrder = ['january','jan','february','feb','march','mar','april','apr','may','june','jun',
+    'july','jul','august','aug','september','sept','sep','october','oct','november','nov','december','dec'];
+  const octIdx = monthOrder.indexOf('october');
+  for (let i = 0; i < monthOrder.length; i++) {
+    if (s.startsWith(monthOrder[i])) {
+      return i >= octIdx;
+    }
+  }
+  return false;
+}
+
+// Parse month index (0-11)
+const MONTHS_LIST = [
+  ['jan','january'], ['feb','february'], ['mar','march'], ['apr','april'],
+  ['may'], ['jun','june'], ['jul','july'], ['aug','august'],
+  ['sep','sept','september'], ['oct','october'], ['nov','november'], ['dec','december']
+];
+function monthIndex(raw) {
+  const s = raw.toLowerCase();
+  for (let i = 0; i < MONTHS_LIST.length; i++) {
+    for (const m of MONTHS_LIST[i]) {
+      if (s.startsWith(m)) return i;
+    }
+  }
+  return -1;
+}
+
+// Parse to sortable YYYYMMDD to filter from a specific date onwards
+function parseSortableDate(raw) {
+  const s = raw.toLowerCase();
+  const mi = monthIndex(s);
+  if (mi === -1) return 0;
+  // Extract year if present; if absent, infer: Jul-Dec=2025, Jan-Jun=2026
+  let year = 2025;
+  const ym = s.match(/20\d{2}/);
+  if (ym) { year = parseInt(ym[0]); }
+  else { year = mi >= 6 ? 2025 : 2026; }
+  // Extract day number
+  const dayMatch = s.match(/(\d+)/);
+  const day = dayMatch ? parseInt(dayMatch[1]) : 1;
+  return year * 10000 + (mi + 1) * 100 + day; // e.g. 20251006 for Oct 6 2025
+}
+
+function getNote(raw) {
+  const s = raw.toLowerCase().replace(/,?\s*2026/i, '').replace(/,?\s*2025/i, '').trim();
+  for (const [key, val] of Object.entries(WEEK_NOTES)) {
+    // Match month + day number
+    const km = key.match(/^(\w+)\s+(\d+)/);
+    const sm = s.match(/^(\w+)\s+(\d+)/);
+    if (km && sm && sm[2] === km[2]) {
+      // Check if month matches
+      const kMonth = km[1].toLowerCase();
+      const sMonth = sm[1].toLowerCase();
+      if (sMonth.startsWith(kMonth) || kMonth.startsWith(sMonth)) return val;
+    }
+  }
+  return '';
+}
+
+// ═══════════════════════════════════════════════════════
+// PROCESS GOOGLE VIZ JSON RESPONSE
+// ═══════════════════════════════════════════════════════
+function processGvizData(json) {
+  const table = json.table;
+  const cols = table.cols;  // column definitions
+  const rows = table.rows;  // data rows
+
+  // Each row has .c array of cells; each cell has .v (value) and optionally .f (formatted)
+  const data = [];
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].c;
+    const week = cells[0] ? (cells[0].f || cells[0].v || '') : '';
+    const vol = cells[1] ? parseFloat(cells[1].v) : NaN;
+    const volPrev = cells[2] ? parseFloat(cells[2].v) : NaN;
+    const pctRaw = cells[6] ? (cells[6].f || String(cells[6].v) || '') : '';
+
+    if (!week || isNaN(vol)) continue;
+
+    // Filter: only from Oct 6 2025 onwards
+    const sortDate = parseSortableDate(week);
+    if (sortDate < 20251006) continue;
+
+    // Calculate %
+    let pct = null;
+    if (pctRaw && pctRaw !== '0.00%' && pctRaw !== '0') {
+      const parsed = parseFloat(String(pctRaw).replace('%', '').replace(',', '.'));
+      if (!isNaN(parsed) && parsed !== 0) pct = parsed;
+    }
+    if (pct === null && !isNaN(volPrev) && volPrev === 0 && vol > 0) {
+      pct = -1; // sin referencia
+    } else if (pct === null && !isNaN(volPrev) && volPrev > 0) {
+      pct = (vol / volPrev) * 100;
+    }
+
+    let note = getNote(week);
+    if (pct === -1 && !note) note = '0 km año ant.';
+
+    data.push({
+      w: shortLabel(week),
+      wRaw: week,
+      v: vol,
+      p: pct,
+      n: note
+    });
+  }
+
+  return data;
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+let chartInstance = null;
+
+function render(data) {
+  // ── KPIs ──
+  const totalVol = data.reduce((s, d) => s + d.v, 0);
+  const peakWeek = data.reduce((max, d) => d.v > max.v ? d : max, data[0]);
+  const avg = totalVol / data.length;
+  const last3 = data.filter(d => d.v > 0).slice(-3);
+  const trend = last3.map(d => d.v);
+  const trendRound = trend.map(v => Math.round(v));
+  const trendDir = trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2] ? '↑ Build' : '→ Estable';
+  const trendColor = trendDir.includes('Build') ? 'var(--green)' : 'var(--gray-500)';
+
+  const firstWeek = data[0]?.w || '';
+  const lastWeek = data[data.length - 1]?.w || '';
+
+  document.getElementById('kpiTitle').textContent = `Resumen de preparación · ${firstWeek} – ${lastWeek}`;
+
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Vol. total acumulado</div>
+      <div class="kpi-value" style="color:var(--sea-teal);">~${Math.round(totalVol)} km</div>
+      <div class="kpi-note">${data.length} semanas de entreno</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Semana pico</div>
+      <div class="kpi-value">${Math.round(peakWeek.v)} km</div>
+      <div class="kpi-note">${peakWeek.w}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Media semanal</div>
+      <div class="kpi-value">${Math.round(avg)} km</div>
+      <div class="kpi-note">${firstWeek} – ${lastWeek}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tendencia reciente</div>
+      <div class="kpi-value" style="color:${trendColor};">${trendDir}</div>
+      <div class="kpi-note">${trendRound.join(' → ')}</div>
+    </div>
+  `;
+
+  // ── Chart ──
+  const ctx = document.getElementById('volChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  const maxVol = peakWeek.v;
+
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.w),
+      datasets: [
+        {
+          label: 'Volumen (km)',
+          data: data.map(d => d.v),
+          backgroundColor: data.map(d => {
+            if (d.n && d.n !== '0 km año ant.') return 'rgba(245,158,11,0.6)';
+            if (d.v >= 25) return 'rgba(14,165,233,0.85)';
+            if (d.v >= 18) return 'rgba(14,165,233,0.6)';
+            if (d.v >= 10) return 'rgba(14,165,233,0.4)';
+            return 'rgba(14,165,233,0.2)';
+          }),
+          borderRadius: 4,
+          borderSkipped: false,
+        },
+        {
+          label: 'Distancia Rande (27 km)',
+          data: data.map(() => 27),
+          type: 'line',
+          borderColor: 'rgba(244,63,94,0.5)',
+          borderDash: [6, 4],
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 16, font: { size: 11, family: 'Inter' } } },
+        tooltip: {
+          backgroundColor: '#0A1628',
+          titleFont: { family: 'Inter', weight: '600' },
+          bodyFont: { family: 'JetBrains Mono' },
+          padding: 12, cornerRadius: 8,
+          callbacks: {
+            label: function(ctx2) {
+              if (ctx2.datasetIndex === 1) return 'Objetivo: 27 km';
+              const d = data[ctx2.dataIndex];
+              const note = d && d.n ? ' · ' + d.n : '';
+              return Math.round(ctx2.parsed.y) + ' km' + note;
+            }
+          }
+        }
+      },
+      scales: {
+        y: { beginAtZero: true, max: Math.ceil(maxVol / 5) * 5 + 5, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11, family: 'JetBrains Mono' }, callback: v => Math.round(v) + ' km' } },
+        x: { grid: { display: false }, ticks: { font: { size: 9, family: 'Inter' }, maxRotation: 60 } }
+      }
+    }
+  });
+
+  // ── Phases (auto-generated) ──
+  const phases = generatePhases(data);
+  document.getElementById('phases').innerHTML = phases;
+
+  // ── Insights (auto-generated) ──
+  const insights = generateInsights(data, peakWeek, avg, trend);
+  document.getElementById('insights').innerHTML = insights;
+
+  // ── Table ──
+  const tbody = document.querySelector('#dataTable tbody');
+  tbody.innerHTML = '';
+  data.forEach(d => {
+    const isPeak = d.v >= maxVol;
+    const pctClass = d.p != null && d.p !== -1 ? (d.p >= 100 ? 'pct-up' : 'pct-down') : '';
+    const pctText = d.p === -1 ? 'sin ref.' : (d.p != null ? d.p.toFixed(1) + '%' : '—');
+    const barW = (d.v / maxVol * 100).toFixed(0);
+    const noteStyle = d.n ? 'font-family:Inter,sans-serif;font-size:0.75rem;color:var(--gray-500);font-style:italic;' : '';
+    const tr = document.createElement('tr');
+    if (isPeak) tr.className = 'peak-row';
+    tr.innerHTML = `
+      <td class="week-cell">${d.w}</td>
+      <td class="vol-cell">${Math.round(d.v)}</td>
+      <td><div class="vol-bar-wrap"><div class="vol-bar" style="width:${barW}%"></div></div></td>
+      <td class="pct-cell ${pctClass}">${pctText}</td>
+      <td style="${noteStyle}">${d.n || ''}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // ── Footer ──
+  const now = new Date();
+  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('footerDate').textContent =
+    `Datos cargados en vivo · ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()} a las ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// AUTO-GENERATE PHASES
+// ═══════════════════════════════════════════════════════
+function generatePhases(data) {
+  // Group by month
+  const groups = {};
+  data.forEach(d => {
+    const m = d.w.split(' ')[1] || 'Otro';
+    if (!groups[m]) groups[m] = [];
+    groups[m].push(d);
+  });
+
+  const colors = ['var(--sea-teal)','var(--sand-dark)','var(--green)','var(--coral)','var(--purple)','var(--gray-500)','var(--sea-glow)'];
+  let html = '';
+  let idx = 0;
+
+  for (const [month, weeks] of Object.entries(groups)) {
+    const vols = weeks.map(w => w.v);
+    const avg = Math.round(vols.reduce((a,b) => a+b, 0) / vols.length);
+    const peak = Math.round(Math.max(...vols));
+    const notes = weeks.filter(w => w.n && w.n !== '0 km año ant.').map(w => w.n);
+    const noteText = notes.length > 0 ? ` · ${notes.join(', ')}` : '';
+    const trendText = vols.length >= 2 ? ` (${vols.map(v => Math.round(v)).join(' → ')})` : '';
+
+    html += `
+      <div class="phase">
+        <div class="phase-marker" style="background:${colors[idx % colors.length]};">${idx + 1}</div>
+        <div class="phase-content">
+          <div class="phase-title">${month}${noteText}</div>
+          <div class="phase-detail">Volúmenes semanales${trendText}.</div>
+          <div class="phase-vol">Prom: ${avg} km/sem · Pico: ${peak} km</div>
+        </div>
+      </div>`;
+    idx++;
+  }
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// AUTO-GENERATE INSIGHTS
+// ═══════════════════════════════════════════════════════
+function generateInsights(data, peakWeek, avg, trend) {
+  const weeksAbove20 = data.filter(d => d.v >= 20).length;
+  const pctAbove20 = ((weeksAbove20 / data.length) * 100).toFixed(0);
+  const travelWeeks = data.filter(d => d.n && d.n !== '0 km año ant.');
+  const lastVal = trend[trend.length - 1] || 0;
+
+  let html = '';
+
+  // Peak vs race distance
+  html += `<div class="insight good">
+    <div class="insight-title">✅ Volumen pico = distancia de carrera</div>
+    <div class="insight-text">Tu semana más alta fue ${Math.round(peakWeek.v)} km (${peakWeek.w}), prácticamente idéntica a los 27 km de la prueba. Tu cuerpo ya sabe lo que es moverse esa distancia en una semana.</div>
+  </div>`;
+
+  // Trend
+  if (trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2]) {
+    html += `<div class="insight good">
+      <div class="insight-title">✅ Tendencia ascendente</div>
+      <div class="insight-text">Las últimas semanas muestran un build limpio: ${trend.map(v => Math.round(v)).join(' → ')}. Si mantienes esta trayectoria, llegarás en buena forma.</div>
+    </div>`;
+  }
+
+  // Travel impact
+  if (travelWeeks.length > 0) {
+    const names = travelWeeks.map(w => w.n).join(', ');
+    html += `<div class="insight warn">
+      <div class="insight-title">⚠️ Viajes y compromisos impactan</div>
+      <div class="insight-text">Semanas con ${names} muestran caídas de volumen. Para Rande necesitas bloques largos sin cortes. Planifica los entrenos alrededor de tus viajes.</div>
+    </div>`;
+  }
+
+  // Consistency
+  html += `<div class="insight info">
+    <div class="insight-title">💡 ${pctAbove20}% de semanas ≥ 20 km</div>
+    <div class="insight-text">${weeksAbove20} de ${data.length} semanas superaron los 20 km. La media general es ${Math.round(avg)} km/sem. Para una prueba de 27 km, cuantas más semanas por encima de 20, mejor.</div>
+  </div>`;
+
+  // Pace
+  html += `<div class="insight good">
+    <div class="insight-title">✅ Ritmo 1:53/100m = colchón amplio</div>
+    <div class="insight-text">A 1:53/100m el tiempo estimado es ~8h30, lo que te deja ~1h30 de margen sobre el límite de 10h. Incluso con corrientes, avituallamientos y fatiga, tienes espacio para gestionar con calma.</div>
+  </div>`;
+
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// JSONP CALLBACK & INIT
+// ═══════════════════════════════════════════════════════
+// Global callback for Google Sheets JSONP response
+function handleSheetData(response) {
+  try {
+    if (response.status === 'error') {
+      throw new Error('Google Sheets respondió con error. ¿Está compartido como público?');
+    }
+    const data = processGvizData(response);
+    if (data.length === 0) throw new Error('No se encontraron datos desde octubre.');
+    render(data);
+  } catch (err) {
+    const banner = document.getElementById('errorBanner');
+    banner.style.display = 'block';
+    banner.textContent = '❌ Error cargando datos: ' + err.message;
+    console.error(err);
+  } finally {
+    document.getElementById('loader').classList.add('hidden');
+  }
+}
+
+// Load data via JSONP (works from file:// and https://)
+(function init() {
+  const script = document.createElement('script');
+  script.src = JSONP_URL;
+  script.onerror = function() {
+    document.getElementById('loader').classList.add('hidden');
+    const banner = document.getElementById('errorBanner');
+    banner.style.display = 'block';
+    banner.textContent = '❌ Error cargando datos: no se pudo conectar con Google Sheets. Verifica tu conexión a internet.';
+  };
+  document.body.appendChild(script);
+})();
+</script>
+
+</body>
+</html>
