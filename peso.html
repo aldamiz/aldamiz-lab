@@ -753,11 +753,14 @@ function showTab(name) {
       <input id="chatInput" placeholder="Pregunta algo sobre tus datos..." onkeydown="if(event.key==='Enter')sendChat()" />
       <button id="chatSendBtn" onclick="sendChat()">Enviar</button>
     </div>
+    <div style="text-align:right; padding: 4px 12px 8px; font-size:10px;">
+      <span style="color:#4a5568; cursor:pointer;" onclick="forgetKey()">Olvidar clave</span>
+    </div>
   </div>
 </div>
 
 <script>
-let apiKey = '';
+let apiKey = localStorage.getItem('oai_key_renpho') || '';
 let chatHistory = [];
 
 function buildSystemPrompt() {
@@ -812,19 +815,37 @@ Responde siempre en español. Sé preciso, usa los datos reales. Si te preguntan
 
 function openChat() {
   document.getElementById('chatPanel').classList.add('open');
+  if (apiKey) showChatBody();
 }
 function closeChat() {
   document.getElementById('chatPanel').classList.remove('open');
+}
+
+function forgetKey() {
+  localStorage.removeItem('oai_key_renpho');
+  apiKey = '';
+  chatHistory = [];
+  document.getElementById('chatBody').classList.remove('visible');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('keyPrompt').style.display = '';
+  document.getElementById('apiKeyInput').value = '';
 }
 
 function saveApiKey() {
   const val = document.getElementById('apiKeyInput').value.trim();
   if (!val.startsWith('sk-')) { alert('Clave no válida. Debe empezar por sk-'); return; }
   apiKey = val;
+  localStorage.setItem('oai_key_renpho', val);
+  showChatBody();
+}
+
+function showChatBody() {
   document.getElementById('keyPrompt').style.display = 'none';
   const body = document.getElementById('chatBody');
   body.classList.add('visible');
-  addMsg('assistant', '¡Hola! Tengo acceso a tus datos de composición corporal de los últimos 5 años. ¿Qué quieres saber? Puedes preguntarme sobre tu evolución, comparativas por año, el patrón estacional, proyecciones, o cualquier métrica específica.');
+  if (chatHistory.length === 0) {
+    addMsg('assistant', '¡Hola! Tengo acceso a tus datos de composición corporal de los últimos 5 años. ¿Qué quieres saber? Puedes preguntarme sobre tu evolución, comparativas por año, el patrón estacional, proyecciones, o cualquier métrica específica.');
+  }
 }
 
 function addMsg(role, text) {
