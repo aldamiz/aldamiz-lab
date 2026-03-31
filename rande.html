@@ -672,12 +672,14 @@
     display: none;
     flex-direction: column;
     flex: 1;
+    min-height: 0;
     overflow: hidden;
   }
   .chat-body.show { display: flex; }
 
   #chatMessages {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: 16px;
     display: flex;
@@ -1426,13 +1428,26 @@ let dashboardData = [];
 })();
 
 // ═══ CHAT WIDGET ═══
-let chatApiKey = null;
+let chatApiKey = localStorage.getItem('rande_groq_key') || null;
 let chatHistory = [];
+
+// Auto-restore session if key exists
+(function restoreChatSession() {
+  if (chatApiKey) {
+    document.getElementById('chatKeyPrompt').style.display = 'none';
+    document.getElementById('chatBody').style.display = 'flex';
+  }
+})();
 
 function openChat() {
   document.getElementById('chatPanel').classList.add('open');
   document.getElementById('chatFab').classList.add('has-chat');
-  if (chatApiKey) document.getElementById('chatInput').focus();
+  if (chatApiKey) {
+    document.getElementById('chatInput').focus();
+    if (chatHistory.length === 0) {
+      addMsg('assistant', '¡Hola! Tengo acceso a tus datos de entreno, el plan de nutrición y el protocolo de carrera. Pregúntame lo que quieras sobre Rande.');
+    }
+  }
 }
 function closeChat() {
   document.getElementById('chatPanel').classList.remove('open');
@@ -1442,6 +1457,7 @@ function saveApiKey() {
   const key = document.getElementById('apiKeyInput').value.trim();
   if (!key) return;
   chatApiKey = key;
+  localStorage.setItem('rande_groq_key', key);
   document.getElementById('chatKeyPrompt').style.display = 'none';
   document.getElementById('chatBody').style.display = 'flex';
   addMsg('assistant', '¡Hola! Tengo acceso a tus datos de entreno, el plan de nutrición y el protocolo de carrera. Pregúntame lo que quieras sobre Rande.');
