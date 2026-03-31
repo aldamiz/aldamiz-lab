@@ -412,6 +412,17 @@
             indexTitle.value = baseName.charAt(0).toUpperCase() + baseName.slice(1);
             btnUpload.disabled = false;
             status.style.display = 'none';
+            var metaReader = new FileReader();
+            metaReader.onload = function() {
+                var doc = new DOMParser().parseFromString(metaReader.result, 'text/html');
+                var mt = doc.querySelector('meta[name="lab-title"]');
+                var ms = doc.querySelector('meta[name="lab-subtitle"]');
+                var mc = doc.querySelector('meta[name="lab-section"]');
+                if (mt) indexTitle.value = mt.getAttribute('content');
+                if (ms) indexSubtitle.value = ms.getAttribute('content');
+                if (mc) indexSection.value = mc.getAttribute('content');
+            };
+            metaReader.readAsText(file);
         }
 
         function clearFile() {
