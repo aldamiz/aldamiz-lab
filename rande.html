@@ -605,7 +605,7 @@
   }
 
   /* Chat Widget */
-  .chat-fab { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: linear-gradient(135deg, var(--sea-teal), var(--sea-glow)); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 50; box-shadow: 0 4px 16px rgba(14,165,233,0.4); transition: all 0.3s ease; }
+  .chat-fab { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: linear-gradient(135deg, var(--sea-teal), var(--sea-glow)); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 9998; box-shadow: 0 4px 16px rgba(14,165,233,0.4); transition: all 0.3s ease; }
   .chat-fab:hover { transform: scale(1.1); }
   .chat-fab.has-chat { animation: pulse 2s infinite; }
   @keyframes pulse { 0%, 100% { box-shadow: 0 4px 16px rgba(14,165,233,0.4); } 50% { box-shadow: 0 4px 24px rgba(14,165,233,0.8); } }
@@ -618,7 +618,7 @@
     background: white;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    z-index: 51;
+    z-index: 9999;
     display: none;
     flex-direction: column;
     overflow: hidden;
@@ -703,7 +703,7 @@
     align-self: flex-start;
   }
   .chat-msg.typing::after {
-    content: 'âââ';
+    content: '●●●';
     animation: typing 1.4s infinite;
   }
   @keyframes typing { 0%, 60%, 100% { opacity: 0; } 20% { opacity: 1; } }
@@ -754,8 +754,8 @@
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-badge">BATALLA DE RANDE</div>
-    <h1>TravesÃ­a de <span>27 km</span> en aguas abiertas</h1>
-    <p class="hero-sub">Desde las Islas CÃ­es hasta la Isla de San SimÃ³n (Galicia). Monitoreo completo de tu preparaciÃ³n: volumen de entrenamiento, nutriciÃ³n en agua y plan de carrera.</p>
+    <h1>Travesía de <span>27 km</span> en aguas abiertas</h1>
+    <p class="hero-sub">Desde las Islas Cíes hasta la Isla de San Simón (Galicia). Monitoreo completo de tu preparación: volumen de entrenamiento, nutrición en agua y plan de carrera.</p>
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-value">27</div>
@@ -763,10 +763,10 @@
       </div>
       <div class="hero-stat">
         <div class="hero-stat-value">9:30h</div>
-        <div class="hero-stat-label">LÃ­mite de tiempo</div>
+        <div class="hero-stat-label">Límite de tiempo</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">15Â°C</div>
+        <div class="hero-stat-value">15°C</div>
         <div class="hero-stat-label">Temp. agua estimada</div>
       </div>
     </div>
@@ -776,9 +776,9 @@
 <!-- Tab Navigation -->
 <nav class="tab-nav">
   <div class="tab-nav-inner">
-    <button class="tab-btn active" onclick="switchTab('nado', this)">ð Entreno de nado</button>
-    <button class="tab-btn" onclick="switchTab('nutrition', this)">ð Entreno nutricional</button>
-    <button class="tab-btn" onclick="switchTab('race-nutrition', this)">â¡ Plan nutricional en carrera</button>
+    <button class="tab-btn active" onclick="switchTab('nado', this)">🏊 Entreno de nado</button>
+    <button class="tab-btn" onclick="switchTab('nutrition', this)">🍊 Entreno nutricional</button>
+    <button class="tab-btn" onclick="switchTab('race-nutrition', this)">⚡ Plan nutricional en carrera</button>
   </div>
 </nav>
 
@@ -790,8 +790,8 @@
   <!-- KPIs -->
   <div class="section">
     <div class="section-header">
-      <div class="section-icon blue">ð</div>
-      <h2 id="kpiTitle">Resumen de preparaciÃ³n</h2>
+      <div class="section-icon blue">📊</div>
+      <h2 id="kpiTitle">Resumen de preparación</h2>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
   </div>
@@ -799,19 +799,19 @@
   <!-- Chart -->
   <div class="section">
     <div class="section-header">
-      <div class="section-icon blue">ð</div>
+      <div class="section-icon blue">🌊</div>
       <h2>Volumen semanal (km)</h2>
     </div>
     <div class="chart-container">
       <canvas id="volChart"></canvas>
     </div>
-    <p style="font-size:0.78rem; color:var(--gray-400); margin-top:8px;">La lÃ­nea roja punteada marca los 27 km de la prueba. Las barras <span style="color:var(--sand-dark);font-weight:600;">naranjas</span> son semanas con viaje o compromiso.</p>
+    <p style="font-size:0.78rem; color:var(--gray-400); margin-top:8px;">La línea roja punteada marca los 27 km de la prueba. Las barras <span style="color:var(--sand-dark);font-weight:600;">naranjas</span> son semanas con viaje o compromiso.</p>
   </div>
 
   <!-- Datos completos -->
   <div class="section">
     <div class="section-header">
-      <div class="section-icon blue">ð</div>
+      <div class="section-icon blue">📋</div>
       <h2>Datos completos de volumen</h2>
     </div>
     <div style="overflow-x:auto;">
@@ -821,7 +821,7 @@
             <th>Semana</th>
             <th>Vol (km)</th>
             <th style="width:25%;">Visual</th>
-            <th>vs. aÃ±o ant.</th>
+            <th>vs. año ant.</th>
             <th>Notas</th>
           </tr>
         </thead>
@@ -830,11 +830,11 @@
     </div>
   </div>
 
-  <!-- DiagnÃ³stico -->
+  <!-- Diagnóstico -->
   <div class="section">
     <div class="section-header">
-      <div class="section-icon coral">ð</div>
-      <h2>DiagnÃ³stico: Â¿DÃ³nde estÃ¡s hoy?</h2>
+      <div class="section-icon coral">🔍</div>
+      <h2>Diagnóstico: ¿Dónde estás hoy?</h2>
     </div>
     <div class="insight-grid" id="insights"></div>
   </div>
@@ -842,23 +842,23 @@
   <!-- Factores clave -->
   <div class="section">
     <div class="section-header">
-      <div class="section-icon purple">ð¯</div>
+      <div class="section-icon purple">🎯</div>
       <h2>Lo que te va a ganar (o perder) la carrera</h2>
     </div>
     <div class="phase-timeline">
-      <div class="phase"><div class="phase-marker" style="background:var(--coral);">1Â°</div><div class="phase-content"><div class="phase-title">EconomÃ­a de brazada</div><div class="phase-detail">A 1:53/100m durante 8+ horas, cada ineficiencia se multiplica por ~14.000 brazadas. DPS estable, codo alto, no luchar contra el agua. Factor #1.</div></div></div>
-      <div class="phase"><div class="phase-marker" style="background:var(--sand-dark);">2Â°</div><div class="phase-content"><div class="phase-title">Estrategia energÃ©tica</div><div class="phase-detail">No es una prueba de velocidad, es una prueba de glucÃ³geno. Metabolismo aerÃ³bico puro (Z2-Z3 bajo). Los avituallamientos son tu lifeline.</div></div></div>
-      <div class="phase"><div class="phase-marker" style="background:var(--sea-teal);">3Â°</div><div class="phase-content"><div class="phase-title">GestiÃ³n del ritmo</div><div class="phase-detail">Salir demasiado fuerte = error clÃ¡sico. Z2 alto / Z3 bajo constante. Los primeros 10 km deberÃ­an sentirse "demasiado fÃ¡ciles".</div></div></div>
-      <div class="phase"><div class="phase-marker" style="background:var(--green);">4Â°</div><div class="phase-content"><div class="phase-title">Resistencia estructural</div><div class="phase-detail">Hombros, escÃ¡pula, core. 8+ horas de carga repetitiva. PrevenciÃ³n > tratamiento.</div></div></div>
-      <div class="phase"><div class="phase-marker" style="background:var(--purple);">5Â°</div><div class="phase-content"><div class="phase-title">13â15Â°C + mental</div><div class="phase-detail">Agua frÃ­a = pÃ©rdida progresiva de calor. Con neopreno mejoras flotabilidad pero cambia mecÃ¡nica. Y 8+ horas de monotonÃ­a + fatiga.</div></div></div>
+      <div class="phase"><div class="phase-marker" style="background:var(--coral);">1°</div><div class="phase-content"><div class="phase-title">Economía de brazada</div><div class="phase-detail">A 1:53/100m durante 8+ horas, cada ineficiencia se multiplica por ~14.000 brazadas. DPS estable, codo alto, no luchar contra el agua. Factor #1.</div></div></div>
+      <div class="phase"><div class="phase-marker" style="background:var(--sand-dark);">2°</div><div class="phase-content"><div class="phase-title">Estrategia energética</div><div class="phase-detail">No es una prueba de velocidad, es una prueba de glucógeno. Metabolismo aeróbico puro (Z2-Z3 bajo). Los avituallamientos son tu lifeline.</div></div></div>
+      <div class="phase"><div class="phase-marker" style="background:var(--sea-teal);">3°</div><div class="phase-content"><div class="phase-title">Gestión del ritmo</div><div class="phase-detail">Salir demasiado fuerte = error clásico. Z2 alto / Z3 bajo constante. Los primeros 10 km deberían sentirse "demasiado fáciles".</div></div></div>
+      <div class="phase"><div class="phase-marker" style="background:var(--green);">4°</div><div class="phase-content"><div class="phase-title">Resistencia estructural</div><div class="phase-detail">Hombros, escápula, core. 8+ horas de carga repetitiva. Prevención > tratamiento.</div></div></div>
+      <div class="phase"><div class="phase-marker" style="background:var(--purple);">5°</div><div class="phase-content"><div class="phase-title">13–15°C + mental</div><div class="phase-detail">Agua fría = pérdida progresiva de calor. Con neopreno mejoras flotabilidad pero cambia mecánica. Y 8+ horas de monotonía + fatiga.</div></div></div>
     </div>
   </div>
 
   <!-- Fases (auto-generated) -->
   <div class="section">
     <div class="section-header">
-      <div class="section-icon green">ð</div>
-      <h2>Fases de tu preparaciÃ³n</h2>
+      <div class="section-icon green">📈</div>
+      <h2>Fases de tu preparación</h2>
     </div>
     <div class="phase-timeline" id="phases"></div>
   </div>
@@ -871,27 +871,27 @@
     <!-- Summary -->
     <div class="section" style="background:linear-gradient(135deg, var(--sea-ghost), var(--foam)); border-color:var(--sea-soft);">
       <div class="section-header">
-        <div class="section-icon blue">ð</div>
-        <h2>Entreno Nutricional â AdaptaciÃ³n Intestinal</h2>
+        <div class="section-icon blue">🍊</div>
+        <h2>Entreno Nutricional — Adaptación Intestinal</h2>
       </div>
-      <p style="font-size:0.95rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: entrenar el intestino para sostener energÃ­a durante 9:30 horas en agua a 15Â°C, activando los transportadores <strong>SGLT1</strong> (glucosa/maltodextrina) y <strong>GLUT5</strong> (fructosa).</p>
+      <p style="font-size:0.95rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: entrenar el intestino para sostener energía durante 9:30 horas en agua a 15°C, activando los transportadores <strong>SGLT1</strong> (glucosa/maltodextrina) y <strong>GLUT5</strong> (fructosa).</p>
       <div style="display:flex; align-items:stretch; gap:0; margin-top:4px; background:var(--gray-50); border-radius:14px; overflow:hidden;">
         <div style="flex:1; text-align:center; padding:18px 12px; background:var(--green-soft);">
-          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--green); letter-spacing:0.5px; margin-bottom:6px;">Fase 1 Â· 4 sem</div>
-          <div style="font-size:1.6rem; font-weight:800; color:var(--green);">60â70</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--green); letter-spacing:0.5px; margin-bottom:6px;">Fase 1 · 4 sem</div>
+          <div style="font-size:1.6rem; font-weight:800; color:var(--green);">60–70</div>
           <div style="font-size:0.75rem; color:var(--gray-500);">g CHO/h</div>
           <div style="font-size:0.72rem; color:var(--gray-400); margin-top:4px;">ratio 3:1</div>
         </div>
-        <div style="display:flex; align-items:center; padding:0 4px; color:var(--gray-300); font-size:1.2rem;">â</div>
+        <div style="display:flex; align-items:center; padding:0 4px; color:var(--gray-300); font-size:1.2rem;">→</div>
         <div style="flex:1; text-align:center; padding:18px 12px; background:var(--sand);">
-          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--sand-dark); letter-spacing:0.5px; margin-bottom:6px;">Fase 2 Â· 5 sem</div>
-          <div style="font-size:1.6rem; font-weight:800; color:var(--sand-dark);">80â90</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--sand-dark); letter-spacing:0.5px; margin-bottom:6px;">Fase 2 · 5 sem</div>
+          <div style="font-size:1.6rem; font-weight:800; color:var(--sand-dark);">80–90</div>
           <div style="font-size:0.75rem; color:var(--gray-500);">g CHO/h</div>
           <div style="font-size:0.72rem; color:var(--gray-400); margin-top:4px;">ratio 2.5:1</div>
         </div>
-        <div style="display:flex; align-items:center; padding:0 4px; color:var(--gray-300); font-size:1.2rem;">â</div>
+        <div style="display:flex; align-items:center; padding:0 4px; color:var(--gray-300); font-size:1.2rem;">→</div>
         <div style="flex:1; text-align:center; padding:18px 12px; background:var(--coral-soft);">
-          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--coral); letter-spacing:0.5px; margin-bottom:6px;">Fase 3 Â· 6 sem</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--coral); letter-spacing:0.5px; margin-bottom:6px;">Fase 3 · 6 sem</div>
           <div style="font-size:1.6rem; font-weight:800; color:var(--coral);">105</div>
           <div style="font-size:0.75rem; color:var(--gray-500);">g CHO/h</div>
           <div style="font-size:0.72rem; color:var(--gray-400); margin-top:4px;">ratio 2:1</div>
@@ -901,55 +901,55 @@
 
     <!-- Phase 1 -->
     <div class="section" style="border-left:4px solid var(--green); padding-left:32px;">
-      <h2 style="color:var(--green); margin-bottom:4px;">Fase 1 Â· AdaptaciÃ³n intestinal (3:1)</h2>
-      <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:16px;">16 de marzo de 2026 Â· 4 semanas</p>
-      <p style="font-size:0.9rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: entrenar el intestino para absorber CHO durante ejercicio sin molestias con <strong>60â70 g CHO/h</strong> y 300â400 mg sodio/hora, activando SGLT1 y GLUT5.</p>
+      <h2 style="color:var(--green); margin-bottom:4px;">Fase 1 · Adaptación intestinal (3:1)</h2>
+      <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:16px;">16 de marzo de 2026 · 4 semanas</p>
+      <p style="font-size:0.9rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: entrenar el intestino para absorber CHO durante ejercicio sin molestias con <strong>60–70 g CHO/h</strong> y 300–400 mg sodio/hora, activando SGLT1 y GLUT5.</p>
       <div style="background:var(--gray-50); border-radius:14px; padding:20px;">
-        <h3 style="font-size:0.85rem; font-weight:700; color:var(--gray-600); margin-bottom:12px;">Protocolo por sesiÃ³n</h3>
+        <h3 style="font-size:0.85rem; font-weight:700; color:var(--gray-600); margin-bottom:12px;">Protocolo por sesión</h3>
         <p style="font-size:0.88rem; color:var(--gray-700); line-height:1.8;">
-          <strong>Frecuencia:</strong> 1â2 sesiones con nutriciÃ³n/semana<br>
+          <strong>Frecuencia:</strong> 1–2 sesiones con nutrición/semana<br>
           <strong>45 min antes:</strong> 40 g mezcla en 500 ml agua (llegar con glucosa disponible)<br>
-          <strong>Durante entreno â¥90 min:</strong> 60 g mezcla en 500 ml agua, beber cada 15â20 min<br>
-          <strong>SeÃ±ales de Ã©xito:</strong> estÃ³mago vacÃ­o nadando, energÃ­a estable, sin nÃ¡usea<br>
-          <strong>Si falla:</strong> bajar concentraciÃ³n (â 50 g / 500 ml), espaciar tomas
+          <strong>Durante entreno ≥90 min:</strong> 60 g mezcla en 500 ml agua, beber cada 15–20 min<br>
+          <strong>Señales de éxito:</strong> estómago vacío nadando, energía estable, sin náusea<br>
+          <strong>Si falla:</strong> bajar concentración (→ 50 g / 500 ml), espaciar tomas
         </p>
       </div>
     </div>
 
-    <!-- Mezcla Fase 1 â secciÃ³n separada -->
+    <!-- Mezcla Fase 1 — sección separada -->
     <div class="section" style="background:var(--foam); border:1px dashed var(--sea-soft);">
       <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-        <span style="font-size:1.1rem;">ð§ª</span>
-        <h3 style="font-size:1rem; font-weight:800; color:var(--ocean-deep);">Receta de mezcla â Fase 1 (3:1)</h3>
+        <span style="font-size:1.1rem;">🧪</span>
+        <h3 style="font-size:1rem; font-weight:800; color:var(--ocean-deep);">Receta de mezcla — Fase 1 (3:1)</h3>
       </div>
-      <p style="font-size:0.82rem; color:var(--gray-500); margin-bottom:16px;">Batch de 600 g de carbohidratos para preparar e ir usando durante las 4 semanas de esta fase. Se diluye en agua segÃºn el protocolo de cada sesiÃ³n.</p>
+      <p style="font-size:0.82rem; color:var(--gray-500); margin-bottom:16px;">Batch de 600 g de carbohidratos para preparar e ir usando durante las 4 semanas de esta fase. Se diluye en agua según el protocolo de cada sesión.</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
-        <div style="background:white; padding:12px; border-radius:10px; border:1px solid var(--gray-200);"><div style="font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Maltodextrina</div><div style="font-size:1.1rem; font-weight:800;">300 g</div><div style="font-size:0.75rem; color:var(--sea-teal);">â SGLT1</div></div>
-        <div style="background:white; padding:12px; border-radius:10px; border:1px solid var(--gray-200);"><div style="font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Cluster Dextrin</div><div style="font-size:1.1rem; font-weight:800;">150 g</div><div style="font-size:0.75rem; color:var(--sea-teal);">â SGLT1</div></div>
-        <div style="background:white; padding:12px; border-radius:10px; border:1px solid var(--gray-200);"><div style="font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Fructosa</div><div style="font-size:1.1rem; font-weight:800;">150 g</div><div style="font-size:0.75rem; color:var(--purple);">â GLUT5</div></div>
+        <div style="background:white; padding:12px; border-radius:10px; border:1px solid var(--gray-200);"><div style="font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Maltodextrina</div><div style="font-size:1.1rem; font-weight:800;">300 g</div><div style="font-size:0.75rem; color:var(--sea-teal);">→ SGLT1</div></div>
+        <div style="background:white; padding:12px; border-radius:10px; border:1px solid var(--gray-200);"><div style="font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Cluster Dextrin</div><div style="font-size:1.1rem; font-weight:800;">150 g</div><div style="font-size:0.75rem; color:var(--sea-teal);">→ SGLT1</div></div>
+        <div style="background:white; padding:12px; border-radius:10px; border:1px solid var(--gray-200);"><div style="font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Fructosa</div><div style="font-size:1.1rem; font-weight:800;">150 g</div><div style="font-size:0.75rem; color:var(--purple);">→ GLUT5</div></div>
       </div>
-      <p style="font-size:0.82rem; color:var(--gray-500); margin-top:12px;">+ 25 g Evolytes (electrolitos) + 60 g Ã¡cido cÃ­trico (sabor)</p>
+      <p style="font-size:0.82rem; color:var(--gray-500); margin-top:12px;">+ 25 g Evolytes (electrolitos) + 60 g ácido cítrico (sabor)</p>
     </div>
 
     <!-- Phase 2 -->
     <div class="section" style="border-left:4px solid var(--sand-dark); padding-left:32px;">
-      <h2 style="color:var(--sand-dark); margin-bottom:4px;">Fase 2 Â· Alta absorciÃ³n (2.5:1)</h2>
-      <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:16px;">13 de abril de 2026 Â· 5 semanas</p>
-      <p style="font-size:0.9rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: entrenar capacidad intestinal mÃ¡xima, tolerancia a bebidas mÃ¡s concentradas y estabilidad energÃ©tica larga â <strong>80â90 g CHO/h</strong>.</p>
+      <h2 style="color:var(--sand-dark); margin-bottom:4px;">Fase 2 · Alta absorción (2.5:1)</h2>
+      <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:16px;">13 de abril de 2026 · 5 semanas</p>
+      <p style="font-size:0.9rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: entrenar capacidad intestinal máxima, tolerancia a bebidas más concentradas y estabilidad energética larga — <strong>80–90 g CHO/h</strong>.</p>
       <div style="background:var(--gray-50); border-radius:14px; padding:20px;">
         <p style="font-size:0.88rem; color:var(--gray-700); line-height:1.8;">
-          <strong>Mezcla:</strong> ~2.5:1 (mÃ¡s fructosa â mÃ¡s absorciÃ³n total)<br>
+          <strong>Mezcla:</strong> ~2.5:1 (más fructosa → más absorción total)<br>
           <strong>Pre-entreno:</strong> 500 ml + 45 g mezcla<br>
-          <strong>Durante entreno:</strong> 500 ml + 80â90 g mezcla<br>
-          <span style="font-size:0.82rem; color:var(--gray-500);">Riesgo de aumentar el rebote glucÃ©mico si se eleva la dosis pre-entreno, y de reducir el estÃ­mulo de absorber durante el ejercicio.</span>
+          <strong>Durante entreno:</strong> 500 ml + 80–90 g mezcla<br>
+          <span style="font-size:0.82rem; color:var(--gray-500);">Riesgo de aumentar el rebote glucémico si se eleva la dosis pre-entreno, y de reducir el estímulo de absorber durante el ejercicio.</span>
         </p>
       </div>
     </div>
 
     <!-- Phase 3 -->
     <div class="section" style="border-left:4px solid var(--coral); padding-left:32px;">
-      <h2 style="color:var(--coral); margin-bottom:4px;">Fase 3 Â· SimulaciÃ³n Rande (2:1)</h2>
-      <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:16px;">11 de mayo de 2026 Â· 6 semanas</p>
+      <h2 style="color:var(--coral); margin-bottom:4px;">Fase 3 · Simulación Rande (2:1)</h2>
+      <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:16px;">11 de mayo de 2026 · 6 semanas</p>
       <p style="font-size:0.9rem; color:var(--gray-700); margin-bottom:16px;">Objetivo: reproducir exactamente las condiciones de carrera con <strong>105 g CHO/h</strong>.</p>
       <div style="background:var(--gray-50); border-radius:14px; padding:20px;">
         <p style="font-size:0.88rem; color:var(--gray-700); line-height:1.8;">
@@ -967,30 +967,30 @@
   <div class="container">
     <div class="section" style="background:linear-gradient(135deg, var(--sea-ghost), var(--foam)); border-color:var(--sea-soft);">
       <div class="section-header">
-        <div class="section-icon blue">â¡</div>
-        <h2>Plan Nutricional en Carrera â Rande 2026</h2>
+        <div class="section-icon blue">⚡</div>
+        <h2>Plan Nutricional en Carrera — Rande 2026</h2>
       </div>
-      <p style="font-size:0.9rem; color:var(--gray-600);">Gabi Â· v2025-06-04 Â· Protocolo completo de nutriciÃ³n para los 27 km con 7 avituallamientos en boya.</p>
+      <p style="font-size:0.9rem; color:var(--gray-600);">Gabi · v2025-06-04 · Protocolo completo de nutrición para los 27 km con 7 avituallamientos en boya.</p>
     </div>
 
     <!-- PRE-RACE -->
     <div class="section">
-      <div class="section-header"><div class="section-icon green">ð½ï¸</div><h2>Protocolo Pre-Carrera</h2></div>
+      <div class="section-header"><div class="section-icon green">🍽️</div><h2>Protocolo Pre-Carrera</h2></div>
       <div class="phase-timeline">
-        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">-48h</div><div class="phase-content"><div class="phase-title">Dos dÃ­as previos</div><div class="phase-detail">MuchÃ­simo carbohidrato (arroz y pasta), algo de proteÃ­na, nada de fibra ni grasa para no entorpecer la digestiÃ³n.</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--sea-teal);">-3h</div><div class="phase-content"><div class="phase-title">Desayuno: 120 g CHO</div><div class="phase-detail">Pan blanco + mermelada. CHO de absorciÃ³n lenta/moderada sin fibra ni grasa. Estabiliza glucemia y llena glucÃ³geno hepÃ¡tico. Para que sea fÃ¡cil de prepararlo, esto equivale a 6 rodajas de pan Bimbo blanco + 4 cucharadas soperas de mermelada, o 6 rodajas + 3 cucharadas soperas de miel</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--sea-teal);">-2h</div><div class="phase-content"><div class="phase-title">500 ml SUB9 Race Day (82 g CHO, 460 mg Na)</div><div class="phase-detail">Ciclodextrina: absorciÃ³n rÃ¡pida con bajo impacto osmÃ³tico â vaciado gÃ¡strico veloz, ideal para hidratar sin molestias.</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--sand-dark);">-45m</div><div class="phase-content"><div class="phase-title">High Energy Gel "Espresso" (50 g CHO, 80 mg cafeÃ­na)</div><div class="phase-detail">Glucosa + fructosa: doble transporte para maximizar absorciÃ³n. EnergÃ­a disponible justo al inicio.</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--sand-dark);">-30m</div><div class="phase-content"><div class="phase-title">3 cÃ¡ps SUB9 Salts (750 mg Na)</div><div class="phase-detail">Pre-carga de sodio para equilibrio osmÃ³tico en agua frÃ­a.</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">-48h</div><div class="phase-content"><div class="phase-title">Dos días previos</div><div class="phase-detail">Muchísimo carbohidrato (arroz y pasta), algo de proteína, nada de fibra ni grasa para no entorpecer la digestión.</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--sea-teal);">-3h</div><div class="phase-content"><div class="phase-title">Desayuno: 120 g CHO</div><div class="phase-detail">Pan blanco + mermelada. CHO de absorción lenta/moderada sin fibra ni grasa. Estabiliza glucemia y llena glucógeno hepático. Para que sea fácil de prepararlo, esto equivale a 6 rodajas de pan Bimbo blanco + 4 cucharadas soperas de mermelada, o 6 rodajas + 3 cucharadas soperas de miel</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--sea-teal);">-2h</div><div class="phase-content"><div class="phase-title">500 ml SUB9 Race Day (82 g CHO, 460 mg Na)</div><div class="phase-detail">Ciclodextrina: absorción rápida con bajo impacto osmótico → vaciado gástrico veloz, ideal para hidratar sin molestias.</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--sand-dark);">-45m</div><div class="phase-content"><div class="phase-title">High Energy Gel "Espresso" (50 g CHO, 80 mg cafeína)</div><div class="phase-detail">Glucosa + fructosa: doble transporte para maximizar absorción. Energía disponible justo al inicio.</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--sand-dark);">-30m</div><div class="phase-content"><div class="phase-title">3 cáps SUB9 Salts (750 mg Na)</div><div class="phase-detail">Pre-carga de sodio para equilibrio osmótico en agua fría.</div></div></div>
       </div>
       <div style="background:var(--green-soft); border-radius:14px; padding:16px 20px; margin-top:16px; border-left:4px solid var(--green);">
-        <p style="font-size:0.9rem; font-weight:700; color:var(--green);">â Glucosa en sangre medida en el barco antes de la salida: 150 mg/dL â perfecto para empezar.</p>
+        <p style="font-size:0.9rem; font-weight:700; color:var(--green);">✅ Glucosa en sangre medida en el barco antes de la salida: 150 mg/dL — perfecto para empezar.</p>
       </div>
     </div>
 
     <!-- 7 AVITUALLAMIENTOS -->
     <div class="section">
-      <div class="section-header"><div class="section-icon blue">ð</div><h2>7 Avituallamientos en Boya</h2></div>
+      <div class="section-header"><div class="section-icon blue">🏁</div><h2>7 Avituallamientos en Boya</h2></div>
 
       <!-- Avit 1 -->
       <div style="background:var(--gray-50); border-radius:16px; padding:20px; margin-bottom:16px; border:1px solid var(--gray-200);">
@@ -1001,11 +1001,11 @@
           <span style="margin-left:auto; background:var(--purple); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">100% Fructosa (GLUT5)</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">2Ã High Fructose Gel (110 g CHO)</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--purple);">â GLUT5</span> fructosa de absorciÃ³n rÃ¡pida</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">600 ml Aquarius (36 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa (50/50)</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">3Ã SUB9 Salts (750 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">2× High Fructose Gel (110 g CHO)</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--purple);">→ GLUT5</span> fructosa de absorción rápida</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">600 ml Aquarius (36 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa (50/50)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">3× SUB9 Salts (750 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: primer avituallamiento largo tras 1h48 â carga agresiva de fructosa vÃ­a GLUT5 para reponer rÃ¡pido, mÃ¡s lÃ­quido abundante porque el cuerpo aÃºn suda mÃ¡s al inicio. Sales altas (750 mg Na) para compensar pÃ©rdidas del arranque.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: primer avituallamiento largo tras 1h48 — carga agresiva de fructosa vía GLUT5 para reponer rápido, más líquido abundante porque el cuerpo aún suda más al inicio. Sales altas (750 mg Na) para compensar pérdidas del arranque.</div>
       </div>
 
       <!-- Avit 2 -->
@@ -1017,11 +1017,11 @@
           <span style="margin-left:auto; background:var(--sea-teal); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">Malto:Fructosa (SGLT1+GLUT5)</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1Ã HE "Espresso" (50 g) + 1Ã HE "Salty" (50 g)</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> maltodextrina + <span style="color:var(--purple);">GLUT5</span> fructosa Â· 80 mg cafeÃ­na</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">400 ml Powerade (26 g CHO) + 300 ml Aquarius Zero</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa Â· Zero para hidratar sin mÃ¡s CHO</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2Ã SUB9 Salts (500 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1× HE "Espresso" (50 g) + 1× HE "Salty" (50 g)</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> maltodextrina + <span style="color:var(--purple);">GLUT5</span> fructosa · 80 mg cafeína</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">400 ml Powerade (26 g CHO) + 300 ml Aquarius Zero</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa · Zero para hidratar sin más CHO</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2× SUB9 Salts (500 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: primera dosis de cafeÃ­na (Espresso) a las 3h15 â coincide con el primer tramo de posible bajÃ³n mental. Cambio a HE (maltodextrina) para diversificar vÃ­a SGLT1 tras la carga de fructosa del Avit 1. Menos lÃ­quido total, compensado con Aquarius Zero para hidratar sin sobrecargar CHO.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: primera dosis de cafeína (Espresso) a las 3h15 — coincide con el primer tramo de posible bajón mental. Cambio a HE (maltodextrina) para diversificar vía SGLT1 tras la carga de fructosa del Avit 1. Menos líquido total, compensado con Aquarius Zero para hidratar sin sobrecargar CHO.</div>
       </div>
 
       <!-- Avit 3 -->
@@ -1033,11 +1033,11 @@
           <span style="margin-left:auto; background:linear-gradient(90deg, var(--purple), var(--sea-teal)); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">Mixto: Fructosa + Malto</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1Ã HF Cola (55 g) + 1Ã HE base (50 g)</div><div style="font-size:0.75rem; margin-top:4px;">HF: <span style="color:var(--purple);">â GLUT5</span> fructosa Â· HE: <span style="color:var(--sea-teal);">â SGLT1</span> maltodextrina</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">500 ml Aquarius (30 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">3Ã SUB9 Salts (750 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1× HF Cola (55 g) + 1× HE base (50 g)</div><div style="font-size:0.75rem; margin-top:4px;">HF: <span style="color:var(--purple);">→ GLUT5</span> fructosa · HE: <span style="color:var(--sea-teal);">→ SGLT1</span> maltodextrina</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">500 ml Aquarius (30 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">3× SUB9 Salts (750 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: mitad de carrera â combo HF + HE para saturar ambos transportadores simultÃ¡neamente. HF Cola: sabor fuerte para romper la fatiga de paladar. MÃ¡s lÃ­quido (800 ml) y sales altas (750 mg Na) â los avituallamientos impares llevan mÃ¡s volumen y sodio.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: mitad de carrera — combo HF + HE para saturar ambos transportadores simultáneamente. HF Cola: sabor fuerte para romper la fatiga de paladar. Más líquido (800 ml) y sales altas (750 mg Na) — los avituallamientos impares llevan más volumen y sodio.</div>
       </div>
 
       <!-- Avit 4 -->
@@ -1049,11 +1049,11 @@
           <span style="margin-left:auto; background:linear-gradient(90deg, var(--sea-teal), var(--purple)); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">Mixto: Malto + Fructosa</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1Ã HE "Salty" (50 g) + 1Ã HF libre (55 g)</div><div style="font-size:0.75rem; margin-top:4px;">HE: <span style="color:var(--sea-teal);">â SGLT1</span> maltodextrina Â· HF: <span style="color:var(--purple);">â GLUT5</span> fructosa</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">300 ml Powerade (20 g CHO) + 400 ml Powerade Zero</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa Â· Zero para volumen sin CHO extra</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2Ã SUB9 Salts (500 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1× HE "Salty" (50 g) + 1× HF libre (55 g)</div><div style="font-size:0.75rem; margin-top:4px;">HE: <span style="color:var(--sea-teal);">→ SGLT1</span> maltodextrina · HF: <span style="color:var(--purple);">→ GLUT5</span> fructosa</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">300 ml Powerade (20 g CHO) + 400 ml Powerade Zero</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa · Zero para volumen sin CHO extra</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2× SUB9 Salts (500 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: avituallamiento par = menos volumen y menos sodio (patrÃ³n alterno). HE Salty aporta sodio extra dentro del gel. HF libre: el sabor que mejor siente en ese momento. Powerade Zero como volumen de hidrataciÃ³n sin sobrecargar carbohidratos â las 5h38 ya acumulan mucho CHO.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: avituallamiento par = menos volumen y menos sodio (patrón alterno). HE Salty aporta sodio extra dentro del gel. HF libre: el sabor que mejor siente en ese momento. Powerade Zero como volumen de hidratación sin sobrecargar carbohidratos — las 5h38 ya acumulan mucho CHO.</div>
       </div>
 
       <!-- Avit 5 -->
@@ -1065,11 +1065,11 @@
           <span style="margin-left:auto; background:linear-gradient(90deg, var(--purple), var(--sea-teal)); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">Mixto: Fructosa + Malto</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1Ã HF Cola (55 g) + 1Ã HE base (50 g)</div><div style="font-size:0.75rem; margin-top:4px;">HF: <span style="color:var(--purple);">â GLUT5</span> fructosa Â· HE: <span style="color:var(--sea-teal);">â SGLT1</span> maltodextrina</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">500 ml Aquarius (30 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">3Ã SUB9 Salts (750 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1× HF Cola (55 g) + 1× HE base (50 g)</div><div style="font-size:0.75rem; margin-top:4px;">HF: <span style="color:var(--purple);">→ GLUT5</span> fructosa · HE: <span style="color:var(--sea-teal);">→ SGLT1</span> maltodextrina</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">500 ml Aquarius (30 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">3× SUB9 Salts (750 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: replica el patrÃ³n del Avit 3 (impar = mÃ¡s volumen + mÃ¡s Na). HF Cola de nuevo â sabor fuerte que funciona contra la fatiga de paladar a las casi 7h. HE base como absorciÃ³n sostenida vÃ­a SGLT1 para el tramo largo hasta el Avit 6.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: replica el patrón del Avit 3 (impar = más volumen + más Na). HF Cola de nuevo — sabor fuerte que funciona contra la fatiga de paladar a las casi 7h. HE base como absorción sostenida vía SGLT1 para el tramo largo hasta el Avit 6.</div>
       </div>
 
       <!-- Avit 6 -->
@@ -1081,11 +1081,11 @@
           <span style="margin-left:auto; background:var(--sea-teal); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">Malto:Fructosa (SGLT1+GLUT5)</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1Ã HE "Espresso" (50 g) + 1Ã HE "Salty" (50 g)</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> maltodextrina + <span style="color:var(--purple);">GLUT5</span> fructosa Â· 80 mg cafeÃ­na</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">300 ml Powerade (20 g CHO) + 500 ml Powerade Zero</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa Â· Zero como volumen extra</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2Ã SUB9 Salts (500 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1× HE "Espresso" (50 g) + 1× HE "Salty" (50 g)</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> maltodextrina + <span style="color:var(--purple);">GLUT5</span> fructosa · 80 mg cafeína</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">300 ml Powerade (20 g CHO) + 500 ml Powerade Zero</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa · Zero como volumen extra</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2× SUB9 Salts (500 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: segunda y Ãºltima dosis de cafeÃ­na (Espresso) â a las 7h45 es el momento de mÃ¡xima fatiga mental, la cafeÃ­na apunta aquÃ­ deliberadamente. Replica el patrÃ³n del Avit 2 (par = Espresso + Salty). MÃ¡s Powerade Zero que normal para hidratar sin aÃ±adir mÃ¡s carga gÃ¡strica en la recta final.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: segunda y última dosis de cafeína (Espresso) — a las 7h45 es el momento de máxima fatiga mental, la cafeína apunta aquí deliberadamente. Replica el patrón del Avit 2 (par = Espresso + Salty). Más Powerade Zero que normal para hidratar sin añadir más carga gástrica en la recta final.</div>
       </div>
 
       <!-- Avit 7 -->
@@ -1097,64 +1097,64 @@
           <span style="margin-left:auto; background:var(--purple); color:white; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:700;">100% Fructosa (GLUT5)</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1Ã HF libre (55 g) + <s>1Ã HE base (50 g)</s></div><div style="font-size:0.75rem; margin-top:4px;">HF: <span style="color:var(--purple);">â GLUT5</span> fructosa</div><div style="font-size:0.78rem; color:var(--coral); font-style:italic; margin-top:4px;">HE no tomado: no cabÃ­a en la boya</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">LÃ­quidos</div><div style="font-size:0.85rem;">400 ml Aquarius (24 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">â SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa</div></div>
-          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2Ã SUB9 Salts (500 mg Na)</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Geles</div><div style="font-size:0.85rem;">1× HF libre (55 g) + <s>1× HE base (50 g)</s></div><div style="font-size:0.75rem; margin-top:4px;">HF: <span style="color:var(--purple);">→ GLUT5</span> fructosa</div><div style="font-size:0.78rem; color:var(--coral); font-style:italic; margin-top:4px;">HE no tomado: no cabía en la boya</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Líquidos</div><div style="font-size:0.85rem;">400 ml Aquarius (24 g CHO) + 300 ml agua</div><div style="font-size:0.75rem; margin-top:4px;"><span style="color:var(--sea-teal);">→ SGLT1</span> + <span style="color:var(--purple);">GLUT5</span> sacarosa</div></div>
+          <div style="background:white; padding:10px 14px; border-radius:10px;"><div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase;">Sales</div><div style="font-size:0.85rem;">2× SUB9 Salts (500 mg Na)</div></div>
         </div>
-        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: Ãºltimo avituallamiento antes de los 3 km finales. Carga ligera â solo HF para energÃ­a rÃ¡pida vÃ­a GLUT5. El HE base estaba planificado pero no cabÃ­a en la boya (lecciÃ³n: optimizar el packing). Menos lÃ­quido y menos sales que los impares anteriores â quedan solo ~50 min de esfuerzo.</div>
+        <div style="margin-top:12px; padding:10px 14px; background:var(--sea-ghost); border-radius:10px; font-size:0.82rem; color:var(--gray-600); font-style:italic;">Razonamiento: último avituallamiento antes de los 3 km finales. Carga ligera — solo HF para energía rápida vía GLUT5. El HE base estaba planificado pero no cabía en la boya (lección: optimizar el packing). Menos líquido y menos sales que los impares anteriores — quedan solo ~50 min de esfuerzo.</div>
       </div>
     </div>
 
     <!-- GELES ENTRE AVITUALLAMIENTOS -->
     <div class="section">
       <div style="background:var(--sand); border-left:4px solid var(--sand-dark); border-radius:12px; padding:16px 20px; margin-bottom:16px;">
-        <p style="font-size:0.9rem; font-weight:700; color:var(--sand-dark);">â ï¸ EN 2025, ESTOS NO LOS TOMÃ porque no me entraban en la boya.</p>
+        <p style="font-size:0.9rem; font-weight:700; color:var(--sand-dark);">⚠️ EN 2025, ESTOS NO LOS TOMÉ porque no me entraban en la boya.</p>
       </div>
-      <div class="section-header"><div class="section-icon purple">ð</div><h2>Geles entre avituallamientos (plan original)</h2></div>
+      <div class="section-header"><div class="section-icon purple">💊</div><h2>Geles entre avituallamientos (plan original)</h2></div>
       <div class="phase-timeline">
-        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~6h08</div><div class="phase-content"><div class="phase-title">DespuÃ©s del Avit 4</div><div class="phase-detail">Isotonic Gel Cola Â· 22 g CHO Â· 100 mg cafeÃ­na Â· SGLT1 rÃ¡pida (10-15 min)</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~7h15</div><div class="phase-content"><div class="phase-title">DespuÃ©s del Avit 5</div><div class="phase-detail">Isotonic Gel Lima Â· 22 g CHO Â· SGLT1 rÃ¡pida</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~8h10</div><div class="phase-content"><div class="phase-title">DespuÃ©s del Avit 6</div><div class="phase-detail">Isotonic Gel SandÃ­a Â· 22 g CHO Â· SGLT1 para evitar bajÃ³n previo al Ãºltimo tramo</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~9h00</div><div class="phase-content"><div class="phase-title">DespuÃ©s del Avit 7</div><div class="phase-detail">Isotonic Gel Cola Â· 22 g CHO Â· 100 mg cafeÃ­na Â· Impulso final</div></div></div>
-        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~9h35</div><div class="phase-content"><div class="phase-title">Tramo final (km 27)</div><div class="phase-detail">Isotonic Gel Lima Â· 22 g CHO Â· Entrada rÃ¡pida para mantener hasta meta</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~6h08</div><div class="phase-content"><div class="phase-title">Después del Avit 4</div><div class="phase-detail">Isotonic Gel Cola · 22 g CHO · 100 mg cafeína · SGLT1 rápida (10-15 min)</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~7h15</div><div class="phase-content"><div class="phase-title">Después del Avit 5</div><div class="phase-detail">Isotonic Gel Lima · 22 g CHO · SGLT1 rápida</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~8h10</div><div class="phase-content"><div class="phase-title">Después del Avit 6</div><div class="phase-detail">Isotonic Gel Sandía · 22 g CHO · SGLT1 para evitar bajón previo al último tramo</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~9h00</div><div class="phase-content"><div class="phase-title">Después del Avit 7</div><div class="phase-detail">Isotonic Gel Cola · 22 g CHO · 100 mg cafeína · Impulso final</div></div></div>
+        <div class="phase"><div class="phase-marker" style="background:var(--gray-400);">~9h35</div><div class="phase-content"><div class="phase-title">Tramo final (km 27)</div><div class="phase-detail">Isotonic Gel Lima · 22 g CHO · Entrada rápida para mantener hasta meta</div></div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- âââ CHAT WIDGET âââ -->
-<button class="chat-fab" id="chatFab" onclick="openChat()">ð¬</button>
+<!-- ═══ CHAT WIDGET ═══ -->
+<button class="chat-fab" id="chatFab" onclick="openChat()">💬</button>
 <div class="chat-panel" id="chatPanel">
   <div class="chat-header">
     <div>
-      <div class="chat-header-title">PregÃºntame sobre tus entrenos</div>
-      <div class="chat-header-sub">Powered by Llama 3 Â· Datos en vivo</div>
+      <div class="chat-header-title">Pregúntame sobre Rande</div>
+      <div class="chat-header-sub">Entrenos · Nutrición · Plan de carrera · Llama 3</div>
     </div>
-    <button class="chat-header-close" onclick="closeChat()">â</button>
+    <button class="chat-header-close" onclick="closeChat()">✕</button>
   </div>
   <div id="chatKeyPrompt" class="chat-key-prompt">
     <label>Introduce tu API key de Groq para chatear con tus datos</label>
     <input type="password" id="apiKeyInput" placeholder="gsk_..." />
     <button onclick="saveApiKey()">Conectar</button>
-    <div class="chat-key-note">La key se guarda en este navegador.</div>
+    <div class="chat-key-note">La key se guarda solo en memoria. No se almacena en disco.</div>
   </div>
   <div id="chatBody" style="display:none; flex-direction:column; flex:1;">
     <div class="chat-messages" id="chatMessages"></div>
-    <div class="chat-input-row">
-      <input type="text" id="chatInput" placeholder="Â¿CÃ³mo va mi preparaciÃ³n?" onkeydown="if(event.key==='Enter')sendChat()" />
-      <button id="chatSendBtn" onclick="sendChat()">â</button>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Entrenos, nutrición, plan de carrera..." onkeydown="if(event.key==='Enter')sendChat()" />
+      <button id="chatSendBtn" onclick="sendChat()">→</button>
     </div>
   </div>
 </div>
 
-<!-- âââ FOOTER âââ -->
+<!-- ═══ FOOTER ═══ -->
 <div class="footer">
-  <div class="motto">Islas CÃ­es â San SimÃ³n. 27 km. TÃº puedes. ð</div>
+  <div class="motto">Islas Cíes → San Simón. 27 km. Tú puedes. 🌊</div>
   <span id="footerDate"></span>
 </div>
 
 <script>
-// âââ TAB SWITCHING âââ
+// ═══ TAB SWITCHING ═══
 function switchTab(tabId, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1163,7 +1163,7 @@ function switchTab(tabId, btn) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// âââ CONFIG âââ
+// ═══ CONFIG ═══
 const SHEET_ID = '1JtFrZiJj20n7nXqZuLqsWX2loP5fV-85zwga842y44s';
 const GID = '1618423594';
 const JSONP_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${GID}&tqx=responseHandler:handleSheetData`;
@@ -1172,8 +1172,8 @@ const WEEK_NOTES = {
   'nov 10': 'Londres', 'november 10': 'Londres',
   'nov 17': 'Madrid', 'november 17': 'Madrid',
   'jan 26': 'Oporto', 'january 26': 'Oporto',
-  'feb 16': 'NÃ¡poles', 'february 16': 'NÃ¡poles',
-  'feb 23': 'Cumple MarÃ­a', 'february 23': 'Cumple MarÃ­a',
+  'feb 16': 'Nápoles', 'february 16': 'Nápoles',
+  'feb 23': 'Cumple María', 'february 23': 'Cumple María',
 };
 
 const MONTH_MAP = {
@@ -1230,7 +1230,7 @@ function getNote(raw) {
   return '';
 }
 
-// âââ PROCESS GVIZ DATA âââ
+// ═══ PROCESS GVIZ DATA ═══
 function processGvizData(json) {
   const rows = json.table.rows;
   const data = [];
@@ -1254,13 +1254,13 @@ function processGvizData(json) {
       pct = (vol / volPrev) * 100;
     }
     let note = getNote(week);
-    if (pct === -1 && !note) note = '0 km aÃ±o ant.';
+    if (pct === -1 && !note) note = '0 km año ant.';
     data.push({ w: shortLabel(week), wRaw: week, v: vol, p: pct, n: note });
   }
   return data;
 }
 
-// âââ RENDER âââ
+// ═══ RENDER ═══
 let chartInstance = null;
 
 function render(data) {
@@ -1270,13 +1270,13 @@ function render(data) {
   const last3 = data.filter(d => d.v > 0).slice(-3);
   const trend = last3.map(d => d.v);
   const trendRound = trend.map(v => Math.round(v));
-  const trendDir = trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2] ? 'â Build' : 'â Estable';
+  const trendDir = trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2] ? '↑ Build' : '→ Estable';
   const trendColor = trendDir.includes('Build') ? 'var(--green)' : 'var(--gray-500)';
   const firstWeek = data[0]?.w || '';
   const lastWeek = data[data.length - 1]?.w || '';
   const currentWeek = data[data.length - 1];
 
-  document.getElementById('kpiTitle').textContent = `Resumen de preparaciÃ³n Â· ${firstWeek} â ${lastWeek}`;
+  document.getElementById('kpiTitle').textContent = `Resumen de preparación · ${firstWeek} – ${lastWeek}`;
   document.getElementById('kpiGrid').innerHTML = `
     <div class="kpi"><div class="kpi-label">Vol. total acumulado</div><div class="kpi-value" style="color:var(--sea-teal);">~${Math.round(totalVol)} km</div><div class="kpi-note">${data.length} semanas de entreno</div></div>
     <div class="kpi"><div class="kpi-label">Semana pico</div><div class="kpi-value">${Math.round(peakWeek.v)} km</div><div class="kpi-note">${peakWeek.w}</div></div>
@@ -1294,7 +1294,7 @@ function render(data) {
       datasets: [
         { label: 'Volumen (km)', data: data.map(d => d.v),
           backgroundColor: data.map(d => {
-            if (d.n && d.n !== '0 km aÃ±o ant.') return 'rgba(245,158,11,0.6)';
+            if (d.n && d.n !== '0 km año ant.') return 'rgba(245,158,11,0.6)';
             if (d.v >= 25) return 'rgba(14,165,233,0.85)';
             if (d.v >= 18) return 'rgba(14,165,233,0.6)';
             if (d.v >= 10) return 'rgba(14,165,233,0.4)';
@@ -1317,7 +1317,7 @@ function render(data) {
           callbacks: { label: function(ctx2) {
             if (ctx2.datasetIndex === 1) return 'Objetivo: 27 km';
             const d = data[ctx2.dataIndex];
-            return Math.round(ctx2.parsed.y) + ' km' + (d && d.n ? ' Â· ' + d.n : '');
+            return Math.round(ctx2.parsed.y) + ' km' + (d && d.n ? ' · ' + d.n : '');
           }}
         }
       },
@@ -1338,7 +1338,7 @@ function render(data) {
   [...data].reverse().forEach(d => {
     const isPeak = d.v >= maxVol;
     const pctClass = d.p != null && d.p !== -1 ? (d.p >= 100 ? 'pct-up' : 'pct-down') : '';
-    const pctText = d.p === -1 ? 'sin ref.' : (d.p != null ? d.p.toFixed(1) + '%' : 'â');
+    const pctText = d.p === -1 ? 'sin ref.' : (d.p != null ? d.p.toFixed(1) + '%' : '—');
     const barW = (d.v / maxVol * 100).toFixed(0);
     const noteStyle = d.n ? 'font-family:Inter,sans-serif;font-size:0.75rem;color:var(--gray-500);font-style:italic;' : '';
     const tr = document.createElement('tr');
@@ -1357,7 +1357,7 @@ function render(data) {
   const now = new Date();
   const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   document.getElementById('footerDate').textContent =
-    `Datos cargados en vivo Â· ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()} a las ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+    `Datos cargados en vivo · ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()} a las ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
 }
 
 function generatePhases(data) {
@@ -1369,10 +1369,10 @@ function generatePhases(data) {
     const vols = weeks.map(w => w.v);
     const avg = Math.round(vols.reduce((a,b) => a+b, 0) / vols.length);
     const peak = Math.round(Math.max(...vols));
-    const notes = weeks.filter(w => w.n && w.n !== '0 km aÃ±o ant.').map(w => w.n);
-    const noteText = notes.length > 0 ? ` Â· ${notes.join(', ')}` : '';
-    const trendText = vols.length >= 2 ? ` (${vols.map(v => Math.round(v)).join(' â ')})` : '';
-    html += `<div class="phase"><div class="phase-marker" style="background:${colors[idx % colors.length]};">${idx + 1}</div><div class="phase-content"><div class="phase-title">${month}${noteText}</div><div class="phase-detail">VolÃºmenes semanales${trendText}.</div><div class="phase-vol">Prom: ${avg} km/sem Â· Pico: ${peak} km</div></div></div>`;
+    const notes = weeks.filter(w => w.n && w.n !== '0 km año ant.').map(w => w.n);
+    const noteText = notes.length > 0 ? ` · ${notes.join(', ')}` : '';
+    const trendText = vols.length >= 2 ? ` (${vols.map(v => Math.round(v)).join(' → ')})` : '';
+    html += `<div class="phase"><div class="phase-marker" style="background:${colors[idx % colors.length]};">${idx + 1}</div><div class="phase-content"><div class="phase-title">${month}${noteText}</div><div class="phase-detail">Volúmenes semanales${trendText}.</div><div class="phase-vol">Prom: ${avg} km/sem · Pico: ${peak} km</div></div></div>`;
     idx++;
   }
   return html;
@@ -1381,24 +1381,24 @@ function generatePhases(data) {
 function generateInsights(data, peakWeek, avg, trend) {
   const weeksAbove20 = data.filter(d => d.v >= 20).length;
   const pctAbove20 = ((weeksAbove20 / data.length) * 100).toFixed(0);
-  const travelWeeks = data.filter(d => d.n && d.n !== '0 km aÃ±o ant.');
+  const travelWeeks = data.filter(d => d.n && d.n !== '0 km año ant.');
   let html = '';
-  html += `<div class="insight good"><div class="insight-title">â Volumen pico = distancia de carrera</div><div class="insight-text">Tu semana mÃ¡s alta fue ${Math.round(peakWeek.v)} km (${peakWeek.w}), prÃ¡cticamente idÃ©ntica a los 27 km de la prueba.</div></div>`;
+  html += `<div class="insight good"><div class="insight-title">✅ Volumen pico = distancia de carrera</div><div class="insight-text">Tu semana más alta fue ${Math.round(peakWeek.v)} km (${peakWeek.w}), prácticamente idéntica a los 27 km de la prueba.</div></div>`;
   if (trend.length >= 2 && trend[trend.length - 1] > trend[trend.length - 2]) {
-    html += `<div class="insight good"><div class="insight-title">â Tendencia ascendente</div><div class="insight-text">Las Ãºltimas semanas muestran un build limpio: ${trend.map(v => Math.round(v)).join(' â ')}.</div></div>`;
+    html += `<div class="insight good"><div class="insight-title">✅ Tendencia ascendente</div><div class="insight-text">Las últimas semanas muestran un build limpio: ${trend.map(v => Math.round(v)).join(' → ')}.</div></div>`;
   }
   if (travelWeeks.length > 0) {
-    html += `<div class="insight warn"><div class="insight-title">â ï¸ Viajes y compromisos impactan</div><div class="insight-text">Semanas con ${travelWeeks.map(w => w.n).join(', ')} muestran caÃ­das de volumen.</div></div>`;
+    html += `<div class="insight warn"><div class="insight-title">⚠️ Viajes y compromisos impactan</div><div class="insight-text">Semanas con ${travelWeeks.map(w => w.n).join(', ')} muestran caídas de volumen.</div></div>`;
   }
-  html += `<div class="insight info"><div class="insight-title">ð¡ ${pctAbove20}% de semanas â¥ 20 km</div><div class="insight-text">${weeksAbove20} de ${data.length} semanas superaron los 20 km. Media: ${Math.round(avg)} km/sem.</div></div>`;
-  html += `<div class="insight good"><div class="insight-title">â Ritmo 1:53/100m = colchÃ³n amplio</div><div class="insight-text">A 1:53/100m el tiempo estimado es ~8h30, lo que deja ~1h de margen sobre el lÃ­mite de 9:30h.</div></div>`;
+  html += `<div class="insight info"><div class="insight-title">💡 ${pctAbove20}% de semanas ≥ 20 km</div><div class="insight-text">${weeksAbove20} de ${data.length} semanas superaron los 20 km. Media: ${Math.round(avg)} km/sem.</div></div>`;
+  html += `<div class="insight good"><div class="insight-title">✅ Ritmo 1:53/100m = colchón amplio</div><div class="insight-text">A 1:53/100m el tiempo estimado es ~8h30, lo que deja ~1h de margen sobre el límite de 9:30h.</div></div>`;
   return html;
 }
 
-// âââ JSONP CALLBACK & INIT âââ
+// ═══ JSONP CALLBACK & INIT ═══
 function handleSheetData(response) {
   try {
-    if (response.status === 'error') throw new Error('Google Sheets respondiÃ³ con error. Â¿EstÃ¡ compartido como pÃºblico?');
+    if (response.status === 'error') throw new Error('Google Sheets respondió con error. ¿Está compartido como público?');
     const data = processGvizData(response);
     if (data.length === 0) throw new Error('No se encontraron datos desde octubre.');
     dashboardData = data;
@@ -1406,9 +1406,9 @@ function handleSheetData(response) {
   } catch (err) {
     const banner = document.getElementById('errorBanner');
     banner.style.display = 'block';
-    banner.textContent = 'â Error: ' + err.message;
+    banner.textContent = '❌ Error: ' + err.message;
   } finally {
-    document.getElementById('loader').classList.add('hidden');
+    var loader = document.getElementById('loader'); if (loader) loader.classList.add('hidden');
   }
 }
 
@@ -1417,27 +1417,22 @@ let dashboardData = [];
   const script = document.createElement('script');
   script.src = JSONP_URL;
   script.onerror = function() {
-    document.getElementById('loader').classList.add('hidden');
+    var loader = document.getElementById('loader'); if (loader) loader.classList.add('hidden');
     const banner = document.getElementById('errorBanner');
     banner.style.display = 'block';
-    banner.textContent = 'â No se pudo conectar con Google Sheets.';
+    banner.textContent = '❌ No se pudo conectar con Google Sheets.';
   };
   document.body.appendChild(script);
 })();
 
-// âââ CHAT WIDGET âââ
-let chatApiKey = (function(){const d=[96,116,108,88,118,66,110,102,114,80,107,54,110,112,63,101,49,119,94,119,117,101,111,100,80,64,99,126,101,52,65,94,75,81,86,115,80,111,125,67,55,49,63,82,67,118,127,112,80,76,118,70,111,53,99,62];return d.map(c=>String.fromCharCode(c^7)).join('');})();
+// ═══ CHAT WIDGET ═══
+let chatApiKey = null;
 let chatHistory = [];
 
 function openChat() {
   document.getElementById('chatPanel').classList.add('open');
   document.getElementById('chatFab').classList.add('has-chat');
-  if (chatApiKey && document.getElementById('chatKeyPrompt').style.display !== 'none') {
-    document.getElementById('chatKeyPrompt').style.display = 'none';
-    document.getElementById('chatBody').style.display = 'flex';
-    if (chatHistory.length === 0) addMsg('assistant', '\u00a1Hola! Tengo acceso a todos tus datos de entreno. Preg\u00fantame lo que quieras sobre tu preparaci\u00f3n para Rande.');
-  }
-  document.getElementById('chatInput').focus();
+  if (chatApiKey) document.getElementById('chatInput').focus();
 }
 function closeChat() {
   document.getElementById('chatPanel').classList.remove('open');
@@ -1449,7 +1444,7 @@ function saveApiKey() {
   chatApiKey = key;
   document.getElementById('chatKeyPrompt').style.display = 'none';
   document.getElementById('chatBody').style.display = 'flex';
-  addMsg('assistant', 'Â¡Hola! Tengo acceso a todos tus datos de entreno. PregÃºntame lo que quieras sobre tu preparaciÃ³n para Rande.');
+  addMsg('assistant', '¡Hola! Tengo acceso a tus datos de entreno, el plan de nutrición y el protocolo de carrera. Pregúntame lo que quieras sobre Rande.');
   document.getElementById('chatInput').focus();
 }
 function addMsg(role, text) {
@@ -1464,14 +1459,38 @@ function addMsg(role, text) {
 function buildSystemPrompt() {
   const rows = dashboardData.map(d =>
     `${d.wRaw}: ${Math.round(d.v)} km` +
-    (d.p != null && d.p !== -1 ? ` (${d.p.toFixed(0)}% vs aÃ±o ant.)` : '') +
+    (d.p != null && d.p !== -1 ? ` (${d.p.toFixed(0)}% vs año ant.)` : '') +
     (d.n ? ` [${d.n}]` : '')
   ).join('\n');
-  return `Eres el asistente de entrenamiento de Gabi para la Batalla de Rande 2026, una travesÃ­a de nado en aguas abiertas de 27 km desde las Islas CÃ­es hasta la Isla de San SimÃ³n (Galicia).
-Datos del nadador: Ritmo 1:53/100m Â· Tiempo lÃ­mite 9:30h Â· Agua ~15Â°C
-Datos de entrenamiento semanal (volumen en km, desde oct 2025):
+  return `Eres el asistente de preparación de Gabi para la Batalla de Rande 2026, una travesía de nado en aguas abiertas de 27 km desde las Islas Cíes hasta la Isla de San Simón (Galicia).
+
+DATOS DEL NADADOR: Ritmo 1:53/100m · Tiempo límite 9:30h · Agua ~15°C · Fecha carrera: 21 junio 2026
+
+ENTRENO DE NADO — Volumen semanal (km, desde oct 2025):
 ${rows}
-Responde en espaÃ±ol, de forma concisa y directa. Usa los datos reales.`;
+
+ENTRENO NUTRICIONAL — Adaptación intestinal en 3 fases (transportadores SGLT1 maltodextrina + GLUT5 fructosa):
+- Fase 1 (16 mar, 4 sem): 60–70 g CHO/h, ratio 3:1. Mezcla: 300g maltodextrina + 150g cluster dextrin + 150g fructosa + 25g Evolytes + 60g ácido cítrico. Pre-entreno: 40g en 500ml. Durante ≥90min: 60g en 500ml cada 15-20min.
+- Fase 2 (13 abr, 5 sem): 80–90 g CHO/h, ratio 2.5:1. Pre: 45g/500ml. Durante: 80-90g/500ml.
+- Fase 3 (11 may, 6 sem): 105 g CHO/h, ratio 2:1. Pre: 50g/500ml. Durante: 105g/500ml. Simulación exacta de carrera.
+
+PLAN NUTRICIONAL EN CARRERA — Pre-carrera:
+- -48h: Carga masiva de CHO (arroz, pasta, sin fibra ni grasa)
+- -3h: Desayuno 120g CHO (6 rodajas pan Bimbo + 4 cucharadas mermelada, o 6 rodajas + 3 cucharadas miel)
+- -2h: 500ml SUB9 Race Day (82g CHO, 460mg Na, ciclodextrina)
+- -45min: HE Gel Espresso (50g CHO, 80mg cafeína)
+
+7 AVITUALLAMIENTOS EN BOYA (cada ~3.3 km):
+- Avit 1 (km5, ~1h48): 2× HF gel 110g CHO (100% fructosa GLUT5) + 600ml Aquarius + 300ml agua + 3× SUB9 750mg Na
+- Avit 2 (km9, ~3h15): 1× HE Espresso + 1× HE Salty (100g CHO, malto:fructosa SGLT1+GLUT5, 80mg cafeína) + 400ml Powerade + 300ml Aquarius Zero + 2× SUB9 500mg Na
+- Avit 3 (km12.3, ~4h26): 1× HF Cola + 1× HE base (105g CHO, mixto) + 500ml Aquarius + 300ml agua + 3× SUB9 750mg Na
+- Avit 4 (km15.6, ~5h38): 1× HE Salty + 1× HF libre (105g CHO, mixto) + 300ml Powerade + 400ml Powerade Zero + 2× SUB9 500mg Na
+- Avit 5 (km18.7, ~6h45): 1× HF Cola + 1× HE base (105g CHO, mixto) + 500ml Aquarius + 300ml agua + 3× SUB9 750mg Na
+- Avit 6 (km21.5, ~7h45): 1× HE Espresso + 1× HE Salty (100g CHO, malto:fructosa, 80mg cafeína) + 300ml Powerade + 500ml Powerade Zero + 2× SUB9 500mg Na
+- Avit 7 (km24, ~8h40): 1× HF libre (55g CHO, 100% fructosa) + 400ml Aquarius + 300ml agua + 2× SUB9 500mg Na. NOTA: HE base planificado pero no cabía en la boya.
+Patrón: impares = más volumen líquido + más sodio (750mg). Pares = menos volumen + menos sodio (500mg). Cafeína solo en Avit 2 y 6 (total 160mg).
+
+Responde en español, de forma concisa y directa. Usa los datos reales. Puedes responder sobre entrenos, nutrición y plan de carrera.`;
 }
 async function sendChat() {
   const input = document.getElementById('chatInput');
@@ -1497,7 +1516,7 @@ async function sendChat() {
     chatHistory.push({ role: 'assistant', content: json.choices[0]?.message?.content || '' });
   } catch (err) {
     typing.remove();
-    addMsg('assistant', 'â ' + err.message);
+    addMsg('assistant', '❌ ' + err.message);
     chatHistory.pop();
   } finally {
     document.getElementById('chatSendBtn').disabled = false;
