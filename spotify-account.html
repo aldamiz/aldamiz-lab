@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta de Spotify</title>
+  <script src="/guard.js"></script>
+  <style>
+    :root {
+      --green: #1DB954;
+      --green-dark: #158a3e;
+      --bg: #0d0d0d;
+      --bg2: #181818;
+      --bg3: #242424;
+      --text: #ffffff;
+      --text-muted: #a7a7a7;
+      --border: #333;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(180deg, #1a3a28 0%, var(--bg) 100%);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    .spotify-logo {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    header h1 span { color: var(--green); }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* SECTION TITLES */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--bg2);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+
+    /* ACCOUNT GRID */
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .account-item {
+      background: var(--bg3);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .account-item .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .account-item .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .account-item .value.green { color: var(--green); }
+    .account-item .value.muted { color: var(--text-muted); font-weight: 400; font-size: 13px; }
+
+    /* INFERENCE GRID */
+    .inference-section {
+      margin-bottom: 24px;
+    }
+
+    .inference-section:last-child { margin-bottom: 0; }
+
+    .inference-section h3 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .tag.highlight {
+      background: rgba(29, 185, 84, 0.12);
+      border-color: var(--green);
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .tag.accent {
+      background: rgba(29, 185, 84, 0.06);
+      border-color: rgba(29, 185, 84, 0.3);
+      color: #7ee89e;
+    }
+
+    /* ARTIST SEGMENTS */
+    .segments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .segment-card {
+      background: var(--bg3);
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .segment-card.super {
+      border-color: var(--green);
+      background: rgba(29, 185, 84, 0.08);
+    }
+
+    .segment-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .segment-card.super .segment-label { color: var(--green); }
+    .segment-card.moderate .segment-label { color: #f59e0b; }
+    .segment-card.light .segment-label { color: var(--text-muted); }
+
+    .segment-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .segment-artists {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .segment-artist {
+      font-size: 13px;
+      color: var(--text);
+      padding: 2px 0;
+    }
+
+    .segment-count {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* SOCIAL */
+    .social-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) { .social-grid { grid-template-columns: 1fr; } }
+
+    .social-box h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .social-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .social-user {
+      background: var(--bg3);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text);
+      font-family: monospace;
+    }
+
+    /* HIGHLIGHTS */
+    .highlights-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .highlight-item {
+      background: var(--bg3);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .highlight-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 64px;
+    }
+
+    .highlight-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .highlight-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .highlight-text strong { color: var(--green); }
+
+    /* STAT BAR */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .stat-row:last-child { margin-bottom: 0; }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      min-width: 160px;
+    }
+
+    .stat-bar-wrap {
+      flex: 1;
+      background: var(--bg3);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+
+    .stat-bar {
+      height: 100%;
+      background: var(--green);
+      border-radius: 4px;
+    }
+
+    .stat-value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* NOTE BOX */
+    .note {
+      background: rgba(29, 185, 84, 0.08);
+      border: 1px solid rgba(29, 185, 84, 0.3);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #9de8b5;
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg class="spotify-logo" viewBox="0 0 24 24" fill="#1DB954" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+  </svg>
+  <h1>Mi cuenta de <span>Spotify</span></h1>
+  <p>Datos exportados &bull; Abril 2026</p>
+</header>
+
+<main>
+
+  <!-- CUENTA -->
+  <section>
+    <div class="section-title">Cuenta</div>
+    <div class="card">
+      <div class="account-grid">
+        <div class="account-item">
+          <div class="label">Display name</div>
+          <div class="value green">aldamiz</div>
+        </div>
+        <div class="account-item">
+          <div class="label">Username (URL)</div>
+          <div class="value muted">lolasaraolaiz<br><span style="font-size:11px;color:#666">Generado por Spotify</span></div>
+        </div>
+        <div class="account-item">
+          <div class="label">Email</div>
+          <div class="value muted">gabriel.aldamiz<br>@gmail.com</div>
+        </div>
+        <div class="account-item">
+          <div class="label">Cuenta creada</div>
+          <div class="value">9 ago 2015</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">~11 años de historia</div>
+        </div>
+        <div class="account-item">
+          <div class="label">País / región</div>
+          <div class="value">ES &nbsp;&#x1F1EA;&#x1F1F8;</div>
+        </div>
+        <div class="account-item">
+          <div class="label">Plan</div>
+          <div class="value muted">Familiar</div>
+        </div>
+        <div class="account-item">
+          <div class="label">Método de pago</div>
+          <div class="value muted">VISA **** 7148<br><span style="font-size:11px">Caduca 10/2027</span></div>
+        </div>
+        <div class="account-item">
+          <div class="label">Plan añadido</div>
+          <div class="value muted">Nov 2023</div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:16px">
+        El <strong style="color:var(--green)">username</strong> (<code>lolasaraolaiz</code>) es el identificador técnico que Spotify genera automáticamente al crear la cuenta &mdash; no es elegido por el usuario. El nombre visible (<strong style="color:var(--green)">aldamiz</strong>) sí lo pusiste tú.
+      </div>
+    </div>
+  </section>
+
+  <!-- INFERENCES -->
+  <section>
+    <div class="section-title">Lo que Spotify sabe de ti</div>
+    <div class="card">
+
+      <div class="inference-section">
+        <h3>Perfil dem&oacute;grafico</h3>
+        <div class="tags">
+          <span class="tag highlight">Hombre</span>
+          <span class="tag highlight">50&ndash;54 a&ntilde;os</span>
+          <span class="tag highlight">Conductor</span>
+          <span class="tag highlight">Viajero internacional</span>
+        </div>
+      </div>
+
+      <div class="inference-section">
+        <h3>Dispositivos y h&aacute;bitos</h3>
+        <div class="tags">
+          <span class="tag accent">Apple loyalist</span>
+          <span class="tag accent">Apple Wearable (Watch)</span>
+          <span class="tag accent">iOS &middot; solo m&oacute;vil</span>
+          <span class="tag accent">Escucha en el coche</span>
+          <span class="tag accent">Curator apasionado</span>
+          <span class="tag accent">Usa Blend</span>
+          <span class="tag">Wrapped Engager</span>
+          <span class="tag">Entrenos</span>
+          <span class="tag">Productividad / motivaci&oacute;n</span>
+          <span class="tag">Playlists verano</span>
+          <span class="tag">Playlists navide&ntilde;as</span>
+          <span class="tag">Romance playlists</span>
+        </div>
+      </div>
+
+      <div class="inference-section">
+        <h3>Podcasts</h3>
+        <div class="tags">
+          <span class="tag accent">Self-help</span>
+          <span class="tag accent">Emprendimiento</span>
+          <span class="tag accent">Business &amp; tech</span>
+          <span class="tag accent">Noticias &amp; pol&iacute;tica</span>
+          <span class="tag">Sociedad &amp; cultura</span>
+          <span class="tag">Deportes</span>
+          <span class="tag">Comedia</span>
+          <span class="tag">Arte &amp; entretenimiento</span>
+          <span class="tag">Infotainment</span>
+        </div>
+      </div>
+
+      <div class="inference-section">
+        <h3>Intereses inferidos</h3>
+        <div class="tags">
+          <span class="tag accent">Startups &amp; VC</span>
+          <span class="tag accent">Marketing &amp; publicidad</span>
+          <span class="tag accent">Inteligencia artificial</span>
+          <span class="tag accent">Desarrollo web</span>
+          <span class="tag accent">Running</span>
+          <span class="tag accent">Meditaci&oacute;n &amp; yoga</span>
+          <span class="tag">Actividades outdoor</span>
+          <span class="tag">Libros &amp; literatura</span>
+          <span class="tag">Noticias internacionales</span>
+          <span class="tag">Finanzas personales</span>
+          <span class="tag">Viajes</span>
+          <span class="tag">Familia &amp; crianza</span>
+          <span class="tag">Educaci&oacute;n online</span>
+          <span class="tag">Realidad virtual / aumentada</span>
+          <span class="tag">Cloud computing</span>
+          <span class="tag">Pel&iacute;culas (comedia, romance)</span>
+          <span class="tag">Videojuegos educativos</span>
+          <span class="tag">Danza</span>
+        </div>
+      </div>
+
+      <div class="note">
+        Adem&aacute;s de los segmentos con nombre legible, Spotify te asigna <strong style="color:var(--green)">m&aacute;s de 250 etiquetas internas</strong> con UUIDs (identificadores de audiencia para anunciantes) que no se publican con nombre.
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTIST SEGMENTS -->
+  <section>
+    <div class="section-title">T&uacute; como oyente de artistas &mdash; Marquee</div>
+    <div class="card">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Spotify clasifica tu relaci&oacute;n con cada artista para determinar si es relevante mostrarte sus novedades.</p>
+
+      <div class="segments-grid">
+        <div class="segment-card super">
+          <div class="segment-label">
+            <span class="segment-dot"></span>
+            Super Listener &mdash; 2 artistas
+          </div>
+          <div class="segment-artists">
+            <div class="segment-artist" style="color:var(--green);font-weight:700">&#9733; Barricada</div>
+            <div class="segment-artist" style="color:var(--green);font-weight:700">&#9733; La Polla Records</div>
+          </div>
+        </div>
+
+        <div class="segment-card moderate">
+          <div class="segment-label">
+            <span class="segment-dot"></span>
+            Moderate Listener &mdash; 14 artistas
+          </div>
+          <div class="segment-artists">
+            <div class="segment-artist">Mikel Laboa</div>
+            <div class="segment-artist">Itoiz</div>
+            <div class="segment-artist">Accept</div>
+            <div class="segment-artist">Joan Manuel Serrat</div>
+            <div class="segment-artist">Kaos Et&iacute;liko</div>
+            <div class="segment-artist">Oskorri</div>
+            <div class="segment-artist">C. Tangana</div>
+            <div class="segment-artist" style="color:var(--text-muted);font-size:12px">+ 7 m&aacute;s</div>
+          </div>
+        </div>
+
+        <div class="segment-card light">
+          <div class="segment-label">
+            <span class="segment-dot"></span>
+            Light Listener &mdash; 63 artistas
+          </div>
+          <div class="segment-artists">
+            <div class="segment-artist">Reincidentes</div>
+            <div class="segment-artist">Hertzainak</div>
+            <div class="segment-artist">Eskorbuto</div>
+            <div class="segment-artist">Ska-P</div>
+            <div class="segment-artist">RADIOCRIMEN</div>
+            <div class="segment-artist">M.C.D.</div>
+            <div class="segment-count">+ 57 m&aacute;s</div>
+          </div>
+        </div>
+
+        <div class="segment-card light">
+          <div class="segment-label">
+            <span class="segment-dot"></span>
+            Previously Active &mdash; 328 artistas
+          </div>
+          <div class="segment-artists">
+            <div class="segment-artist">Dire Straits</div>
+            <div class="segment-artist">The Pogues</div>
+            <div class="segment-artist">Maroon 5</div>
+            <div class="segment-artist">Andrea Bocelli</div>
+            <div class="segment-artist">Elvis Presley</div>
+            <div class="segment-count">+ 323 m&aacute;s (historial completo)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTS / SOUND CAPSULE -->
+  <section>
+    <div class="section-title">Momentos &mdash; Sound Capsule (&#xfa; 6 meses)</div>
+    <div class="card">
+      <div class="highlights-list">
+
+        <div class="highlight-item">
+          <div class="highlight-date">Mar 2026</div>
+          <div class="highlight-icon">&#x1F4AA;</div>
+          <div class="highlight-text">La playlist <strong>EuskoGabi</strong> represent&oacute; el <strong>37%</strong> de todo lo que escuchaste esa semana.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Mar 2026</div>
+          <div class="highlight-icon">&#x1F3AF;</div>
+          <div class="highlight-text"><strong>La Polla Records</strong> acapar&oacute; el <strong>44%</strong> de tu tiempo de escucha esa semana.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Mar 2026</div>
+          <div class="highlight-icon">&#x1F525;</div>
+          <div class="highlight-text">La playlist <strong>Malotes</strong> fue el <strong>55%</strong> de tu semana. Modo intenso activado.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Feb 2026</div>
+          <div class="highlight-icon">&#x1F504;</div>
+          <div class="highlight-text"><strong>Aitormena</strong> en repeat &mdash; la pusiste <strong>5 veces</strong> esa semana.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Feb 2026</div>
+          <div class="highlight-icon">&#x1F4C5;</div>
+          <div class="highlight-text"><strong>Mikel Laboa</strong> &mdash; 4 d&iacute;as seguidos escuch&aacute;ndole.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Feb 2026</div>
+          <div class="highlight-icon">&#x1F914;</div>
+          <div class="highlight-text">Spotify detect&oacute; una combinaci&oacute;n sorprendente: <strong>Running Wild</strong> + <strong>Lin Cort&eacute;s</strong>.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Ene 2026</div>
+          <div class="highlight-icon">&#x1F4C5;</div>
+          <div class="highlight-text">La playlist <strong>Flamenco, baladas, cantautores&hellip;</strong> copó el <strong>51%</strong> de tu semana.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Dic 2025</div>
+          <div class="highlight-icon">&#x1F504;</div>
+          <div class="highlight-text"><strong>La vereda de la puerta de atr&aacute;s</strong> en repeat &mdash; <strong>11 veces</strong> esa semana.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Dic 2025</div>
+          <div class="highlight-icon">&#x1F4C5;</div>
+          <div class="highlight-text"><strong>Oskorri</strong> &mdash; 4 d&iacute;as seguidos.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Dic 2025</div>
+          <div class="highlight-icon">&#x1F914;</div>
+          <div class="highlight-text">Combinaci&oacute;n inesperada: <strong>Running Wild</strong> + <strong>J Balvin</strong>.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Nov 2025</div>
+          <div class="highlight-icon">&#x1F3C6;</div>
+          <div class="highlight-text">Eres el oyente <strong>#1 en Espa&ntilde;a</strong> de <strong>La Perla</strong> entre los fans similares a ti.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Nov 2025</div>
+          <div class="highlight-icon">&#x1F4CA;</div>
+          <div class="highlight-text">Escuchas <strong>Bad Bunny 3.75 veces m&aacute;s</strong> que la media espa&ntilde;ola. Destacas en el mercado.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Nov 2025</div>
+          <div class="highlight-icon">&#x1F914;</div>
+          <div class="highlight-text">Combinaci&oacute;n inesperada: <strong>Lendakaris Muertos</strong> + <strong>Daniel B&eacute;langer</strong>.</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="highlight-date">Oct 2025</div>
+          <div class="highlight-icon">&#x1F504;</div>
+          <div class="highlight-text"><strong>Vicio</strong> en repeat &mdash; 6 veces esa semana.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL -->
+  <section>
+    <div class="section-title">Red social</div>
+    <div class="card">
+      <div class="social-grid">
+        <div class="social-box">
+          <h3>Sigues a (6)</h3>
+          <div class="social-list">
+            <div class="social-user">uarenaza</div>
+            <div class="social-user">zarapalleto</div>
+            <div class="social-user">ramon-et</div>
+            <div class="social-user">pablopr</div>
+            <div class="social-user">adrycerdeiro</div>
+            <div class="social-user">moussenger</div>
+          </div>
+        </div>
+        <div class="social-box">
+          <h3>Te siguen (2)</h3>
+          <div class="social-list">
+            <div class="social-user">uarenaza</div>
+            <div class="social-user">elenita33</div>
+          </div>
+          <div style="margin-top:16px">
+            <h3>Bloqueados (0)</h3>
+            <div style="font-size:13px;color:var(--text-muted);padding-top:6px">Nadie.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  lab.aldamiz.com &bull; Datos exportados de Spotify &bull; Abril 2026
+</footer>
+
+</body>
+</html>
