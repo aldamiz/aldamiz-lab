@@ -1,0 +1,14 @@
+{
+  "name": "Puntutxus",
+  "short_name": "Puntutxus",
+  "description": "Otra forma de ganar puntutxus.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#02223f",
+  "theme_color": "#063562",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "puntutxu.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

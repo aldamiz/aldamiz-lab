@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#063562">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Puntutxus">
+  <meta name="description" content="Puntutxus — otra forma de ganar puntutxus.">
+  <title>Puntutxus</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="puntutxu.svg">
+  <link rel="apple-touch-icon" href="puntutxu.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ========== ONBOARDING ========== -->
+    <section class="view view-onboarding" data-view="onboard-1">
+      <div class="onboard-stack">
+        <div class="onboard-emoji">🌊</div>
+        <h1 class="onboard-title">Aupa.</h1>
+        <p class="onboard-q">¿Te gustan los puntutxus?</p>
+        <button class="btn-primary" data-action="onboard-next" data-next="onboard-2">Sí, claro</button>
+      </div>
+    </section>
+
+    <section class="view view-onboarding" data-view="onboard-2">
+      <div class="onboard-stack">
+        <div class="puntutxu-coin animate-spin-pop" aria-hidden="true">
+          <svg viewBox="0 0 100 100" width="160" height="160">
+            <defs>
+              <radialGradient id="goldGrad" cx="35%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#fff5b8"/>
+                <stop offset="40%" stop-color="#ffd34d"/>
+                <stop offset="100%" stop-color="#b78700"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="46" fill="url(#goldGrad)" stroke="#8a6500" stroke-width="2"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#8a6500" stroke-width="1.5" stroke-dasharray="2 3"/>
+            <path d="M20 55 Q35 45, 50 55 T80 55" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M20 65 Q35 55, 50 65 T80 65" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </div>
+        <p class="onboard-q">¿Te merecerás un puntutxu?</p>
+        <button class="btn-primary" data-action="onboard-next" data-next="onboard-3">A por ello</button>
+      </div>
+    </section>
+
+    <section class="view view-onboarding" data-view="onboard-3">
+      <div class="onboard-stack">
+        <h2 class="onboard-h2">¿Quién eres?</h2>
+        <button class="btn-choice" data-action="identify" data-who="txifon">
+          <span class="btn-choice-icon">🏊</span>
+          <span class="btn-choice-text">Soy Txifon</span>
+        </button>
+        <button class="btn-choice" data-action="identify" data-who="amigo">
+          <span class="btn-choice-icon">👋</span>
+          <span class="btn-choice-text">Soy un amigo</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="view view-onboarding" data-view="onboard-pw">
+      <div class="onboard-stack">
+        <h2 class="onboard-h2">Solo para Txifon</h2>
+        <p class="onboard-sub">Mete la contraseña</p>
+        <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="pwInput" class="pw-input" autocomplete="off">
+        <p class="pw-error hidden" id="pwError">Esa no es</p>
+        <button class="btn-primary" data-action="check-pw">Entrar</button>
+        <button class="btn-link" data-action="back-to-identify">← Soy un amigo</button>
+      </div>
+    </section>
+
+    <section class="view view-onboarding" data-view="onboard-howitworks">
+      <div class="onboard-stack">
+        <h2 class="onboard-h2">Cómo va esto</h2>
+        <ul class="howitworks-list">
+          <li><span class="bullet">①</span><span>Antes de nadar: cuestionario nutri → <b>1 puntutxu</b> si lo preparas bien.</span></li>
+          <li><span class="bullet">②</span><span>Después: ¿qué tal el intestino? → <b>otro puntutxu</b> si aguantó.</span></li>
+          <li><span class="bullet">③</span><span>Y siempre puedes preguntar al asistente.</span></li>
+        </ul>
+        <button class="btn-primary" data-action="onboard-done">Empezamos</button>
+      </div>
+    </section>
+
+    <!-- ========== HOME ========== -->
+    <section class="view view-home" data-view="home">
+      <header class="home-header">
+        <div class="brand">
+          <span class="brand-name">Puntutxus</span>
+          <span class="brand-tag">Otra forma de ganar puntutxus.</span>
+        </div>
+        <button class="icon-btn" data-action="open-menu" aria-label="Menú">☰</button>
+      </header>
+
+      <div class="home-counter">
+        <div class="counter-num" id="counterNum">0</div>
+        <div class="counter-label" id="counterLabel">puntutxus</div>
+      </div>
+
+      <div class="rande-countdown" id="randeCountdown">
+        <div class="cd-label">Batalla de Rande</div>
+        <div class="cd-days" id="cdDays">—</div>
+        <div class="cd-sub">días</div>
+      </div>
+
+      <div class="home-actions">
+        <button class="btn-action btn-pre" data-action="start-pre">
+          <span class="ba-emoji">🏊</span>
+          <span class="ba-text">
+            <b>Voy a nadar</b>
+            <small>Prepara la nutri</small>
+          </span>
+        </button>
+        <button class="btn-action btn-post" data-action="start-post">
+          <span class="ba-emoji">✅</span>
+          <span class="ba-text">
+            <b>Ya he nadado</b>
+            <small>¿Cómo te ha ido?</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="home-quick-links">
+        <button class="ql" data-action="open-chat">🤖 Asistente</button>
+        <button class="ql" data-action="open-faq">📚 FAQ</button>
+        <button class="ql" data-action="open-products">📦 Productos</button>
+        <button class="ql" data-action="open-rande">🌊 Rande</button>
+        <button class="ql" data-action="open-history">📜 Mis entrenos</button>
+      </div>
+    </section>
+
+    <!-- ========== PRE — Plan recomendado ========== -->
+    <section class="view view-form" data-view="plan-ask">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">Antes de empezar</span>
+      </header>
+      <div class="form-stack">
+        <h3>¿Cuánto vas a nadar hoy?</h3>
+        <div class="chip-group" data-field="duration">
+          <button class="chip" data-value="<1h">&lt; 1h</button>
+          <button class="chip" data-value="1-2h">1–2h</button>
+          <button class="chip" data-value="2-3h">2–3h</button>
+          <button class="chip" data-value=">3h">&gt; 3h</button>
+          <button class="chip" data-value="rande-sim">Simulacro Rande</button>
+        </div>
+        <h3>Temperatura del agua</h3>
+        <div class="chip-group" data-field="temp">
+          <button class="chip" data-value="<14">&lt; 14°C</button>
+          <button class="chip" data-value="14-17">14–17°C</button>
+          <button class="chip" data-value=">17">&gt; 17°C</button>
+        </div>
+        <button class="btn-primary" data-action="get-plan" id="btnGetPlan" disabled>Pídeme un plan</button>
+        <button class="btn-link" data-action="skip-plan">Saltar y empezar cuestionario →</button>
+      </div>
+    </section>
+
+    <section class="view view-form" data-view="plan-result">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">Tu plan de hoy</span>
+      </header>
+      <div class="plan-card" id="planCard">
+        <div class="plan-loading">Pensando...</div>
+      </div>
+      <button class="btn-primary" data-action="continue-to-pre">Vamos al cuestionario</button>
+    </section>
+
+    <!-- ========== PRE — Cuestionario ========== -->
+    <section class="view view-form" data-view="pre">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">✕</button>
+        <div class="progress" id="preProgress"><div class="progress-bar"></div></div>
+      </header>
+      <div class="form-stack" id="preStack"></div>
+    </section>
+
+    <!-- ========== POST — Cuestionario ========== -->
+    <section class="view view-form" data-view="post">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">✕</button>
+        <div class="progress" id="postProgress"><div class="progress-bar"></div></div>
+      </header>
+      <div class="form-stack" id="postStack"></div>
+    </section>
+
+    <!-- ========== RESULT ========== -->
+    <section class="view view-result" data-view="result">
+      <div class="result-stack">
+        <div class="result-coins" id="resultCoins"></div>
+        <h2 class="result-title" id="resultTitle"></h2>
+        <p class="result-message" id="resultMessage"></p>
+        <div class="result-tip" id="resultTip"></div>
+        <div class="result-actions">
+          <button class="btn-primary" data-action="result-share">Compartir 📲</button>
+          <button class="btn-secondary" data-action="home">Volver al inicio</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CHAT (LLM) ========== -->
+    <section class="view view-chat" data-view="chat">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">🤖 Asistente</span>
+      </header>
+      <div class="chat-list" id="chatList"></div>
+      <form class="chat-input-row" id="chatForm" autocomplete="off">
+        <button type="button" class="icon-btn mic-btn" id="micBtn" aria-label="Hablar">🎤</button>
+        <input type="text" id="chatInput" placeholder="Pregunta lo que quieras..." autocomplete="off">
+        <button type="submit" class="icon-btn send-btn" aria-label="Enviar">↑</button>
+      </form>
+    </section>
+
+    <!-- ========== FAQ ========== -->
+    <section class="view view-content" data-view="faq">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">FAQ</span>
+      </header>
+      <div class="faq-list" id="faqList"></div>
+    </section>
+
+    <!-- ========== PRODUCTOS ========== -->
+    <section class="view view-content" data-view="products">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">Lo que te van a dar</span>
+      </header>
+      <div class="products-list" id="productsList"></div>
+    </section>
+
+    <!-- ========== RANDE ========== -->
+    <section class="view view-content" data-view="rande">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">Batalla de Rande</span>
+      </header>
+      <div class="rande-info">
+        <div class="rande-summary">
+          <div><b>27 km</b> · aguas abiertas</div>
+          <div><b>15°C</b> · agua fría</div>
+          <div><b>20 junio 2026</b> · Galicia</div>
+        </div>
+        <h3>Avituallamientos</h3>
+        <div class="avitu-line">
+          <div class="avitu-track"></div>
+          <div class="avitu-points" id="avituPoints"></div>
+        </div>
+        <p class="rande-note">Avituallamiento parado, en vertical. Tragos pequeños y frecuentes. Nada nuevo que no hayas probado.</p>
+      </div>
+    </section>
+
+    <!-- ========== HISTORY ========== -->
+    <section class="view view-content" data-view="history">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">Mis entrenos</span>
+      </header>
+      <div class="history-list" id="historyList"></div>
+    </section>
+
+    <!-- ========== RANDE DAY ========== -->
+    <section class="view view-rande-day" data-view="rande-day">
+      <div class="rd-stack">
+        <h1 class="rd-title">🌊 HOY ES EL DÍA 🌊</h1>
+        <p class="rd-sub">Aupa Txifon. Es 20 de junio. Es Rande.</p>
+        <div class="rd-counter">
+          <div class="counter-num" id="rdCounter">0</div>
+          <div class="counter-label">puntutxus de prepa</div>
+        </div>
+        <p class="rd-msg">Has hecho los entrenos. Has cuidado la nutri. Hoy solo queda nadar.</p>
+        <button class="btn-primary" data-action="rd-go">A por ello</button>
+        <button class="btn-link" data-action="rd-after">Ya he terminado Rande →</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
