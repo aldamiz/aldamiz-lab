@@ -1048,6 +1048,41 @@ input {
   font-style: italic;
 }
 
+.rande-goal {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--c-gold);
+  font-weight: 600;
+}
+
+.rande-tips {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+}
+
+.rande-tips li {
+  background: var(--c-surface);
+  padding: 16px 18px 16px 42px;
+  border-radius: var(--r-md);
+  font-size: 19px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.rande-tips li::before {
+  content: '•';
+  position: absolute;
+  left: 18px;
+  top: 14px;
+  color: var(--c-gold);
+  font-weight: 800;
+  font-size: 22px;
+}
+
 /* ============= HISTORY ============= */
 .history-list {
   display: flex;
