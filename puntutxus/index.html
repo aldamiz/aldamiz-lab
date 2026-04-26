@@ -94,7 +94,6 @@
       <header class="home-header">
         <div class="brand">
           <span class="brand-name">Puntutxus</span>
-          <span class="brand-tag">Otra forma de ganar puntutxus.</span>
         </div>
         <button class="icon-btn" data-action="open-menu" aria-label="Menú">☰</button>
       </header>
@@ -104,11 +103,7 @@
         <div class="counter-label" id="counterLabel">puntutxus</div>
       </div>
 
-      <div class="rande-countdown" id="randeCountdown">
-        <div class="cd-label">Batalla de Rande</div>
-        <div class="cd-days" id="cdDays">—</div>
-        <div class="cd-sub">días</div>
-      </div>
+      <p class="home-slogan">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.<br><span class="home-slogan-sub">Con cariño, para Txifon.</span></p>
 
       <div class="home-actions">
         <button class="btn-action btn-pre" data-action="start-pre">
@@ -126,13 +121,70 @@
           </span>
         </button>
       </div>
+    </section>
 
-      <div class="home-quick-links">
-        <button class="ql" data-action="open-chat">🤖 Asistente</button>
-        <button class="ql" data-action="open-faq">📚 FAQ</button>
-        <button class="ql" data-action="open-products">📦 Productos</button>
-        <button class="ql" data-action="open-rande">🌊 Rande</button>
-        <button class="ql" data-action="open-history">📜 Mis entrenos</button>
+    <!-- ========== MENU ========== -->
+    <section class="view view-menu" data-view="menu">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">✕</button>
+        <span class="view-title">Menú</span>
+      </header>
+      <div class="menu-list">
+        <button class="menu-item" data-action="open-qe">
+          <span class="menu-icon">❓</span>
+          <span class="menu-text">¿Qué es esto?</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" data-action="open-chat">
+          <span class="menu-icon">🤖</span>
+          <span class="menu-text">Asistente</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" data-action="open-faq">
+          <span class="menu-icon">📚</span>
+          <span class="menu-text">Recomendaciones</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" data-action="open-products">
+          <span class="menu-icon">📦</span>
+          <span class="menu-text">Productos</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" data-action="open-rande">
+          <span class="menu-icon">🌊</span>
+          <span class="menu-text">Rande</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" data-action="open-history">
+          <span class="menu-icon">📜</span>
+          <span class="menu-text">Mis entrenos</span>
+          <span class="menu-arrow">›</span>
+        </button>
+      </div>
+      <div class="menu-footer">
+        <button class="logout-link" data-action="logout" id="logoutBtn">Cerrar sesión y borrar todo</button>
+      </div>
+    </section>
+
+    <!-- ========== ¿QUÉ ES ESTO? ========== -->
+    <section class="view view-content" data-view="qe">
+      <header class="view-header">
+        <button class="icon-btn" data-action="home">←</button>
+        <span class="view-title">¿Qué es esto?</span>
+      </header>
+      <div class="qe-body">
+        <p class="qe-lead">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.</p>
+        <p class="qe-sub">Con cariño, para Txifon.</p>
+        <p>Esta es una web para ayudarte a preparar tus entrenos de nutrición. Para intentar que dejes de vomitar mientras nadas.</p>
+        <p>Antes de cada entreno puedes completar un cuestionario, y si dices que vas a hacer todo bien, te damos un <b>puntutxu</b>... porque sabemos que te gustan los puntutxus.</p>
+        <p>Después de cada entreno completas otro cuestionario y también te puedes llevar otro puntutxu si ha salido todo bien.</p>
+        <p>Además de ganar puntutxus, tienes:</p>
+        <ul class="qe-list">
+          <li>📚 Una zona de <b>recomendaciones nutricionales</b> para preparar las travesías y entrenos.</li>
+          <li>📦 Una <b>explicación de los productos</b> nutricionales de Rande.</li>
+          <li>🤖 Un <b>asistente</b> al que puedes preguntar lo que quieras.</li>
+          <li>🌊 Toda la info de <b>Rande</b>: avituallamientos y plan.</li>
+        </ul>
       </div>
     </section>
 
@@ -219,11 +271,11 @@
       </form>
     </section>
 
-    <!-- ========== FAQ ========== -->
+    <!-- ========== RECOMENDACIONES ========== -->
     <section class="view view-content" data-view="faq">
       <header class="view-header">
         <button class="icon-btn" data-action="home">←</button>
-        <span class="view-title">FAQ</span>
+        <span class="view-title">Recomendaciones</span>
       </header>
       <div class="faq-list" id="faqList"></div>
     </section>

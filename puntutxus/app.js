@@ -158,6 +158,15 @@ function showView(name) {
   document.querySelectorAll('.view').forEach((el) => {
     el.classList.toggle('active', el.dataset.view === name);
   });
+  // Reinicia animaciones cuando entra la vista
+  if (name === 'onboard-2') {
+    const coin = document.querySelector('[data-view="onboard-2"] .puntutxu-coin');
+    if (coin) {
+      coin.classList.remove('animate-spin-pop');
+      void coin.offsetWidth;
+      coin.classList.add('animate-spin-pop');
+    }
+  }
   window.scrollTo(0, 0);
 }
 
@@ -183,6 +192,44 @@ function identify(who) {
     saveState();
     goHome();
   }
+}
+
+let logoutArmed = false;
+let logoutTimer = null;
+
+function logout() {
+  const btn = document.getElementById('logoutBtn');
+  if (!logoutArmed) {
+    logoutArmed = true;
+    if (btn) {
+      btn.textContent = 'Tócame otra vez para borrarlo todo';
+      btn.classList.add('logout-armed');
+    }
+    logoutTimer = setTimeout(() => {
+      logoutArmed = false;
+      if (btn) {
+        btn.textContent = 'Cerrar sesión y borrar todo';
+        btn.classList.remove('logout-armed');
+      }
+    }, 4000);
+    return;
+  }
+  clearTimeout(logoutTimer);
+  // Borrar TODO: localStorage, estado en memoria, vuelve a onboarding
+  localStorage.removeItem('puntutxus_state');
+  state.user_type = null;
+  state.onboarding_done = false;
+  state.txifon_session_expires = 0;
+  state.entrenos = [];
+  state.chat_history = [];
+  state.current_entreno_id = null;
+  state.pre_step = 0;
+  state.post_step = 0;
+  state.pre_answers = {};
+  state.post_answers = {};
+  state.plan_inputs = { duration: null, temp: null };
+  logoutArmed = false;
+  showView('onboard-1');
 }
 
 function checkPw() {
@@ -222,11 +269,6 @@ function renderHome() {
   const total = countTotalPuntutxus();
   const counter = document.getElementById('counterNum');
   animateCount(counter, parseInt(counter.textContent || '0', 10), total, 700);
-
-  const days = daysToRande();
-  const cd = document.getElementById('cdDays');
-  cd.textContent = days >= 0 ? days : 'Ya pasó';
-  document.querySelector('.cd-sub').textContent = days >= 0 ? (days === 1 ? 'día' : 'días') : '';
 
   const label = document.getElementById('counterLabel');
   label.textContent = total === 1 ? 'puntutxu' : 'puntutxus';
@@ -527,8 +569,9 @@ function buildTip(entreno) {
 
 function makeCoinSvg(delay) {
   const wrap = document.createElement('div');
-  wrap.className = 'animate-drop-in animate-shimmer';
-  wrap.style.animationDelay = `${delay}ms, ${delay + 1100}ms`;
+  wrap.className = 'coin-anim';
+  // Cada moneda con un retraso distinto para que caigan en cascada
+  wrap.style.animationDelay = `${delay}ms, ${delay + 1200}ms`;
   wrap.innerHTML = `
     <svg viewBox="0 0 100 100">
       <defs>
@@ -700,11 +743,25 @@ function renderHistory() {
       </div>
     `;
   }).join('');
+  // Tap-to-confirm pattern: 1st tap muestra "Confirmar", 2º tap borra. Se resetea a los 3s.
   list.querySelectorAll('.history-del').forEach((btn) => {
+    let armed = false;
+    let timer = null;
     btn.addEventListener('click', (ev) => {
       ev.stopPropagation();
-      if (confirm('¿Borrar este entreno?')) {
-        state.entrenos = state.entrenos.filter((e) => e.id !== btn.dataset.id);
+      if (!armed) {
+        armed = true;
+        btn.textContent = '¿Seguro?';
+        btn.classList.add('history-del-armed');
+        timer = setTimeout(() => {
+          armed = false;
+          btn.textContent = '🗑';
+          btn.classList.remove('history-del-armed');
+        }, 3000);
+      } else {
+        clearTimeout(timer);
+        const id = btn.dataset.id;
+        state.entrenos = state.entrenos.filter((e) => e.id !== id);
         saveState();
         renderHistory();
       }
@@ -743,8 +800,14 @@ function wireEvents() {
       case 'home':
         goHome();
         break;
+      case 'open-qe':
+        showView('qe');
+        break;
       case 'open-menu':
-        // simple cycle through quick links visually for now — placeholder
+        showView('menu');
+        break;
+      case 'logout':
+        logout();
         break;
       case 'start-pre':
         startPre();
