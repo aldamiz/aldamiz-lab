@@ -98,12 +98,12 @@
         <button class="icon-btn" data-action="open-menu" aria-label="Menú">☰</button>
       </header>
 
+      <p class="home-slogan">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.<br><span class="home-slogan-sub">Con cariño, para Txifon.</span></p>
+
       <div class="home-counter">
         <div class="counter-num" id="counterNum">0</div>
         <div class="counter-label" id="counterLabel">puntutxus</div>
       </div>
-
-      <p class="home-slogan">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.<br><span class="home-slogan-sub">Con cariño, para Txifon.</span></p>
 
       <div class="home-actions">
         <button class="btn-action btn-pre" data-action="start-pre">
@@ -121,6 +121,33 @@
           </span>
         </button>
       </div>
+
+      <div class="home-quick-links">
+        <button class="ql" data-action="open-qe">
+          <span class="ql-icon">❓</span>
+          <span class="ql-text">¿Qué es esto?</span>
+        </button>
+        <button class="ql" data-action="open-faq">
+          <span class="ql-icon">📚</span>
+          <span class="ql-text">Recomendaciones<br>nutricionales</span>
+        </button>
+        <button class="ql" data-action="open-products">
+          <span class="ql-icon">📦</span>
+          <span class="ql-text">Explicación de los<br>geles Rande</span>
+        </button>
+        <button class="ql" data-action="open-chat">
+          <span class="ql-icon">🤖</span>
+          <span class="ql-text">Hazme<br>preguntas</span>
+        </button>
+        <button class="ql" data-action="open-rande">
+          <span class="ql-icon">🌊</span>
+          <span class="ql-text">Avituallamientos<br>Rande</span>
+        </button>
+        <button class="ql" data-action="open-history">
+          <span class="ql-icon">📜</span>
+          <span class="ql-text">Mis<br>puntutxus</span>
+        </button>
+      </div>
     </section>
 
     <!-- ========== MENU ========== -->
@@ -135,29 +162,29 @@
           <span class="menu-text">¿Qué es esto?</span>
           <span class="menu-arrow">›</span>
         </button>
-        <button class="menu-item" data-action="open-chat">
-          <span class="menu-icon">🤖</span>
-          <span class="menu-text">Asistente</span>
-          <span class="menu-arrow">›</span>
-        </button>
         <button class="menu-item" data-action="open-faq">
           <span class="menu-icon">📚</span>
-          <span class="menu-text">Recomendaciones</span>
+          <span class="menu-text">Recomendaciones nutricionales</span>
           <span class="menu-arrow">›</span>
         </button>
         <button class="menu-item" data-action="open-products">
           <span class="menu-icon">📦</span>
-          <span class="menu-text">Productos</span>
+          <span class="menu-text">Explicación de los geles Rande</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" data-action="open-chat">
+          <span class="menu-icon">🤖</span>
+          <span class="menu-text">Hazme preguntas</span>
           <span class="menu-arrow">›</span>
         </button>
         <button class="menu-item" data-action="open-rande">
           <span class="menu-icon">🌊</span>
-          <span class="menu-text">Rande</span>
+          <span class="menu-text">Avituallamientos Rande</span>
           <span class="menu-arrow">›</span>
         </button>
         <button class="menu-item" data-action="open-history">
           <span class="menu-icon">📜</span>
-          <span class="menu-text">Mis entrenos</span>
+          <span class="menu-text">Mis puntutxus</span>
           <span class="menu-arrow">›</span>
         </button>
       </div>
@@ -261,7 +288,7 @@
     <section class="view view-chat" data-view="chat">
       <header class="view-header">
         <button class="icon-btn" data-action="home">←</button>
-        <span class="view-title">🤖 Asistente</span>
+        <span class="view-title">🤖 Hazme preguntas</span>
       </header>
       <div class="chat-list" id="chatList"></div>
       <form class="chat-input-row" id="chatForm" autocomplete="off">
@@ -271,29 +298,29 @@
       </form>
     </section>
 
-    <!-- ========== RECOMENDACIONES ========== -->
+    <!-- ========== RECOMENDACIONES NUTRICIONALES ========== -->
     <section class="view view-content" data-view="faq">
       <header class="view-header">
         <button class="icon-btn" data-action="home">←</button>
-        <span class="view-title">Recomendaciones</span>
+        <span class="view-title">Recomendaciones nutricionales</span>
       </header>
       <div class="faq-list" id="faqList"></div>
     </section>
 
-    <!-- ========== PRODUCTOS ========== -->
+    <!-- ========== EXPLICACIÓN DE LOS GELES RANDE ========== -->
     <section class="view view-content" data-view="products">
       <header class="view-header">
         <button class="icon-btn" data-action="home">←</button>
-        <span class="view-title">Lo que te van a dar</span>
+        <span class="view-title">Explicación de los geles Rande</span>
       </header>
       <div class="products-list" id="productsList"></div>
     </section>
 
-    <!-- ========== RANDE ========== -->
+    <!-- ========== AVITUALLAMIENTOS RANDE ========== -->
     <section class="view view-content" data-view="rande">
       <header class="view-header">
         <button class="icon-btn" data-action="home">←</button>
-        <span class="view-title">Batalla de Rande</span>
+        <span class="view-title">Avituallamientos Rande</span>
       </header>
       <div class="rande-info">
         <div class="rande-summary">
@@ -310,11 +337,11 @@
       </div>
     </section>
 
-    <!-- ========== HISTORY ========== -->
+    <!-- ========== MIS PUNTUTXUS (entrenos) ========== -->
     <section class="view view-content" data-view="history">
       <header class="view-header">
         <button class="icon-btn" data-action="home">←</button>
-        <span class="view-title">Mis entrenos</span>
+        <span class="view-title">Mis puntutxus</span>
       </header>
       <div class="history-list" id="historyList"></div>
     </section>

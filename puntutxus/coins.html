@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#063562">
-  <title>Puntutxus — diseños</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+  <title>Puntutxus — diseños de moneda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -31,6 +31,16 @@
       text-align: center;
       line-height: 1.5;
     }
+    h2.section {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffcf3d;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 28px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 207, 61, 0.2);
+    }
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -50,7 +60,7 @@
       color: #1a1300;
       font-weight: 800;
       font-size: 14px;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
     }
     .name {
@@ -67,9 +77,9 @@
       line-height: 1.4;
     }
     svg.coin {
-      width: 100px;
-      height: 100px;
-      filter: drop-shadow(0 6px 16px rgba(255, 207, 61, 0.32));
+      width: 110px;
+      height: 110px;
+      filter: drop-shadow(0 6px 18px rgba(255, 207, 61, 0.38));
     }
     .footer {
       margin-top: 36px;
@@ -82,12 +92,158 @@
   </style>
 </head>
 <body>
-  <h1>¿Cuál te gusta?</h1>
-  <p class="intro">Compara los 6 diseños y dime el número del que prefieras.<br>Lo dejaré como puntutxu oficial.</p>
+  <h1>¿Qué moneda?</h1>
+  <p class="intro">14 diseños. Dime el <b>número</b> del que prefieras. También puedes mezclar (ej. "el 11 con la onda del 1").</p>
+
+  <h2 class="section">Con "+1" (lo que pediste)</h2>
 
   <div class="grid">
 
-    <!-- 1. Original — onda mar -->
+    <!-- 9. +1 enorme central -->
+    <div class="card">
+      <div class="num">9</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g9" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g9)" stroke="#8a6500" stroke-width="2.5"/>
+        <text x="50" y="68" font-family="Inter, sans-serif" font-size="56" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+      </svg>
+      <div class="name">+1 enorme</div>
+      <div class="desc">Solo +1, sin nada más.</div>
+    </div>
+
+    <!-- 10. +1 con ola debajo -->
+    <div class="card">
+      <div class="num">10</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g10" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g10)" stroke="#8a6500" stroke-width="2"/>
+        <text x="50" y="58" font-family="Inter, sans-serif" font-size="42" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+        <path d="M22 75 Q34 70, 46 75 T70 75 T82 75" stroke="#063562" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+      <div class="name">+1 con ola</div>
+      <div class="desc">+1 y mar debajo.</div>
+    </div>
+
+    <!-- 11. +1 con TX abajo -->
+    <div class="card">
+      <div class="num">11</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g11" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g11)" stroke="#8a6500" stroke-width="2"/>
+        <text x="50" y="56" font-family="Inter, sans-serif" font-size="38" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+        <text x="50" y="78" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#063562" text-anchor="middle" letter-spacing="2">TX</text>
+      </svg>
+      <div class="name">+1 con TX</div>
+      <div class="desc">+1 grande, TX pequeño.</div>
+    </div>
+
+    <!-- 12. +1 estilo serif -->
+    <div class="card">
+      <div class="num">12</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g12" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g12)" stroke="#8a6500" stroke-width="2.5"/>
+        <text x="50" y="68" font-family="'Playfair Display', serif" font-size="58" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+      </svg>
+      <div class="name">+1 serif</div>
+      <div class="desc">Tipografía clásica, robusta.</div>
+    </div>
+
+    <!-- 13. +1 con estrella -->
+    <div class="card">
+      <div class="num">13</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g13" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g13)" stroke="#8a6500" stroke-width="2"/>
+        <polygon points="50,18 53,27 62,27 55,33 58,42 50,37 42,42 45,33 38,27 47,27" fill="#063562"/>
+        <text x="50" y="74" font-family="Inter, sans-serif" font-size="38" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+      </svg>
+      <div class="name">+1 con estrella</div>
+      <div class="desc">Mérito + estrellita.</div>
+    </div>
+
+    <!-- 14. +1 doble línea -->
+    <div class="card">
+      <div class="num">14</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g14" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g14)" stroke="#8a6500" stroke-width="2"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#8a6500" stroke-width="0.8"/>
+        <text x="50" y="60" font-family="Inter, sans-serif" font-size="32" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+        <text x="50" y="78" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#063562" text-anchor="middle" letter-spacing="2">PUNTUTXU</text>
+      </svg>
+      <div class="name">+1 con sello</div>
+      <div class="desc">+1 + "PUNTUTXU" alrededor.</div>
+    </div>
+
+    <!-- 15. +1 con borde grueso minimal -->
+    <div class="card">
+      <div class="num">15</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g15" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="44" fill="url(#g15)" stroke="#063562" stroke-width="5"/>
+        <text x="50" y="68" font-family="Inter, sans-serif" font-size="50" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+      </svg>
+      <div class="name">+1 contorno azul</div>
+      <div class="desc">Borde azul marino grueso.</div>
+    </div>
+
+    <!-- 16. +1 con onda de fondo -->
+    <div class="card">
+      <div class="num">16</div>
+      <svg class="coin" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="g16" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
+          </radialGradient>
+          <clipPath id="cp16">
+            <circle cx="50" cy="50" r="46"/>
+          </clipPath>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="url(#g16)" stroke="#8a6500" stroke-width="2"/>
+        <g clip-path="url(#cp16)" opacity="0.18">
+          <path d="M0 70 Q15 60, 30 70 T60 70 T90 70 T120 70 L120 100 L0 100 Z" fill="#063562"/>
+        </g>
+        <text x="50" y="62" font-family="Inter, sans-serif" font-size="44" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
+      </svg>
+      <div class="name">+1 sumergido</div>
+      <div class="desc">+1 con mar sutil al fondo.</div>
+    </div>
+  </div>
+
+  <h2 class="section">Otros (los iniciales)</h2>
+
+  <div class="grid">
+
+    <!-- 1. Onda de mar -->
     <div class="card">
       <div class="num">1</div>
       <svg class="coin" viewBox="0 0 100 100">
@@ -102,25 +258,7 @@
         <path d="M20 65 Q35 55, 50 65 T80 65" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
       </svg>
       <div class="name">Onda de mar</div>
-      <div class="desc">El actual. Olas del mar.</div>
-    </div>
-
-    <!-- 2. Pez -->
-    <div class="card">
-      <div class="num">2</div>
-      <svg class="coin" viewBox="0 0 100 100">
-        <defs>
-          <radialGradient id="g2" cx="35%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
-          </radialGradient>
-        </defs>
-        <circle cx="50" cy="50" r="46" fill="url(#g2)" stroke="#8a6500" stroke-width="2"/>
-        <path d="M28 50 Q40 35, 60 40 Q70 45, 70 50 Q70 55, 60 60 Q40 65, 28 50 Z" fill="#063562"/>
-        <path d="M70 50 L82 38 L82 62 Z" fill="#063562"/>
-        <circle cx="38" cy="48" r="2" fill="#ffd34d"/>
-      </svg>
-      <div class="name">Pez</div>
-      <div class="desc">Un pez dorado. Vibe marítimo.</div>
+      <div class="desc">El original.</div>
     </div>
 
     <!-- 3. TX -->
@@ -140,7 +278,7 @@
       <div class="desc">Iniciales de Txifon.</div>
     </div>
 
-    <!-- 4. Lauburu vasco -->
+    <!-- 4. Lauburu -->
     <div class="card">
       <div class="num">4</div>
       <svg class="coin" viewBox="0 0 100 100">
@@ -156,10 +294,9 @@
           <path d="M50 50 Q50 78, 70 70 Q50 70, 50 50 Z"/>
           <path d="M50 50 Q22 50, 30 70 Q30 50, 50 50 Z"/>
         </g>
-        <circle cx="50" cy="50" r="3" fill="#063562"/>
       </svg>
       <div class="name">Lauburu</div>
-      <div class="desc">Símbolo vasco. Identidad.</div>
+      <div class="desc">Símbolo vasco.</div>
     </div>
 
     <!-- 5. Estrella -->
@@ -178,28 +315,23 @@
       <div class="desc">Clásica medalla.</div>
     </div>
 
-    <!-- 6. Pez nadando -->
+    <!-- 8. Nadador -->
     <div class="card">
-      <div class="num">6</div>
+      <div class="num">8</div>
       <svg class="coin" viewBox="0 0 100 100">
         <defs>
-          <radialGradient id="g6" cx="35%" cy="35%" r="65%">
+          <radialGradient id="g8" cx="35%" cy="35%" r="65%">
             <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
           </radialGradient>
         </defs>
-        <circle cx="50" cy="50" r="46" fill="url(#g6)" stroke="#8a6500" stroke-width="2"/>
-        <g stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round">
-          <path d="M22 42 Q34 36, 46 42 T70 42"/>
-          <path d="M22 58 Q34 64, 46 58 T70 58" opacity="0.7"/>
-        </g>
-        <g transform="translate(58, 50)">
-          <ellipse cx="0" cy="0" rx="14" ry="6" fill="#063562"/>
-          <path d="M14 0 L22 -6 L22 6 Z" fill="#063562"/>
-          <circle cx="-6" cy="-1" r="1.5" fill="#ffd34d"/>
-        </g>
+        <circle cx="50" cy="50" r="46" fill="url(#g8)" stroke="#8a6500" stroke-width="2"/>
+        <circle cx="38" cy="42" r="6" fill="#063562"/>
+        <path d="M38 42 Q42 28, 56 28" stroke="#063562" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M30 52 Q40 56, 50 52 Q60 48, 70 52" stroke="#063562" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M22 65 Q30 60, 38 65 T54 65 T70 65 T80 65" stroke="#063562" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
       </svg>
-      <div class="name">Pez nadando</div>
-      <div class="desc">Pez sobre las olas.</div>
+      <div class="name">Nadador</div>
+      <div class="desc">Cabeza, brazo, ola.</div>
     </div>
 
     <!-- 7. Mínimo -->
@@ -213,37 +345,15 @@
         </defs>
         <circle cx="50" cy="50" r="46" fill="url(#g7)" stroke="#8a6500" stroke-width="3"/>
       </svg>
-      <div class="name">Mínimo</div>
-      <div class="desc">Solo círculo dorado.</div>
+      <div class="name">Solo dorado</div>
+      <div class="desc">Sin nada dentro.</div>
     </div>
 
-    <!-- 8. Nadador -->
-    <div class="card">
-      <div class="num">8</div>
-      <svg class="coin" viewBox="0 0 100 100">
-        <defs>
-          <radialGradient id="g8" cx="35%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#fff5b8"/><stop offset="40%" stop-color="#ffd34d"/><stop offset="100%" stop-color="#b78700"/>
-          </radialGradient>
-        </defs>
-        <circle cx="50" cy="50" r="46" fill="url(#g8)" stroke="#8a6500" stroke-width="2"/>
-        <!-- Cabeza -->
-        <circle cx="38" cy="42" r="6" fill="#063562"/>
-        <!-- Brazo levantado -->
-        <path d="M38 42 Q42 28, 56 28" stroke="#063562" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <!-- Cuerpo onda -->
-        <path d="M30 52 Q40 56, 50 52 Q60 48, 70 52" stroke="#063562" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <!-- Olas debajo -->
-        <path d="M22 65 Q30 60, 38 65 T54 65 T70 65 T80 65" stroke="#063562" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
-      </svg>
-      <div class="name">Nadador</div>
-      <div class="desc">Cabeza + brazo + ola.</div>
-    </div>
   </div>
 
   <p class="footer">
-    Dime el número del que más te guste y lo pongo como <b>puntutxu oficial</b> en toda la web.<br>
-    Si quieres mezcla (ej. "el 8 con menos olas"), también vale.
+    Dime el <b>número</b> del que más te guste y lo aplico en toda la web.<br>
+    Puedes mezclar: "el 9 con la onda del 1", "el 12 con borde como el 15"...
   </p>
 </body>
 </html>

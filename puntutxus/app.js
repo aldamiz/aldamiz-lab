@@ -1,5 +1,17 @@
 // ============= CONFIG =============
 const WORKER_URL = 'https://puntutxus-chat.aldamiz.workers.dev';
+
+// ============= HAPTICS =============
+function haptic(pattern) {
+  if (navigator.vibrate) {
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+}
+const H_TAP = 12;        // botón normal
+const H_YN = 30;         // Sí/No
+const H_ARM = 50;        // tap-to-confirm armado
+const H_COMMIT = [50, 60, 110];   // confirmación final (borrar, logout)
+const H_COIN = [50, 50, 90];      // ganar puntutxu
 const RANDE_DATE = new Date('2026-06-20T08:00:00');
 const TXIFON_PW = '1234';
 const TXIFON_SESSION_DAYS = 90;
@@ -106,13 +118,13 @@ const PRODUCTS = [
 ];
 
 const AVITUALLAMIENTOS = [
-  { num: 1, km: 5, eta: '~1h 10min' },
-  { num: 2, km: 9, eta: '~2h 5min' },
-  { num: 3, km: 12.3, eta: '~2h 50min' },
-  { num: 4, km: 15.6, eta: '~3h 35min' },
-  { num: 5, km: 18.7, eta: '~4h 20min' },
-  { num: 6, km: 21.5, eta: '~5h' },
-  { num: 7, km: 24, eta: '~5h 40min' },
+  { num: 1, km: 5 },
+  { num: 2, km: 9 },
+  { num: 3, km: 12.3 },
+  { num: 4, km: 15.6 },
+  { num: 5, km: 18.7 },
+  { num: 6, km: 21.5 },
+  { num: 7, km: 24 },
 ];
 
 // ============= STATE =============
@@ -200,6 +212,7 @@ let logoutTimer = null;
 function logout() {
   const btn = document.getElementById('logoutBtn');
   if (!logoutArmed) {
+    haptic(H_ARM);
     logoutArmed = true;
     if (btn) {
       btn.textContent = 'Tócame otra vez para borrarlo todo';
@@ -214,6 +227,7 @@ function logout() {
     }, 4000);
     return;
   }
+  haptic(H_COMMIT);
   clearTimeout(logoutTimer);
   // Borrar TODO: localStorage, estado en memoria, vuelve a onboarding
   localStorage.removeItem('puntutxus_state');
@@ -376,6 +390,7 @@ function renderPreStep() {
 }
 
 function answerPre(id, yn) {
+  haptic(H_YN);
   state.pre_answers[id] = yn;
   state.pre_step += 1;
   setTimeout(renderPreStep, 100);
@@ -463,6 +478,7 @@ function renderPostStep() {
 }
 
 function answerPost(id, yn) {
+  haptic(H_YN);
   state.post_answers[id] = yn;
   state.post_step += 1;
   setTimeout(renderPostStep, 100);
@@ -495,6 +511,8 @@ function showResult(entreno, fromPre) {
     for (let i = 0; i < coins; i++) {
       coinsEl.appendChild(makeCoinSvg(i * 200));
     }
+    // Vibración al ganar puntutxu(s) — pattern más fuerte si son 2
+    setTimeout(() => haptic(coins === 2 ? [60, 60, 80, 60, 110] : H_COIN), 600);
   }
 
   const titleEl = document.getElementById('resultTitle');
@@ -715,7 +733,7 @@ function renderProducts() {
 function renderRandeAvitu() {
   const wrap = document.getElementById('avituPoints');
   const html = AVITUALLAMIENTOS.map((a) =>
-    `<div class="avitu-pt"><b>km ${a.km}</b><span>Avituallamiento ${a.num} · ${a.eta}</span></div>`
+    `<div class="avitu-pt"><b>km ${a.km}</b><span>Avituallamiento ${a.num}</span></div>`
   ).join('') + `<div class="avitu-pt meta"><b>km 27</b><span>🏁 META</span></div>`;
   wrap.innerHTML = html;
 }
@@ -750,6 +768,7 @@ function renderHistory() {
     btn.addEventListener('click', (ev) => {
       ev.stopPropagation();
       if (!armed) {
+        haptic(H_ARM);
         armed = true;
         btn.textContent = '¿Seguro?';
         btn.classList.add('history-del-armed');
@@ -759,6 +778,7 @@ function renderHistory() {
           btn.classList.remove('history-del-armed');
         }, 3000);
       } else {
+        haptic(H_COMMIT);
         clearTimeout(timer);
         const id = btn.dataset.id;
         state.entrenos = state.entrenos.filter((e) => e.id !== id);
@@ -781,6 +801,12 @@ function wireEvents() {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
     const action = btn.dataset.action;
+    // Haptic por tipo de acción
+    if (['start-pre', 'start-post', 'get-plan', 'continue-to-pre', 'rd-go', 'check-pw', 'identify'].includes(action)) {
+      haptic(H_TAP);
+    } else if (['onboard-next', 'onboard-done', 'open-menu', 'open-qe', 'open-faq', 'open-products', 'open-rande', 'open-history', 'open-chat', 'home', 'back-to-identify', 'skip-plan', 'rd-after', 'result-share'].includes(action)) {
+      haptic(H_TAP);
+    }
     switch (action) {
       case 'onboard-next':
         showView(btn.dataset.next);

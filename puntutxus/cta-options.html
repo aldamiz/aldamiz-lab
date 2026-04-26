@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#063562">
+  <title>Puntutxus — opciones CTA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: radial-gradient(ellipse at top, #0a4682 0%, #02223f 70%);
+      color: #f7faff;
+      min-height: 100dvh;
+      padding: 24px 14px 60px;
+      max-width: 480px;
+      margin: 0 auto;
+      font-size: 18px;
+    }
+    h1 { font-size: 26px; font-weight: 900; margin-bottom: 6px; text-align: center; }
+    p.intro { font-size: 15px; color: #a9c4dc; margin-bottom: 24px; text-align: center; line-height: 1.5; }
+    .opt {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 22px;
+      padding: 18px 14px 20px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .opt-num {
+      background: #ffcf3d;
+      color: #1a1300;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .opt-desc { font-size: 13px; color: #a9c4dc; margin-bottom: 16px; line-height: 1.5; }
+
+    /* Common CTA styles */
+    .cta-pre {
+      background: linear-gradient(135deg, #ffcf3d 0%, #ffb629 100%);
+      color: #1a1300;
+      box-shadow: 0 8px 24px rgba(255, 207, 61, 0.32);
+    }
+    .cta-post {
+      background: rgba(255, 255, 255, 0.12);
+      color: #f7faff;
+    }
+    .cta-disabled {
+      background: rgba(255, 255, 255, 0.04);
+      color: #6a8fae;
+      pointer-events: none;
+    }
+
+    /* ============== A: COPY EXPLÍCITO + FLECHA ============== */
+    .a-stack { display: flex; flex-direction: column; gap: 12px; }
+    .a-card {
+      padding: 20px 22px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 88px;
+    }
+    .a-emoji { font-size: 36px; }
+    .a-text { flex: 1; }
+    .a-text b { font-size: 18px; font-weight: 800; display: block; }
+    .a-text small { font-size: 14px; opacity: 0.78; display: block; margin-top: 2px; font-weight: 500; }
+    .a-arrow { font-size: 28px; font-weight: 700; }
+
+    /* ============== B: SECUENCIAL ============== */
+    .b-stack { display: flex; flex-direction: column; gap: 10px; }
+    .b-card {
+      padding: 24px 22px;
+      border-radius: 18px;
+      text-align: center;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+    .b-card b { font-size: 21px; font-weight: 800; }
+    .b-card small { font-size: 14px; opacity: 0.78; font-weight: 500; }
+    .b-state-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6a8fae;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    /* ============== C: NUMERADOS ============== */
+    .c-stack { display: flex; flex-direction: column; gap: 12px; }
+    .c-card {
+      padding: 18px 20px 20px;
+      border-radius: 18px;
+      position: relative;
+      min-height: 96px;
+    }
+    .c-step {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: rgba(26, 19, 0, 0.65);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .cta-post .c-step { color: rgba(247, 250, 255, 0.5); }
+    .c-card b { font-size: 19px; font-weight: 800; display: block; }
+    .c-card small { font-size: 14px; opacity: 0.8; display: block; margin-top: 4px; font-weight: 500; }
+
+    /* ============== D: BANNER + PULSO ============== */
+    .d-banner {
+      background: rgba(255, 207, 61, 0.16);
+      border: 1px solid rgba(255, 207, 61, 0.3);
+      color: #ffcf3d;
+      font-size: 14px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      text-align: center;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+    .d-stack { display: flex; flex-direction: column; gap: 12px; position: relative; }
+    .d-card {
+      padding: 20px 22px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 88px;
+      position: relative;
+    }
+    .pulse-arrow {
+      position: absolute;
+      left: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 22px;
+      color: #ffcf3d;
+      animation: pulseArrow 1.4s ease-in-out infinite;
+    }
+    .cta-post .pulse-arrow { color: #5fdb8d; }
+    @keyframes pulseArrow {
+      0%, 100% { transform: translateY(-50%) translateX(0); opacity: 0.5; }
+      50% { transform: translateY(-50%) translateX(8px); opacity: 1; }
+    }
+    .d-text b { font-size: 18px; font-weight: 800; display: block; }
+    .d-text small { font-size: 14px; opacity: 0.78; display: block; margin-top: 2px; font-weight: 500; }
+
+    /* ============== E: TARJETAS GRANDES CON BADGE ============== */
+    .e-stack { display: flex; flex-direction: column; gap: 14px; }
+    .e-card {
+      padding: 22px;
+      border-radius: 22px;
+      min-height: 110px;
+    }
+    .e-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(26, 19, 0, 0.15);
+      color: #1a1300;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .cta-post .e-badge { background: rgba(247, 250, 255, 0.1); color: #f7faff; }
+    .e-card b { font-size: 22px; font-weight: 800; display: block; line-height: 1.2; }
+    .e-card small { font-size: 14px; opacity: 0.78; display: block; margin-top: 6px; font-weight: 500; }
+    .e-card .tap-hint {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 12px;
+      opacity: 0.6;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ============== F: PROGRESO INLINE ============== */
+    .f-progress {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+    .f-step-dot {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+    }
+    .f-dot-active { background: #ffcf3d; color: #1a1300; }
+    .f-dot-pending { background: rgba(255, 255, 255, 0.12); color: #6a8fae; }
+    .f-dot-done { background: #5fdb8d; color: #02223f; }
+    .f-line { flex: 1; height: 2px; background: rgba(255, 255, 255, 0.12); }
+    .f-line-done { background: #5fdb8d; }
+    .f-action {
+      padding: 24px;
+      border-radius: 22px;
+      text-align: center;
+    }
+    .f-action b { font-size: 22px; font-weight: 800; display: block; }
+    .f-action small { font-size: 14px; opacity: 0.8; display: block; margin-top: 6px; font-weight: 500; }
+
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 14px;
+      color: #6a8fae;
+      line-height: 1.6;
+    }
+    .footer b { color: #ffcf3d; }
+  </style>
+</head>
+<body>
+  <h1>¿Qué CTAs?</h1>
+  <p class="intro">6 maneras de mostrar los botones de "antes/después de nadar".<br>Dime el número del que más te guste.</p>
+
+  <!-- A — COPY EXPLÍCITO + FLECHA -->
+  <div class="opt">
+    <span class="opt-num">A</span>
+    <p class="opt-desc">Botones de toda la vida pero con texto super claro y flecha grande indicando "tócame".</p>
+    <div class="a-stack">
+      <button class="a-card cta-pre">
+        <span class="a-emoji">🏊</span>
+        <span class="a-text">
+          <b>Antes de nadar</b>
+          <small>Toca para preparar la nutri</small>
+        </span>
+        <span class="a-arrow">→</span>
+      </button>
+      <button class="a-card cta-post">
+        <span class="a-emoji">✅</span>
+        <span class="a-text">
+          <b>Después de nadar</b>
+          <small>Toca para contar qué tal</small>
+        </span>
+        <span class="a-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- B — SECUENCIAL -->
+  <div class="opt">
+    <span class="opt-num">B</span>
+    <p class="opt-desc">Solo se ve el botón que toca según el momento. Si no has nadado, te invita a empezar; si ya has nadado, te invita a cerrar.</p>
+    <div class="b-stack">
+      <div class="b-state-label">Antes de meterte al agua</div>
+      <button class="b-card cta-pre">
+        <b>🏊 Voy a empezar a nadar</b>
+        <small>Toca aquí para preparar la nutri</small>
+      </button>
+      <div class="b-state-label" style="margin-top: 10px;">Después de salir del agua</div>
+      <button class="b-card cta-post">
+        <b>✅ He acabado</b>
+        <small>Toca aquí para cerrar el entreno</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- C — NUMERADOS -->
+  <div class="opt">
+    <span class="opt-num">C</span>
+    <p class="opt-desc">Como pasos numerados de un proceso. Muy claro el orden temporal.</p>
+    <div class="c-stack">
+      <button class="c-card cta-pre">
+        <div class="c-step">Paso 1 · ANTES de nadar</div>
+        <b>🏊 Toca para preparar la nutri</b>
+        <small>Cuestionario rápido y te llevas un puntutxu si sale bien</small>
+      </button>
+      <button class="c-card cta-post">
+        <div class="c-step">Paso 2 · DESPUÉS de nadar</div>
+        <b>✅ Toca para contar qué tal</b>
+        <small>¿Vomitaste? ¿Intestino bien? Otro puntutxu si aguantó</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- D — BANNER + PULSO -->
+  <div class="opt">
+    <span class="opt-num">D</span>
+    <p class="opt-desc">Mensaje grande arriba explicando qué hacer + flechas pulsantes apuntando a cada botón.</p>
+    <div class="d-banner">👇 Toca el botón naranja antes de nadar y el blanco cuando vuelvas</div>
+    <div class="d-stack">
+      <button class="d-card cta-pre">
+        <span class="pulse-arrow">›</span>
+        <span style="margin-left: 14px; font-size: 30px;">🏊</span>
+        <span class="d-text">
+          <b>Voy a nadar</b>
+          <small>Prepara la nutri</small>
+        </span>
+      </button>
+      <button class="d-card cta-post">
+        <span class="pulse-arrow">›</span>
+        <span style="margin-left: 14px; font-size: 30px;">✅</span>
+        <span class="d-text">
+          <b>Ya he nadado</b>
+          <small>¿Cómo te ha ido?</small>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- E — BADGES TIPO ETIQUETA -->
+  <div class="opt">
+    <span class="opt-num">E</span>
+    <p class="opt-desc">Tarjetas grandes con etiqueta "ANTES" / "DESPUÉS" y un "TOCAR" debajo para que no haya duda.</p>
+    <div class="e-stack">
+      <button class="e-card cta-pre">
+        <div class="e-badge">⏰ Antes de nadar</div>
+        <b>Prepara la nutri 🏊</b>
+        <small>Cuestionario corto. Si vas a hacerlo bien, te llevas un puntutxu.</small>
+        <div class="tap-hint">▸ Toca esta tarjeta</div>
+      </button>
+      <button class="e-card cta-post">
+        <div class="e-badge">✅ Después de nadar</div>
+        <b>Cuéntame qué tal</b>
+        <small>¿Estómago aguantó? Otro puntutxu si fue bien.</small>
+        <div class="tap-hint">▸ Toca esta tarjeta</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- F — PROGRESO INLINE -->
+  <div class="opt">
+    <span class="opt-num">F</span>
+    <p class="opt-desc">Una barra de progreso "PRE → entreno → POST" arriba que te dice en qué paso estás. Botón grande según donde toque.</p>
+    <div class="f-progress">
+      <div class="f-step-dot f-dot-active">1</div>
+      <div class="f-line"></div>
+      <div class="f-step-dot f-dot-pending">🏊</div>
+      <div class="f-line"></div>
+      <div class="f-step-dot f-dot-pending">2</div>
+      <div style="margin-left: 8px; font-size: 12px; color: #a9c4dc;">Toca para empezar</div>
+    </div>
+    <button class="f-action cta-pre">
+      <b>🏊 Empezar entreno</b>
+      <small>Cuestionario nutri antes de meterte al agua</small>
+    </button>
+  </div>
+
+  <p class="footer">
+    Dime la <b>letra</b> del que más te guste y lo pongo como CTA oficial.<br>
+    También puedo mezclar (ej. "C pero con flecha como en A").
+  </p>
+</body>
+</html>
