@@ -32,7 +32,7 @@ const PRE_QUESTIONS = [
   { id: 'dur_sodio',     section: 'Durante el entreno', text: '¿Vas a tomar sodio?',         hint: 'Pastillas Sub9 Salts o similar',            good: 'yes' },
   { id: 'dur_sorbos',    section: 'Durante el entreno', text: '¿Vas a beber a sorbos pequeños?', hint: 'En lugar de tragos grandes', good: 'yes' },
   { id: 'dur_nuevo',     section: 'Durante el entreno', text: '¿Vas a probar un gel o bebida nuevo?', hint: 'Algo que no hayas usado antes',     good: 'no' },
-  { id: 'dur_cafe',      section: 'Durante el entreno', text: '¿Has tomado o vas a tomar café/cafeína?', hint: 'No quita puntutxus, solo aviso de que puede darte problemas', good: '*', noScore: true },
+  { id: 'dur_cafe',      section: 'Durante el entreno', text: '¿Has tomado café en las últimas 3 horas?', hint: 'No quita puntutxus, solo aviso de que puede darte problemas', good: '*', noScore: true },
 ];
 
 const POST_QUESTIONS = [
@@ -70,12 +70,10 @@ const FAQ = [
     a: 'Es personal. La cafeína mejora rendimiento, pero a algunas personas les acelera el intestino y les da diarrea. Si nunca has tenido problemas con el café, sigue. Si tienes el intestino delicado, mejor sin cafeína el día de Rande, o solo media taza pequeña 2h antes.' },
   { q: '¿Cuánto líquido por hora?',
     a: '400-500 ml/h en agua fría, en sorbos pequeños. Más de 700 ml/h te puede dar vómito por sobre-distensión gástrica. Menos de 300 ml/h en travesía larga lleva a deshidratación. El sodio (Sub9 Salts) es lo que permite que el agua se absorba.' },
-  { q: '¿Qué hago si vomito durante Rande?',
-    a: 'Para 30 segundos en el siguiente avituallamiento, enjuaga la boca, toma sólo unos sorbos de agua sin sal ni gel, y sigue nadando suave 5-10 min antes de retomar la nutrición. No fuerces. Un solo vómito no descarrila la travesía si después no insistes con producto fuerte.' },
-  { q: '¿La edad (58 años) influye en la digestión nadando?',
-    a: 'Sí. A partir de los 50 el vaciado gástrico es ~15-20% más lento que en jóvenes. Eso significa: menos margen para errores nutricionales, más tiempo de espera entre comer y nadar, y tolerancia más baja a sólidos durante el ejercicio.' },
   { q: '¿Por qué nunca probar geles nuevos el día de la travesía?',
     a: 'Cada gel tiene una osmolaridad y composición distintas. Tu intestino reacciona diferente a cada uno. Si pruebas algo nuevo el día D, te juegas un vómito por novedad. Regla absoluta: lo que tomes en Rande lo tienes que haber probado en mínimo 3 entrenos largos.' },
+  { q: '¿Y qué pasa con la maltodextrina, ciclodextrina, etc?',
+    a: 'Txifon, no hablamos de maltodextrina, ciclodextrina, o carbohidratos por hora porque tu gran preocupación son los vómitos y problemas intestinales. Si quieres info sobre esas cosas, pregunta en la sección para hacer preguntas.' },
 ];
 
 const PRODUCTS = [
@@ -103,7 +101,7 @@ const PRODUCTS = [
     risk: 'low',
     risk_label: 'Riesgo bajo',
     description: 'Aporta el sodio que necesitas para que el agua se absorba y para evitar calambres y náusea.',
-    rules: ['Una pastilla cada 30-45 min', 'Siempre con agua, no sola', 'No te saltes ninguna dosis aunque no tengas sed'],
+    rules: ['Una pastilla en cada avituallamiento de Rande (~cada 50-90 min)', 'Siempre con agua, no sola', 'No te saltes ninguna toma aunque no tengas sed'],
     rule: '✅ Imprescindible. Sin sodio, lo que bebes no se absorbe.',
   },
   {
@@ -206,43 +204,14 @@ function identify(who) {
   }
 }
 
-let logoutArmed = false;
-let logoutTimer = null;
-
 function logout() {
-  const btn = document.getElementById('logoutBtn');
-  if (!logoutArmed) {
-    haptic(H_ARM);
-    logoutArmed = true;
-    if (btn) {
-      btn.textContent = 'Tócame otra vez para borrarlo todo';
-      btn.classList.add('logout-armed');
-    }
-    logoutTimer = setTimeout(() => {
-      logoutArmed = false;
-      if (btn) {
-        btn.textContent = 'Cerrar sesión y borrar todo';
-        btn.classList.remove('logout-armed');
-      }
-    }, 4000);
-    return;
-  }
-  haptic(H_COMMIT);
-  clearTimeout(logoutTimer);
-  // Borrar TODO: localStorage, estado en memoria, vuelve a onboarding
-  localStorage.removeItem('puntutxus_state');
+  haptic(H_TAP);
+  // Cerrar sesión "suave": olvida quién es y vuelve al onboarding. Mantiene los entrenos guardados.
   state.user_type = null;
   state.onboarding_done = false;
   state.txifon_session_expires = 0;
-  state.entrenos = [];
   state.chat_history = [];
-  state.current_entreno_id = null;
-  state.pre_step = 0;
-  state.post_step = 0;
-  state.pre_answers = {};
-  state.post_answers = {};
-  state.plan_inputs = { duration: null, temp: null };
-  logoutArmed = false;
+  saveState();
   showView('onboard-1');
 }
 
@@ -632,36 +601,79 @@ function shareLast() {
 }
 
 // ============= CHAT (LLM) =============
+let pendingImage = null;
+
 function openChat() {
   showView('chat');
   if (state.chat_history.length === 0) {
     const msg = state.user_type === 'txifon'
-      ? 'Aupa Txifon. ¿En qué te ayudo? Pregúntame lo que quieras de nutrición, geles, hidratación o Rande.'
-      : 'Aupa. Soy el asistente nutricional de Txifon. Pregúntame lo que quieras de nutrición en aguas abiertas.';
+      ? 'Aupa Txifon. ¿En qué te ayudo? Pregúntame lo que quieras de nutrición, geles, hidratación o Rande. También puedes subirme una foto de un producto y miro los ingredientes por ti.'
+      : 'Aupa. Soy el asistente nutricional de Txifon. Pregúntame lo que quieras de nutrición en aguas abiertas. También puedes subirme una foto de un producto.';
     appendChatMsg('asst', msg);
   }
 }
 
-function appendChatMsg(role, text) {
+function appendChatMsg(role, text, imageUrl) {
   const list = document.getElementById('chatList');
   const div = document.createElement('div');
   div.className = `msg msg-${role}`;
-  div.textContent = text;
+  if (text) {
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+  }
+  if (imageUrl) {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    div.appendChild(img);
+  }
   list.appendChild(div);
   list.scrollTop = list.scrollHeight;
   return div;
 }
 
 async function sendChatMessage(text) {
-  if (!text.trim()) return;
-  state.chat_history.push({ role: 'user', content: text });
-  appendChatMsg('user', text);
+  if (!text.trim() && !pendingImage) return;
+
+  // Construir contenido (texto, o multimodal si hay imagen)
+  let content;
+  let displayText = text;
+  if (pendingImage) {
+    const finalText = text.trim() || '¿Es seguro este producto para mi nutrición de aguas abiertas? Mira los ingredientes y dime.';
+    displayText = finalText;
+    content = [
+      { type: 'text', text: finalText },
+      { type: 'image_url', image_url: { url: pendingImage } },
+    ];
+  } else {
+    content = text;
+  }
+
+  state.chat_history.push({ role: 'user', content });
+  appendChatMsg('user', displayText, pendingImage);
+
+  // Limpiar imagen pendiente
+  const sentImage = pendingImage;
+  pendingImage = null;
+  const preview = document.getElementById('chatImagePreview');
+  if (preview) preview.classList.add('hidden');
+  const inputEl = document.getElementById('chatInput');
+  if (inputEl) inputEl.placeholder = 'Pregunta o sube foto...';
 
   const thinkingMsg = appendChatMsg('asst', 'Pensando...');
   thinkingMsg.classList.add('thinking');
 
   try {
-    const reply = await callLLM(state.chat_history);
+    // Para reducir el payload, solo el último mensaje del usuario lleva imagen.
+    // Los anteriores se aplanan a texto.
+    const messagesForLLM = state.chat_history.map((m, i, arr) => {
+      if (i < arr.length - 1 && Array.isArray(m.content)) {
+        const textPart = m.content.find((c) => c.type === 'text');
+        return { role: m.role, content: textPart ? textPart.text : '' };
+      }
+      return m;
+    });
+    const reply = await callLLM(messagesForLLM);
     thinkingMsg.classList.remove('thinking');
     thinkingMsg.textContent = reply;
     state.chat_history.push({ role: 'assistant', content: reply });
@@ -681,6 +693,75 @@ async function callLLM(messages) {
   if (!res.ok) throw new Error(`Worker ${res.status}`);
   const data = await res.json();
   return data.reply || '';
+}
+
+// ============= PHOTO UPLOAD =============
+function setupPhoto() {
+  const photoBtn = document.getElementById('photoBtn');
+  const imageInput = document.getElementById('imageInput');
+  const preview = document.getElementById('chatImagePreview');
+  const thumb = document.getElementById('chatImageThumb');
+  const removeBtn = document.getElementById('imgRemoveBtn');
+  const input = document.getElementById('chatInput');
+  if (!photoBtn || !imageInput) return;
+
+  photoBtn.addEventListener('click', () => {
+    haptic(H_TAP);
+    // Hint la primera vez
+    if (!localStorage.getItem('photo_hint_shown')) {
+      appendChatMsg('asst', '📸 Sube una foto donde se vean bien los ingredientes del producto. Te digo si es seguro para tu nutrición.');
+      localStorage.setItem('photo_hint_shown', '1');
+    }
+    imageInput.click();
+  });
+
+  imageInput.addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      const dataUrl = await resizeImage(file, 1024, 0.82);
+      pendingImage = dataUrl;
+      thumb.src = dataUrl;
+      preview.classList.remove('hidden');
+      input.placeholder = 'Pregúntame sobre la foto (o envía sin texto)...';
+      input.focus();
+    } catch (err) {
+      console.error('image resize failed', err);
+    }
+    imageInput.value = '';
+  });
+
+  removeBtn.addEventListener('click', () => {
+    haptic(H_TAP);
+    pendingImage = null;
+    preview.classList.add('hidden');
+    input.placeholder = 'Pregunta o sube foto...';
+  });
+}
+
+function resizeImage(file, maxDim, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        const scale = Math.min(maxDim / width, maxDim / height, 1);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 // ============= VOICE =============
@@ -924,4 +1005,5 @@ function wireEvents() {
 loadState();
 wireEvents();
 setupVoice();
+setupPhoto();
 initOnboarding();

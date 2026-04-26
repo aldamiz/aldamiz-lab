@@ -203,7 +203,7 @@
         </button>
       </div>
       <div class="menu-footer">
-        <button class="logout-link" data-action="logout" id="logoutBtn">Cerrar sesión y borrar todo</button>
+        <button class="logout-link" data-action="logout" id="logoutBtn">Cerrar sesión</button>
       </div>
     </section>
 
@@ -214,7 +214,7 @@
         <span class="view-title">¿Qué es esto?</span>
       </header>
       <div class="qe-body">
-        <p>Esta es una web para ayudarte a preparar tus entrenos de nutrición. Para intentar que dejes de vomitar mientras nadas.</p>
+        <p>Txifon, esta es una web para ayudarte a preparar tus entrenos de nutrición. Para intentar que dejes de vomitar mientras nadas.</p>
         <p>Antes de cada entreno puedes completar un cuestionario, y si dices que vas a hacer todo bien, te damos un <b>puntutxu</b>... porque sabemos que te gustan los puntutxus.</p>
         <p>Después de cada entreno completas otro cuestionario y también te puedes llevar otro puntutxu si ha salido todo bien.</p>
       </div>
@@ -296,10 +296,16 @@
         <span class="view-title">🤖 Hazme preguntas</span>
       </header>
       <div class="chat-list" id="chatList"></div>
+      <div class="chat-image-preview hidden" id="chatImagePreview">
+        <img id="chatImageThumb" alt="">
+        <button type="button" class="icon-btn img-remove-btn" id="imgRemoveBtn" aria-label="Quitar foto">✕</button>
+      </div>
       <form class="chat-input-row" id="chatForm" autocomplete="off">
         <button type="button" class="icon-btn mic-btn" id="micBtn" aria-label="Hablar">🎤</button>
-        <input type="text" id="chatInput" placeholder="Pregunta lo que quieras..." autocomplete="off">
+        <button type="button" class="icon-btn photo-btn" id="photoBtn" aria-label="Foto producto">📷</button>
+        <input type="text" id="chatInput" placeholder="Pregunta o sube foto..." autocomplete="off">
         <button type="submit" class="icon-btn send-btn" aria-label="Enviar">↑</button>
+        <input type="file" id="imageInput" accept="image/*" capture="environment" hidden>
       </form>
     </section>
 
