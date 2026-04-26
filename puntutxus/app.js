@@ -28,11 +28,11 @@ const PRE_QUESTIONS = [
   { id: 'des_fibra',     section: 'Desayuno hoy',  text: '¿Has desayunado fibra?',                        hint: 'Integrales, fruta con piel',                good: 'no' },
   { id: 'des_2h',        section: 'Desayuno hoy',  text: '¿Te metes al agua antes de 2h del desayuno?',   hint: '',                                          good: 'no' },
   // Durante
-  { id: 'dur_solidos',   section: 'Durante el entreno', text: '¿Vas a tomar algún sólido?', hint: 'Plátano, barrita, fruta...',                good: 'no' },
+  { id: 'dur_solidos',   section: 'Durante el entreno', text: '¿Vas a tomar algún sólido durante el nado?', hint: 'Plátano, barrita, fruta...',                good: 'no' },
   { id: 'dur_sodio',     section: 'Durante el entreno', text: '¿Vas a tomar sodio?',         hint: 'Pastillas Sub9 Salts o similar',            good: 'yes' },
-  { id: 'dur_sorbos',    section: 'Durante el entreno', text: '¿Vas a beber a sorbos pequeños y frecuentes?', hint: 'En lugar de tragos grandes', good: 'yes' },
+  { id: 'dur_sorbos',    section: 'Durante el entreno', text: '¿Vas a beber a sorbos pequeños?', hint: 'En lugar de tragos grandes', good: 'yes' },
   { id: 'dur_nuevo',     section: 'Durante el entreno', text: '¿Vas a probar un gel o bebida nuevo?', hint: 'Algo que no hayas usado antes',     good: 'no' },
-  { id: 'dur_cafe',      section: 'Durante el entreno', text: '¿Has tomado o vas a tomar café/cafeína?', hint: 'No quita puntutxu, solo aviso', good: '*', noScore: true },
+  { id: 'dur_cafe',      section: 'Durante el entreno', text: '¿Has tomado o vas a tomar café/cafeína?', hint: 'No quita puntutxus, solo aviso de que puede darte problemas', good: '*', noScore: true },
 ];
 
 const POST_QUESTIONS = [
@@ -315,9 +315,9 @@ function animateCount(el, from, to, duration) {
 function startPre() {
   state.current_entreno_id = 'e_' + Date.now();
   state.pre_answers = {};
-  state.plan_inputs = { duration: null, temp: null };
-  showView('plan-ask');
-  initPlanAsk();
+  state.pre_step = 0;
+  showView('pre');
+  renderPreStep();
 }
 
 function initPlanAsk() {
@@ -618,7 +618,15 @@ function shareLast() {
   const days = daysToRande();
   const last = state.entrenos[0];
   const won = last ? (last.puntutxu_prepa ? 1 : 0) + (last.puntutxu_estomago ? 1 : 0) : 0;
-  const text = `Acabo de ganar ${won} puntutxu${won !== 1 ? 's' : ''}. Llevo ${total} en total. ${days >= 0 ? `Faltan ${days} días para Rande.` : ''} 🌊\n\nhttps://puntutxus.com`;
+
+  const wonStr = won === 1 ? 'un puntutxu' : `${won} puntutxus`;
+  const opener = won > 0
+    ? `Acabo de ganar ${wonStr}, ¡hoy triunfo!`
+    : 'Hoy he salido con cero puntutxus, mañana toca.';
+  const totalStr = `Llevo ${total} en total.`;
+  const randeStr = days > 0 ? `Faltan ${days} días para Rande.` : '';
+
+  const text = `${opener} ${totalStr} ${randeStr} 🌊\n\nhttps://puntutxus.com`.replace(/\s+/g, ' ').trim();
   const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
 }
