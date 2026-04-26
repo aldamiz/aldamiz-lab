@@ -13,7 +13,7 @@ const H_ARM = 50;        // tap-to-confirm armado
 const H_COMMIT = [50, 60, 110];   // confirmación final (borrar, logout)
 const H_COIN = [50, 50, 90];      // ganar puntutxu
 const RANDE_DATE = new Date('2026-06-20T08:00:00');
-const TXIFON_PW = '1234';
+const TXIFON_PW = '123';
 const TXIFON_SESSION_DAYS = 90;
 
 // ============= DATA =============
@@ -598,11 +598,15 @@ function makeCoinSvg(delay) {
           <stop offset="40%" stop-color="#ffd34d"/>
           <stop offset="100%" stop-color="#b78700"/>
         </radialGradient>
+        <clipPath id="coinClip-${delay}">
+          <circle cx="50" cy="50" r="46"/>
+        </clipPath>
       </defs>
       <circle cx="50" cy="50" r="46" fill="url(#goldGrad-${delay})" stroke="#8a6500" stroke-width="2"/>
-      <circle cx="50" cy="50" r="38" fill="none" stroke="#8a6500" stroke-width="1.5" stroke-dasharray="2 3"/>
-      <path d="M20 55 Q35 45, 50 55 T80 55" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <path d="M20 65 Q35 55, 50 65 T80 65" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+      <g clip-path="url(#coinClip-${delay})" opacity="0.18">
+        <path d="M0 70 Q15 60, 30 70 T60 70 T90 70 T120 70 L120 100 L0 100 Z" fill="#063562"/>
+      </g>
+      <text x="50" y="64" font-family="Inter, sans-serif" font-size="46" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
     </svg>
   `;
   return wrap;

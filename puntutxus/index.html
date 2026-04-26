@@ -33,22 +33,25 @@
     <section class="view view-onboarding" data-view="onboard-2">
       <div class="onboard-stack">
         <div class="puntutxu-coin animate-spin-pop" aria-hidden="true">
-          <svg viewBox="0 0 100 100" width="160" height="160">
+          <svg viewBox="0 0 100 100" width="170" height="170">
             <defs>
               <radialGradient id="goldGrad" cx="35%" cy="35%" r="65%">
                 <stop offset="0%" stop-color="#fff5b8"/>
                 <stop offset="40%" stop-color="#ffd34d"/>
                 <stop offset="100%" stop-color="#b78700"/>
               </radialGradient>
+              <clipPath id="coinClip">
+                <circle cx="50" cy="50" r="46"/>
+              </clipPath>
             </defs>
             <circle cx="50" cy="50" r="46" fill="url(#goldGrad)" stroke="#8a6500" stroke-width="2"/>
-            <circle cx="50" cy="50" r="38" fill="none" stroke="#8a6500" stroke-width="1.5" stroke-dasharray="2 3"/>
-            <path d="M20 55 Q35 45, 50 55 T80 55" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M20 65 Q35 55, 50 65 T80 65" stroke="#063562" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <g clip-path="url(#coinClip)" opacity="0.18">
+              <path d="M0 70 Q15 60, 30 70 T60 70 T90 70 T120 70 L120 100 L0 100 Z" fill="#063562"/>
+            </g>
+            <text x="50" y="64" font-family="Inter, sans-serif" font-size="46" font-weight="900" fill="#063562" text-anchor="middle">+1</text>
           </svg>
         </div>
-        <p class="onboard-slogan">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.</p>
-        <p class="onboard-slogan-sub">Con cariño, para Txifon.</p>
+        <p class="onboard-slogan">Gana puntutxus preparando bien la nutrición en natación.</p>
         <button class="btn-primary" data-action="onboard-next" data-next="onboard-3">A por ello</button>
       </div>
     </section>
@@ -63,8 +66,8 @@
         <button class="btn-choice" data-action="identify" data-who="amigo">
           <span class="btn-choice-icon">👋</span>
           <span class="btn-choice-text">
-            Soy un amigo
-            <small class="btn-choice-hint">Podrás probarlo sin que afecte a los puntutxus de Txifon</small>
+            Soy un amigo.
+            <small class="btn-choice-hint">Podrás probarlo sin que afecte a los puntutxus de Txifon.</small>
           </span>
         </button>
       </div>
@@ -107,12 +110,14 @@
         <button class="icon-btn" data-action="open-menu" aria-label="Menú">☰</button>
       </header>
 
-      <p class="home-slogan">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.<br><span class="home-slogan-sub">Con cariño, para Txifon.</span></p>
+      <p class="home-slogan">Gana puntutxus preparando bien la nutrición en natación.</p>
 
       <div class="home-counter">
         <div class="counter-num" id="counterNum">0</div>
         <div class="counter-label" id="counterLabel">puntutxus</div>
       </div>
+
+      <p class="home-instructions">Txifon, responde a las preguntas.</p>
 
       <div class="home-actions home-actions-grid">
         <button class="btn-cta" data-action="start-pre">
@@ -120,7 +125,7 @@
           <span class="cta-label">Antes de nadar</span>
         </button>
         <button class="btn-cta" data-action="start-post">
-          <span class="cta-emoji">✅</span>
+          <span class="cta-emoji cta-emoji-mirror">🏊</span>
           <span class="cta-label">Después de nadar</span>
         </button>
       </div>
@@ -203,8 +208,6 @@
         <span class="view-title">¿Qué es esto?</span>
       </header>
       <div class="qe-body">
-        <p class="qe-lead">Gana puntutxus preparando bien la nutrición de los entrenos y travesías.</p>
-        <p class="qe-sub">Con cariño, para Txifon.</p>
         <p>Esta es una web para ayudarte a preparar tus entrenos de nutrición. Para intentar que dejes de vomitar mientras nadas.</p>
         <p>Antes de cada entreno puedes completar un cuestionario, y si dices que vas a hacer todo bien, te damos un <b>puntutxu</b>... porque sabemos que te gustan los puntutxus.</p>
         <p>Después de cada entreno completas otro cuestionario y también te puedes llevar otro puntutxu si ha salido todo bien.</p>

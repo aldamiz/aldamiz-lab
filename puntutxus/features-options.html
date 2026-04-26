@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#063562">
+  <title>Puntutxus — opciones lista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: radial-gradient(ellipse at top, #0a4682 0%, #02223f 70%);
+      color: #f7faff;
+      min-height: 100dvh;
+      padding: 24px 14px 60px;
+      max-width: 480px;
+      margin: 0 auto;
+      font-size: 18px;
+    }
+    h1 { font-size: 28px; font-weight: 900; margin-bottom: 6px; text-align: center; }
+    p.intro { font-size: 16px; color: #a9c4dc; margin-bottom: 24px; text-align: center; line-height: 1.5; }
+    .opt {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 22px;
+      padding: 18px 14px 20px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .opt-num {
+      background: #ffcf3d;
+      color: #1a1300;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .opt-desc { font-size: 13px; color: #a9c4dc; margin-bottom: 16px; line-height: 1.5; }
+
+    /* ====== A: LISTA VERTICAL ====== */
+    .a-list { display: flex; flex-direction: column; gap: 10px; }
+    .a-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 18px 20px;
+      border-radius: 16px;
+      min-height: 70px;
+    }
+    .a-icon { font-size: 32px; flex-shrink: 0; width: 44px; text-align: center; }
+    .a-text { flex: 1; font-size: 18px; font-weight: 600; }
+    .a-arrow { color: #6a8fae; font-size: 24px; }
+
+    /* ====== B: GRID 2x3 LIMPIO ====== */
+    .b-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .b-item {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 22px 14px;
+      border-radius: 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-height: 110px;
+      justify-content: center;
+    }
+    .b-icon { font-size: 38px; }
+    .b-text { font-size: 15px; font-weight: 600; line-height: 1.3; }
+
+    /* ====== C: TARJETAS GRANDES PINTADAS ====== */
+    .c-list { display: flex; flex-direction: column; gap: 12px; }
+    .c-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px;
+      border-radius: 18px;
+      min-height: 84px;
+    }
+    .c-1 { background: linear-gradient(135deg, rgba(255, 207, 61, 0.18), rgba(255, 207, 61, 0.06)); border: 1px solid rgba(255, 207, 61, 0.25); }
+    .c-2 { background: rgba(255, 255, 255, 0.08); }
+    .c-3 { background: rgba(255, 255, 255, 0.08); }
+    .c-icon-big {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255, 207, 61, 0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .c-body { flex: 1; }
+    .c-title { font-size: 17px; font-weight: 700; }
+    .c-sub { font-size: 13px; color: #a9c4dc; margin-top: 3px; line-height: 1.35; }
+
+    /* ====== D: AGRUPADO POR SECCIONES ====== */
+    .d-section-title {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6a8fae;
+      font-weight: 700;
+      margin: 14px 0 6px;
+    }
+    .d-section-title:first-child { margin-top: 0; }
+    .d-list { display: flex; flex-direction: column; gap: 6px; }
+    .d-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      min-height: 56px;
+    }
+    .d-icon { font-size: 22px; }
+    .d-text { font-size: 15px; font-weight: 600; flex: 1; }
+    .d-arrow { color: #6a8fae; font-size: 18px; }
+
+    /* ====== E: ICONOS GRANDES + LABEL ABAJO ====== */
+    .e-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .e-item {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 14px 6px;
+      border-radius: 14px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-height: 88px;
+      justify-content: center;
+    }
+    .e-icon { font-size: 30px; }
+    .e-text { font-size: 11px; font-weight: 600; line-height: 1.2; }
+
+    /* ====== F: HERO + LISTA ====== */
+    .f-hero {
+      background: linear-gradient(135deg, rgba(255, 207, 61, 0.22), rgba(255, 207, 61, 0.08));
+      border: 1px solid rgba(255, 207, 61, 0.3);
+      padding: 18px 20px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .f-hero-icon { font-size: 38px; }
+    .f-hero-text { flex: 1; }
+    .f-hero-title { font-size: 17px; font-weight: 800; color: #ffcf3d; }
+    .f-hero-sub { font-size: 13px; color: #a9c4dc; margin-top: 2px; }
+    .f-list { display: flex; flex-direction: column; gap: 6px; }
+    .f-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      min-height: 56px;
+    }
+    .f-icon { font-size: 22px; }
+    .f-text { font-size: 15px; font-weight: 600; flex: 1; }
+    .f-arrow { color: #6a8fae; font-size: 18px; }
+
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 14px;
+      color: #6a8fae;
+      line-height: 1.6;
+    }
+    .footer b { color: #ffcf3d; }
+  </style>
+</head>
+<body>
+  <h1>¿Cómo mostrar el menú en home?</h1>
+  <p class="intro">6 maneras de listar las funcionalidades. Dime la <b>letra</b>.</p>
+
+  <!-- A: LISTA VERTICAL -->
+  <div class="opt">
+    <span class="opt-num">A</span>
+    <p class="opt-desc">Lista vertical de tarjetas grandes con icono + texto + flecha. Una por fila. Muy limpio y legible.</p>
+    <div class="a-list">
+      <div class="a-item"><span class="a-icon">❓</span><span class="a-text">¿Qué es esto?</span><span class="a-arrow">›</span></div>
+      <div class="a-item"><span class="a-icon">📚</span><span class="a-text">Recomendaciones nutricionales</span><span class="a-arrow">›</span></div>
+      <div class="a-item"><span class="a-icon">📦</span><span class="a-text">Explicación de los geles Rande</span><span class="a-arrow">›</span></div>
+      <div class="a-item"><span class="a-icon">🤖</span><span class="a-text">Hazme preguntas</span><span class="a-arrow">›</span></div>
+      <div class="a-item"><span class="a-icon">🌊</span><span class="a-text">Avituallamientos Rande</span><span class="a-arrow">›</span></div>
+      <div class="a-item"><span class="a-icon">📜</span><span class="a-text">Mis puntutxus</span><span class="a-arrow">›</span></div>
+    </div>
+  </div>
+
+  <!-- B: GRID LIMPIO -->
+  <div class="opt">
+    <span class="opt-num">B</span>
+    <p class="opt-desc">Grid 2 columnas, tarjetas más altas y limpias. Como ahora pero con más aire.</p>
+    <div class="b-grid">
+      <div class="b-item"><span class="b-icon">❓</span><span class="b-text">¿Qué es<br>esto?</span></div>
+      <div class="b-item"><span class="b-icon">📚</span><span class="b-text">Recomendaciones<br>nutricionales</span></div>
+      <div class="b-item"><span class="b-icon">📦</span><span class="b-text">Geles<br>Rande</span></div>
+      <div class="b-item"><span class="b-icon">🤖</span><span class="b-text">Hazme<br>preguntas</span></div>
+      <div class="b-item"><span class="b-icon">🌊</span><span class="b-text">Avituallamientos<br>Rande</span></div>
+      <div class="b-item"><span class="b-icon">📜</span><span class="b-text">Mis<br>puntutxus</span></div>
+    </div>
+  </div>
+
+  <!-- C: TARJETAS CON ICONO CUADRADO -->
+  <div class="opt">
+    <span class="opt-num">C</span>
+    <p class="opt-desc">Tarjetas con icono en caja dorada + título + subtítulo descriptivo. La primera destacada.</p>
+    <div class="c-list">
+      <div class="c-item c-1"><div class="c-icon-big">❓</div><div class="c-body"><div class="c-title">¿Qué es esto?</div><div class="c-sub">Empieza por aquí si es tu primera vez</div></div></div>
+      <div class="c-item c-2"><div class="c-icon-big">📚</div><div class="c-body"><div class="c-title">Recomendaciones nutricionales</div><div class="c-sub">Por qué la grasa, fibra, alcohol...</div></div></div>
+      <div class="c-item c-3"><div class="c-icon-big">📦</div><div class="c-body"><div class="c-title">Geles Rande</div><div class="c-sub">Cómo usar cada producto que te dan</div></div></div>
+      <div class="c-item c-3"><div class="c-icon-big">🤖</div><div class="c-body"><div class="c-title">Hazme preguntas</div><div class="c-sub">Asistente nutricional 24/7</div></div></div>
+      <div class="c-item c-3"><div class="c-icon-big">🌊</div><div class="c-body"><div class="c-title">Avituallamientos Rande</div><div class="c-sub">Los 7 puntos del recorrido</div></div></div>
+      <div class="c-item c-3"><div class="c-icon-big">📜</div><div class="c-body"><div class="c-title">Mis puntutxus</div><div class="c-sub">Tu historial de entrenos</div></div></div>
+    </div>
+  </div>
+
+  <!-- D: AGRUPADO POR SECCIONES -->
+  <div class="opt">
+    <span class="opt-num">D</span>
+    <p class="opt-desc">Items agrupados con etiquetas tipo "APRENDER" / "AYUDARTE" / "RANDE". Compacto, ordenado.</p>
+    <div class="d-section-title">Empieza aquí</div>
+    <div class="d-list">
+      <div class="d-item"><span class="d-icon">❓</span><span class="d-text">¿Qué es esto?</span><span class="d-arrow">›</span></div>
+    </div>
+    <div class="d-section-title">Aprender</div>
+    <div class="d-list">
+      <div class="d-item"><span class="d-icon">📚</span><span class="d-text">Recomendaciones nutricionales</span><span class="d-arrow">›</span></div>
+      <div class="d-item"><span class="d-icon">📦</span><span class="d-text">Geles de Rande</span><span class="d-arrow">›</span></div>
+      <div class="d-item"><span class="d-icon">🤖</span><span class="d-text">Hazme preguntas</span><span class="d-arrow">›</span></div>
+    </div>
+    <div class="d-section-title">Travesía</div>
+    <div class="d-list">
+      <div class="d-item"><span class="d-icon">🌊</span><span class="d-text">Avituallamientos Rande</span><span class="d-arrow">›</span></div>
+      <div class="d-item"><span class="d-icon">📜</span><span class="d-text">Mis puntutxus</span><span class="d-arrow">›</span></div>
+    </div>
+  </div>
+
+  <!-- E: ICONOS GRANDES 3x2 -->
+  <div class="opt">
+    <span class="opt-num">E</span>
+    <p class="opt-desc">3 columnas × 2 filas. Iconos grandes, etiquetas pequeñas debajo. Ocupa poco vertical.</p>
+    <div class="e-grid">
+      <div class="e-item"><span class="e-icon">❓</span><span class="e-text">¿Qué es<br>esto?</span></div>
+      <div class="e-item"><span class="e-icon">📚</span><span class="e-text">Recomenda-<br>ciones</span></div>
+      <div class="e-item"><span class="e-icon">📦</span><span class="e-text">Geles<br>Rande</span></div>
+      <div class="e-item"><span class="e-icon">🤖</span><span class="e-text">Pregunta<br>al asistente</span></div>
+      <div class="e-item"><span class="e-icon">🌊</span><span class="e-text">Avitualla-<br>mientos</span></div>
+      <div class="e-item"><span class="e-icon">📜</span><span class="e-text">Mis<br>puntutxus</span></div>
+    </div>
+  </div>
+
+  <!-- F: HERO + LISTA -->
+  <div class="opt">
+    <span class="opt-num">F</span>
+    <p class="opt-desc">"¿Qué es esto?" como tarjeta hero destacada. Resto en lista compacta debajo.</p>
+    <div class="f-hero">
+      <span class="f-hero-icon">❓</span>
+      <div class="f-hero-text">
+        <div class="f-hero-title">¿Qué es esto?</div>
+        <div class="f-hero-sub">Empieza aquí si es tu primera vez</div>
+      </div>
+    </div>
+    <div class="f-list">
+      <div class="f-item"><span class="f-icon">📚</span><span class="f-text">Recomendaciones nutricionales</span><span class="f-arrow">›</span></div>
+      <div class="f-item"><span class="f-icon">📦</span><span class="f-text">Geles Rande</span><span class="f-arrow">›</span></div>
+      <div class="f-item"><span class="f-icon">🤖</span><span class="f-text">Hazme preguntas</span><span class="f-arrow">›</span></div>
+      <div class="f-item"><span class="f-icon">🌊</span><span class="f-text">Avituallamientos Rande</span><span class="f-arrow">›</span></div>
+      <div class="f-item"><span class="f-icon">📜</span><span class="f-text">Mis puntutxus</span><span class="f-arrow">›</span></div>
+    </div>
+  </div>
+
+  <p class="footer">
+    Dime la <b>letra</b> del que más te guste y lo aplico en la home.<br>
+    Mezclas válidas: "A pero con la idea de hero del F", "C pero más compacto"...
+  </p>
+</body>
+</html>
