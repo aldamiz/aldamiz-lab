@@ -129,15 +129,19 @@ input {
 .icon-btn {
   width: var(--tap-min);
   height: var(--tap-min);
+  min-width: var(--tap-min);
+  flex-shrink: 0;
+  aspect-ratio: 1;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34px;
+  font-size: 28px;
   background: var(--c-surface);
   color: var(--c-text);
   font-weight: 700;
   transition: transform 0.1s, background 0.15s;
+  padding: 0;
 }
 
 .icon-btn:active { transform: scale(0.94); background: var(--c-surface-2); }
@@ -894,13 +898,23 @@ input {
   bottom: 0;
 }
 
+.chat-input-row .icon-btn {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  font-size: 22px;
+}
+
 #chatInput {
   flex: 1;
+  min-width: 0;
   background: var(--c-surface);
   border-radius: var(--r-pill);
   padding: 14px 18px;
   min-height: 48px;
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .send-btn { background: var(--c-gold); color: #1a1300; }
