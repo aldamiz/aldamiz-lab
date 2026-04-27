@@ -8,8 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="spotify-wrap-icon.png">
 <link rel="icon" type="image/png" href="spotify-wrap-icon.png">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -360,70 +358,6 @@
     animation: bounce 2s infinite;
   }
 
-  /* Style switcher */
-  .style-bar {
-    position: fixed;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 999px;
-    padding: 6px;
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: calc(100% - 24px);
-  }
-  .style-bar button {
-    background: transparent;
-    color: #fff;
-    border: 0;
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .style-bar button:hover { background: rgba(255,255,255,0.12); }
-  .style-bar button.active { background: #1DB954; color: #000; }
-
-  /* Icon container */
-  .ico {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    margin-right: 8px;
-    width: 1.1em;
-    height: 1.1em;
-    line-height: 1;
-  }
-  .ico svg, .ico i { width: 100%; height: 100%; }
-  .ico i.ph { font-size: 1.1em; line-height: 1; }
-  .ico:empty { display: none; }
-  .eyebrow .ico { width: 16px; height: 16px; margin-right: 6px; }
-  .eyebrow .ico i.ph { font-size: 16px; }
-
-  /* Hero icon larger */
-  .hero-ico {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
-    color: #000;
-    height: 64px;
-  }
-  .hero-ico:empty { display: none; }
-  .hero-ico svg { width: 64px; height: 64px; }
-  .hero-ico i.ph { font-size: 64px; line-height: 1; }
-  .hero-ico .emoji { font-size: 64px; line-height: 1; }
   @keyframes bounce {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50% { transform: translateX(-50%) translateY(-6px); }
@@ -432,22 +366,11 @@
 </head>
 <body>
 
-<!-- STYLE SWITCHER -->
-<div class="style-bar">
-  <button data-style="none" class="active">Sin iconos</button>
-  <button data-style="spotify">Spotify SVG</button>
-  <button data-style="lucide">Lucide</button>
-  <button data-style="phosphor">Phosphor fill</button>
-  <button data-style="emoji">Emoji</button>
-  <button data-style="mix">Mix curado</button>
-</div>
-
 <!-- HERO -->
 <section class="section hero">
   <div class="blob" style="background:#fff; width:380px; height:380px; top:-100px; right:-100px;"></div>
   <div class="blob" style="background:#000; width:300px; height:300px; bottom:-80px; left:-80px; opacity:0.2;"></div>
   <div class="section-inner">
-    <div class="hero-ico ico" data-key="headphones"></div>
     <div class="eyebrow">Spotify Wrapped · 2015 — 2026</div>
     <h1>Once años<br>en bucle.</h1>
     <div class="big-num">195.041</div>
@@ -466,7 +389,7 @@
 <section class="section artists">
   <div class="blob" style="background:#FF6B35; width:300px; height:300px; top:10%; left:-60px;"></div>
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="mic"></span>Tus 5 artistas</div>
+    <div class="eyebrow">Tus 5 artistas</div>
     <h2>Tu rock no se mueve.</h2>
     <p class="sub">Heavy metal, rock urbano y punk vasco. Una banda sonora muy clara.</p>
     <div class="podium">
@@ -513,7 +436,7 @@
 <section class="section tracks">
   <div class="blob" style="background:#FFE600; width:340px; height:340px; bottom:-100px; right:-100px;"></div>
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="music"></span>Tus 5 canciones</div>
+    <div class="eyebrow">Tus 5 canciones</div>
     <h2>Las que repites<br>sin pensar.</h2>
     <div class="podium">
       <div class="podium-row first">
@@ -559,7 +482,7 @@
 <section class="section albums">
   <div class="blob" style="background:#fff; width:300px; height:300px; top:10%; right:-60px; opacity:0.3;"></div>
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="disc"></span>Tus 8 discos</div>
+    <div class="eyebrow">Tus 8 discos</div>
     <h2>Los álbumes que<br>vivieron contigo.</h2>
     <div class="album-grid">
       <div class="album-card">
@@ -609,7 +532,7 @@
 <!-- YEARS -->
 <section class="section years">
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="calendar"></span>Año a año</div>
+    <div class="eyebrow">Año a año</div>
     <h2>Tu historia,<br>en doce capítulos.</h2>
     <p class="sub">Empezaste con Sweet California en 2015. Has terminado pasando por Ariana Grande, Morat, Bad Bunny… pero siempre vuelves al rock.</p>
     <div class="year-grid">
@@ -633,7 +556,7 @@
 <section class="section hours">
   <div class="blob" style="background:#FFE600; width:300px; height:300px; top:5%; right:-60px; opacity:0.3;"></div>
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="clock"></span>Cuándo escuchas</div>
+    <div class="eyebrow">Cuándo escuchas</div>
     <h2>El after-work<br>es sagrado.</h2>
     <p class="sub">Tu pico está entre las <strong>17:00 y las 20:00</strong>. Salir del trabajo tiene banda sonora.</p>
     <div class="bar-chart" id="hourChart"></div>
@@ -645,7 +568,7 @@
 <!-- DOW -->
 <section class="section dow">
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="week"></span>Día por día</div>
+    <div class="eyebrow">Día por día</div>
     <h2>Los domingos<br>ganan sin debate.</h2>
     <p class="sub">El fin de semana se lleva la corona. Cocinar, conducir, sofá: música siempre puesta.</p>
     <div class="dow-grid">
@@ -663,7 +586,7 @@
 <!-- STATS -->
 <section class="section stats">
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="chart"></span>Y todavía hay más</div>
+    <div class="eyebrow">Y todavía hay más</div>
     <h2>Los datos finos.</h2>
     <div class="stats-grid">
       <div class="stat-card"><div class="n">4.317</div><div class="l">Artistas distintos</div></div>
@@ -683,7 +606,7 @@
   <div class="blob" style="background:#1DB954; width:380px; height:380px; top:20%; left:-100px;"></div>
   <div class="blob" style="background:#E91E63; width:340px; height:340px; bottom:-80px; right:-80px;"></div>
   <div class="section-inner">
-    <div class="eyebrow"><span class="ico" data-key="heart"></span>Tu primera canción</div>
+    <div class="eyebrow">Tu primera canción</div>
     <h2 style="margin-top:8px;">9 de agosto<br>de 2015.</h2>
     <p class="big-quote">"Cuidado", de Eskorbuto, ha sido tu compañera durante <strong>11 años</strong>. 312 reproducciones. Más que ninguna otra.</p>
     <p class="sub" style="margin-top:32px;">Última escuchada: 30 de marzo de 2026 · que sigan los años.</p>
@@ -692,99 +615,6 @@
 </section>
 
 <script>
-  // ===== ICON STYLES =====
-  const SVG = {
-    headphones: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-9 9v6a3 3 0 0 0 3 3h2v-9H6v-1a6 6 0 0 1 12 0v1h-2v9h2a3 3 0 0 0 3-3v-6a9 9 0 0 0-9-9z"/></svg>',
-    mic: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a4 4 0 0 0 4-4V5a4 4 0 1 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93V22h2v-4.07A8 8 0 0 0 20 10h-2z"/></svg>',
-    music: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 3L9 5v9.18A4 4 0 1 0 11 18V8.83l8-1.33V13.18A4 4 0 1 0 21 17V3z"/></svg>',
-    disc: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 14a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg>',
-    calendar: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14zM5 8V6h14v2z"/></svg>',
-    clock: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm5 11h-6V6h2v5h4z"/></svg>',
-    week: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18v3H3zm0 5h18v3H3zm0 5h12v3H3z"/></svg>',
-    chart: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 21V10h3v11zm6 0V3h3v18zm6 0v-7h3v7z"/></svg>',
-    heart: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21l-1.5-1.4C5 14.6 2 11.9 2 8.5A5.5 5.5 0 0 1 7.5 3c1.7 0 3.4.8 4.5 2.1A6 6 0 0 1 16.5 3 5.5 5.5 0 0 1 22 8.5c0 3.4-3 6.1-8.5 11.1z"/></svg>',
-  };
-
-  const LUCIDE = {
-    headphones: 'headphones',
-    mic: 'mic',
-    music: 'music',
-    disc: 'disc-3',
-    calendar: 'calendar-days',
-    clock: 'clock',
-    week: 'calendar-range',
-    chart: 'bar-chart-3',
-    heart: 'heart',
-  };
-
-  const PHOSPHOR = {
-    headphones: 'headphones',
-    mic: 'microphone-stage',
-    music: 'music-notes',
-    disc: 'vinyl-record',
-    calendar: 'calendar-dots',
-    clock: 'clock',
-    week: 'calendar',
-    chart: 'chart-bar',
-    heart: 'heart',
-  };
-
-  const EMOJI = {
-    headphones: '🎧',
-    mic: '🎤',
-    music: '🎵',
-    disc: '💿',
-    calendar: '📅',
-    clock: '⏰',
-    week: '📆',
-    chart: '📊',
-    heart: '❤️',
-  };
-
-  // Mix curado
-  const MIX = {
-    headphones: 'svg',
-    mic: 'phosphor',
-    music: 'emoji',
-    disc: 'svg',
-    calendar: 'lucide',
-    clock: 'phosphor',
-    week: 'emoji',
-    chart: 'lucide',
-    heart: 'emoji',
-  };
-
-  function renderFor(key, style) {
-    if (style === 'none') return '';
-    if (style === 'spotify') return SVG[key] || '';
-    if (style === 'lucide')  return '<i data-lucide="' + LUCIDE[key] + '"></i>';
-    if (style === 'phosphor') return '<i class="ph-fill ph-' + PHOSPHOR[key] + '"></i>';
-    if (style === 'emoji')   return '<span class="emoji">' + EMOJI[key] + '</span>';
-    if (style === 'mix')     return renderFor(key, MIX[key]);
-    return '';
-  }
-
-  function setStyle(name) {
-    document.querySelectorAll('.ico').forEach(el => {
-      el.innerHTML = renderFor(el.dataset.key, name);
-    });
-    if (window.lucide && window.lucide.createIcons) lucide.createIcons();
-    document.querySelectorAll('.style-bar button').forEach(b => {
-      b.classList.toggle('active', b.dataset.style === name);
-    });
-    try { localStorage.setItem('wrap-icon-style', name); } catch(e){}
-  }
-
-  document.querySelectorAll('.style-bar button').forEach(b => {
-    b.addEventListener('click', () => setStyle(b.dataset.style));
-  });
-
-  // Restore last choice
-  let initial = 'none';
-  try { initial = localStorage.getItem('wrap-icon-style') || 'none'; } catch(e){}
-  setStyle(initial);
-
-  // ===== HOUR CHART =====
   // Build hour chart
   const hours = [
     138802672, 116522852, 103661009, 86660442, 91310079, 300188729,
