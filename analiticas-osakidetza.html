@@ -308,6 +308,7 @@
             .chart-container { break-inside: avoid; }
         }
     </style>
+    <link rel="stylesheet" href="/chat-widget.css">
 </head>
 <body>
 <div class="dashboard-container">
@@ -1308,5 +1309,11 @@ This dashboard template is free to use and modify.
 document.getElementById('recipe-content').textContent =
     document.getElementById('recipe-source').textContent;
 </script>
+<script src="/chat-widget.js" defer
+  data-page="analiticas-osakidetza"
+  data-accent="#2B6CB0"
+  data-title="Asistente de analíticas"
+  data-greeting="Pregúntame qué significa cada valor o cómo ha evolucionado."
+  data-suggest='["¿Algo fuera de rango?","Explica mi ferritina","Resume los cambios desde la última"]'></script>
 </body>
 </html>
