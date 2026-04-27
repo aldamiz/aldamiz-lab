@@ -3,52 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="lab-title" content="Iconos preview">
-<meta name="lab-subtitle" content="Opciones para Análisis, Glucosa y Mi Red">
+<meta name="lab-title" content="Iconos finales">
+<meta name="lab-subtitle" content="Atajos del home screen">
 <meta name="lab-section" content="Salud">
 <meta name="lab-icon" content="&#x1F3A8;">
 <script src="/guard.js"></script>
-<title>Iconos preview</title>
+<title>Iconos finales</title>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:#f5f7fa;color:#1a2330;padding:24px 16px;min-height:100vh}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:#f5f7fa;color:#1a2330;padding:32px 16px;min-height:100vh}
   h1{font-size:22px;font-weight:800;margin-bottom:6px}
-  h2{font-size:16px;font-weight:700;margin:28px 0 14px;color:#2a3a52}
-  p.sub{color:#5a6878;font-size:13px;margin-bottom:8px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px}
-  .card{background:#fff;border-radius:18px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  .icon{width:110px;height:110px;border-radius:24px;margin:0 auto 10px;display:block;box-shadow:0 4px 14px rgba(0,0,0,.18)}
-  .title{font-weight:700;font-size:13px}
-  .container{max-width:900px;margin:0 auto}
+  p.sub{color:#5a6878;font-size:14px;margin-bottom:24px;line-height:1.4}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:520px;margin:0 auto}
+  .card{background:#fff;border-radius:18px;padding:18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .icon{width:140px;height:140px;border-radius:32px;margin:0 auto 12px;display:block;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .title{font-weight:700;font-size:15px;margin-bottom:2px}
+  .url{font-size:11px;color:#5a6878;word-break:break-all}
+  .container{max-width:600px;margin:0 auto}
+  .note{background:#fff8e1;border-left:3px solid #f59e0b;padding:12px 14px;border-radius:8px;font-size:13px;color:#5a4500;margin-top:24px;line-height:1.5}
 </style>
 </head>
 <body>
   <div class="container">
-    <h1>Iconos · 3 webs</h1>
-    <p class="sub">Cada borde redondeado simula cómo se verá en la pantalla de inicio del iPhone.</p>
-
-    <h2>🩸 Análisis de sangre</h2>
+    <h1>Iconos finales</h1>
+    <p class="sub">Estos son los 4 atajos personalizados del home screen.</p>
     <div class="grid">
-      <div class="card"><img class="icon" src="/icons-preview/anal_1_pulse.png"><div class="title">1 · ECG pulse</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/anal_2_drop.png"><div class="title">2 · Gota sangre</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/anal_3_chart.png"><div class="title">3 · Bar chart</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/anal_4_heart.png"><div class="title">4 · Corazón + ECG</div></div>
+      <div class="card">
+        <img class="icon" src="/icons-preview/_final_rande.png">
+        <div class="title">Rande</div>
+        <div class="url">/rande</div>
+      </div>
+      <div class="card">
+        <img class="icon" src="/icons-preview/_final_sangre.png">
+        <div class="title">Sangre</div>
+        <div class="url">/analiticas-osakidetza</div>
+      </div>
+      <div class="card">
+        <img class="icon" src="/icons-preview/_final_glucosa.png">
+        <div class="title">Glucosa</div>
+        <div class="url">/glucogabi</div>
+      </div>
+      <div class="card">
+        <img class="icon" src="/icons-preview/_final_mired.png">
+        <div class="title">Mi Red</div>
+        <div class="url">/private/mi-red-dashboard</div>
+      </div>
     </div>
-
-    <h2>💉 GlucoGabi</h2>
-    <div class="grid">
-      <div class="card"><img class="icon" src="/icons-preview/glu_1_curve.png"><div class="title">1 · Curva</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/glu_2_number.png"><div class="title">2 · 98 mg/dL</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/glu_3_drop.png"><div class="title">3 · Gota G</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/glu_4_cgm.png"><div class="title">4 · Sensor CGM</div></div>
-    </div>
-
-    <h2>📡 Mi Red</h2>
-    <div class="grid">
-      <div class="card"><img class="icon" src="/icons-preview/red_1_wifi.png"><div class="title">1 · Wifi clásico</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/red_2_mesh.png"><div class="title">2 · Mesh nodos</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/red_3_signal.png"><div class="title">3 · Barras señal</div></div>
-      <div class="card"><img class="icon" src="/icons-preview/red_4_ring.png"><div class="title">4 · Ring R</div></div>
+    <div class="note">
+      <strong>Para que aparezcan en el iPhone:</strong> borra cada atajo viejo del home screen, abre la URL en Safari, recarga, y vuelve a hacer "Compartir → Añadir a pantalla de inicio".
     </div>
   </div>
 </body>
