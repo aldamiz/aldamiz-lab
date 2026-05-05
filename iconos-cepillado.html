@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elige icono — Cepillado</title>
+<script src="/guard.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    min-height: 100vh;
+    padding: 40px 16px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: #86868b; font-size: 1rem; margin-bottom: 28px; }
+  .group-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #86868b;
+    margin: 32px 0 12px;
+  }
+  .group-label:first-of-type { margin-top: 0; }
+
+  .opt-row {
+    background: white;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .opt-row:hover { border-color: #d2d2d7; transform: translateX(2px); }
+  .opt-row.recommended { border-color: #ff9500; background: linear-gradient(90deg, #fff8ef, white); }
+
+  .opt-icon {
+    font-size: 28px;
+    width: 56px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .opt-icon.svg-icon { font-size: 0; }
+  .opt-icon svg { width: 36px; height: 36px; }
+
+  .opt-info { flex: 1; min-width: 0; }
+  .opt-title { font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
+  .opt-desc { color: #86868b; font-size: 0.85rem; }
+
+  .opt-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f5f5f7;
+    color: #86868b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .opt-row.recommended .opt-num { background: #ff9500; color: white; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #ff9500;
+    color: white;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .preview {
+    background: #fafafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px 0 24px;
+    border: 1px solid #e5e5e7;
+  }
+  .preview-label {
+    font-size: 0.75rem;
+    color: #86868b;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .preview-row {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .preview-row .ic { font-size: 1.5rem; width: 32px; text-align: center; }
+  .preview-row .ic.svg-ic { font-size: 0; }
+  .preview-row .ic svg { width: 24px; height: 24px; }
+  .preview-row .info-title { font-weight: 600; font-size: 1.05rem; }
+  .preview-row .info-desc { color: #86868b; font-size: 0.88rem; }
+  .preview-row .arrow { color: #86868b; }
+
+  .note {
+    background: #fff8ef;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    color: #5a4a3c;
+    line-height: 1.5;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🪥 Elige el icono</h1>
+<p class="subtitle">El que aparece junto a "Cepillado de dientes" en el index del Lab.</p>
+
+<div class="group-label">Emojis</div>
+
+<div class="opt-row recommended">
+  <div class="opt-num">1</div>
+  <div class="opt-icon">🪥</div>
+  <div class="opt-info">
+    <div class="opt-title">Cepillo de dientes <span class="badge">Recom.</span></div>
+    <div class="opt-desc">El obvio. Limpio, reconocible al instante.</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">2</div>
+  <div class="opt-icon">🦷</div>
+  <div class="opt-info">
+    <div class="opt-title">Diente (el actual)</div>
+    <div class="opt-desc">Más "salud bucal" que "cepillado".</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">3</div>
+  <div class="opt-icon">✨</div>
+  <div class="opt-info">
+    <div class="opt-title">Sparkles</div>
+    <div class="opt-desc">Dientes brillantes. Pierde contexto sin texto.</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">4</div>
+  <div class="opt-icon">😁</div>
+  <div class="opt-info">
+    <div class="opt-title">Cara con dientes</div>
+    <div class="opt-desc">Juguetón, tipo "smile-tracker".</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">5</div>
+  <div class="opt-icon">💎</div>
+  <div class="opt-info">
+    <div class="opt-title">Gema</div>
+    <div class="opt-desc">"Dientes como diamantes". Demasiado abstracto.</div>
+  </div>
+</div>
+
+<div class="group-label">Iconos SVG personalizados</div>
+
+<div class="opt-row">
+  <div class="opt-num">6</div>
+  <div class="opt-icon svg-icon">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="14.5" width="11" height="3" rx="1.5" fill="#2d6cdf"/>
+      <rect x="14" y="14" width="6" height="4" rx="1" fill="#5a8eef"/>
+      <rect x="20" y="15" width="1.5" height="2" rx="0.4" fill="#86868b"/>
+      <line x1="14.5" y1="13" x2="14.5" y2="14" stroke="white" stroke-width="0.7"/>
+      <line x1="16" y1="12.5" x2="16" y2="14" stroke="white" stroke-width="0.7"/>
+      <line x1="17.5" y1="12.5" x2="17.5" y2="14" stroke="white" stroke-width="0.7"/>
+      <line x1="19" y1="13" x2="19" y2="14" stroke="white" stroke-width="0.7"/>
+    </svg>
+  </div>
+  <div class="opt-info">
+    <div class="opt-title">Cepillo SVG — azul</div>
+    <div class="opt-desc">Dibujo simple en azul. Estilo Apple Health.</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">7</div>
+  <div class="opt-icon svg-icon">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="14.5" width="11" height="3" rx="1.5" fill="#ff8c42"/>
+      <rect x="14" y="14" width="6" height="4" rx="1" fill="#ffb380"/>
+      <rect x="20" y="15" width="1.5" height="2" rx="0.4" fill="#86868b"/>
+      <line x1="14.5" y1="13" x2="14.5" y2="14" stroke="white" stroke-width="0.7"/>
+      <line x1="16" y1="12.5" x2="16" y2="14" stroke="white" stroke-width="0.7"/>
+      <line x1="17.5" y1="12.5" x2="17.5" y2="14" stroke="white" stroke-width="0.7"/>
+      <line x1="19" y1="13" x2="19" y2="14" stroke="white" stroke-width="0.7"/>
+    </svg>
+  </div>
+  <div class="opt-info">
+    <div class="opt-title">Cepillo SVG — naranja</div>
+    <div class="opt-desc">Mismo dibujo en color cálido.</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">8</div>
+  <div class="opt-icon svg-icon">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="11" fill="#1a2332"/>
+      <rect x="5" y="14.5" width="9" height="2.5" rx="1.2" fill="white"/>
+      <rect x="14" y="14" width="5" height="3.5" rx="0.8" fill="#5a8eef"/>
+      <line x1="14.7" y1="13" x2="14.7" y2="14" stroke="white" stroke-width="0.6"/>
+      <line x1="16" y1="12.5" x2="16" y2="14" stroke="white" stroke-width="0.6"/>
+      <line x1="17.3" y1="12.5" x2="17.3" y2="14" stroke="white" stroke-width="0.6"/>
+      <line x1="18.6" y1="13" x2="18.6" y2="14" stroke="white" stroke-width="0.6"/>
+      <circle cx="9" cy="9" r="0.6" fill="#5a8eef" opacity="0.6"/>
+      <circle cx="14" cy="7" r="0.4" fill="white" opacity="0.7"/>
+      <circle cx="6" cy="11" r="0.3" fill="white" opacity="0.5"/>
+    </svg>
+  </div>
+  <div class="opt-info">
+    <div class="opt-title">Cepillo en círculo Oral-B</div>
+    <div class="opt-desc">Estilo logo de la app — fondo azul oscuro.</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">9</div>
+  <div class="opt-icon svg-icon">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 4 L20 4 L20 9 L18 9 L18 18 Q18 20 16 20 Q14 20 14 18 Z" fill="#5a8eef"/>
+      <rect x="14.5" y="2" width="5" height="2.5" rx="0.5" fill="#5a8eef"/>
+      <line x1="15" y1="1" x2="15" y2="2" stroke="#2d6cdf" stroke-width="0.5"/>
+      <line x1="16" y1="0.5" x2="16" y2="2" stroke="#2d6cdf" stroke-width="0.5"/>
+      <line x1="17" y1="0.5" x2="17" y2="2" stroke="#2d6cdf" stroke-width="0.5"/>
+      <line x1="18" y1="0.5" x2="18" y2="2" stroke="#2d6cdf" stroke-width="0.5"/>
+      <line x1="19" y1="1" x2="19" y2="2" stroke="#2d6cdf" stroke-width="0.5"/>
+      <circle cx="16.5" cy="14" r="0.7" fill="white"/>
+      <text x="16.5" y="14.5" font-size="1.5" fill="#2d6cdf" text-anchor="middle" font-weight="bold">B</text>
+    </svg>
+  </div>
+  <div class="opt-info">
+    <div class="opt-title">Cepillo eléctrico vertical</div>
+    <div class="opt-desc">Más fiel al iO real — vertical, con cabezal.</div>
+  </div>
+</div>
+
+<div class="opt-row">
+  <div class="opt-num">10</div>
+  <div class="opt-icon">🪥✨</div>
+  <div class="opt-info">
+    <div class="opt-title">Cepillo + brillo</div>
+    <div class="opt-desc">Combo. Más "premium" pero más ruidoso.</div>
+  </div>
+</div>
+
+<div class="group-label">Vista previa en el index</div>
+
+<div class="preview">
+  <div class="preview-label">Opción 1 (recomendada)</div>
+  <div class="preview-row">
+    <div class="ic">🪥</div>
+    <div>
+      <div class="info-title">Cepillado de dientes</div>
+      <div class="info-desc">Análisis de mis sesiones con el Oral-B iO</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+</div>
+
+<div class="preview">
+  <div class="preview-label">Opción 6 (SVG azul)</div>
+  <div class="preview-row">
+    <div class="ic svg-ic">
+      <svg viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="14.5" width="11" height="3" rx="1.5" fill="#2d6cdf"/>
+        <rect x="14" y="14" width="6" height="4" rx="1" fill="#5a8eef"/>
+        <line x1="14.5" y1="13" x2="14.5" y2="14" stroke="white" stroke-width="0.7"/>
+        <line x1="16" y1="12.5" x2="16" y2="14" stroke="white" stroke-width="0.7"/>
+        <line x1="17.5" y1="12.5" x2="17.5" y2="14" stroke="white" stroke-width="0.7"/>
+        <line x1="19" y1="13" x2="19" y2="14" stroke="white" stroke-width="0.7"/>
+      </svg>
+    </div>
+    <div>
+      <div class="info-title">Cepillado de dientes</div>
+      <div class="info-desc">Análisis de mis sesiones con el Oral-B iO</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+</div>
+
+<div class="preview">
+  <div class="preview-label">Opción 8 (logo Oral-B style)</div>
+  <div class="preview-row">
+    <div class="ic svg-ic">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="11" fill="#1a2332"/>
+        <rect x="5" y="14.5" width="9" height="2.5" rx="1.2" fill="white"/>
+        <rect x="14" y="14" width="5" height="3.5" rx="0.8" fill="#5a8eef"/>
+        <line x1="14.7" y1="13" x2="14.7" y2="14" stroke="white" stroke-width="0.6"/>
+        <line x1="16" y1="12.5" x2="16" y2="14" stroke="white" stroke-width="0.6"/>
+        <line x1="17.3" y1="12.5" x2="17.3" y2="14" stroke="white" stroke-width="0.6"/>
+        <line x1="18.6" y1="13" x2="18.6" y2="14" stroke="white" stroke-width="0.6"/>
+      </svg>
+    </div>
+    <div>
+      <div class="info-title">Cepillado de dientes</div>
+      <div class="info-desc">Análisis de mis sesiones con el Oral-B iO</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+</div>
+
+<div class="note">
+  💬 <strong>Cuando elijas, dime el número</strong> (p. ej. "la 1" o "la 8") y lo aplico al index.
+</div>
+
+</div>
+</body>
+</html>
