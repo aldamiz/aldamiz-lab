@@ -239,6 +239,65 @@
   .reco h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
   .reco p { font-size: 13px; color: #5a4a3c; line-height: 1.5; }
 
+  /* Gallery */
+  .gallery-intro {
+    text-align: center;
+    color: #5a6b7e;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .gallery-card {
+    background: #1a2332;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(26,35,50,0.15);
+    transition: transform 0.2s;
+  }
+  .gallery-card:hover { transform: translateY(-4px); }
+  .gallery-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 9/19;
+    object-fit: cover;
+    object-position: top;
+  }
+  .gallery-caption {
+    padding: 14px 16px;
+    color: white;
+  }
+  .gallery-caption h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .gallery-caption p {
+    font-size: 12px;
+    color: #a0b3c7;
+    line-height: 1.4;
+  }
+  .gallery-caption .tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-info { background: rgba(45,108,223,0.2); color: #5a8eef; }
+  .tag-warn { background: rgba(224,122,60,0.2); color: #ffb380; }
+  .tag-good { background: rgba(26,147,111,0.2); color: #5dd6a7; }
+  .tag-medal { background: rgba(214,69,138,0.2); color: #ff8ec1; }
+
   footer { text-align: center; margin-top: 40px; color: #a0aec0; font-size: 12px; }
 
   @media (max-width: 720px) {
@@ -317,6 +376,88 @@
     <div id="modes"></div>
   </section>
 </div>
+
+<!-- GALLERY -->
+<section class="card">
+  <h2>📱 Cómo lo veo en la app</h2>
+  <div class="gallery-intro">
+    Capturas reales de la app Oral-B iO durante mis sesiones. La app guía en tiempo real qué zonas cepillar, avisa de presión, y celebra cuando completas todo.
+  </div>
+  <div class="gallery">
+    <div class="gallery-card">
+      <img src="cepillado/IMG_0013.jpg" alt="Inicio de sesión">
+      <div class="gallery-caption">
+        <h4>Empezando por arriba</h4>
+        <p>Mandíbula superior ya cubierta (blanca). Empezando por la zona inferior derecha.</p>
+        <span class="tag tag-info">2:33 min</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_0008.jpg" alt="Aviso de presión">
+      <div class="gallery-caption">
+        <h4>"Reduce pressure" 🚨</h4>
+        <p>Pantalla en rojo cuando aprieto demasiado. Esto pasa especialmente en abajo derecha.</p>
+        <span class="tag tag-warn">Aviso</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_0009.jpg" alt="Increase pressure">
+      <div class="gallery-caption">
+        <h4>"Increase pressure"</h4>
+        <p>Cuando paso muy suave también avisa. La mandíbula inferior ya brilla limpia.</p>
+        <span class="tag tag-info">Feedback</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_0005.jpg" alt="Cobertura perfecta">
+      <div class="gallery-caption">
+        <h4>"Perfect coverage!" ✨</h4>
+        <p>Las 6 zonas cubiertas. Esto pasa en el 92% de mis sesiones.</p>
+        <span class="tag tag-good">Logro</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_9857.jpg" alt="Resultado 100%">
+      <div class="gallery-caption">
+        <h4>Sesión perfecta</h4>
+        <p>4:13 min · 100% cobertura · solo 1s de sobre-presión. Día redondo.</p>
+        <span class="tag tag-good">100/100</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_9862.jpg" alt="Medalla Kissable">
+      <div class="gallery-caption">
+        <h4>Medalla "Kissable" 💋</h4>
+        <p>Por limpiar la lengua 3 días seguidos. Lo hago en el 89% de sesiones.</p>
+        <span class="tag tag-medal">Medalla</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_9871.jpg" alt="Master of Brushing">
+      <div class="gallery-caption">
+        <h4>"Master of Brushing" 🏆</h4>
+        <p>Tres top scores seguidos. Tengo 25 sesiones con score ≥90.</p>
+        <span class="tag tag-medal">Medalla</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_0010.jpg" alt="Pantalla de guardar">
+      <div class="gallery-caption">
+        <h4>Reporte post-sesión</h4>
+        <p>Aquí marco lengua, hilo y enjuague. Estos toggles son los que se ven en mis hábitos.</p>
+        <span class="tag tag-info">Hábitos</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="cepillado/IMG_0011.jpg" alt="Daily coaching">
+      <div class="gallery-caption">
+        <h4>"Apply perfect pressure"</h4>
+        <p>Coaching diario tras un día con 5s de sobre-presión. Las zonas en rojo coinciden con mis datos.</p>
+        <span class="tag tag-warn">Coaching</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- RECOMMENDATIONS -->
 <section class="card">
