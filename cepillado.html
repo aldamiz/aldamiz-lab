@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis de cepillado · Oral-B</title>
+<script src="/guard.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+    color: #1a2332;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  /* Header */
+  header { text-align: center; margin-bottom: 40px; }
+  .logo { font-size: 56px; margin-bottom: 8px; }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .subtitle { color: #5a6b7e; font-size: 15px; }
+  .period { display: inline-block; margin-top: 12px; padding: 6px 16px; background: white; border-radius: 999px; font-size: 13px; color: #5a6b7e; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+
+  /* Hero stats */
+  .hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .stat {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .stat:hover { transform: translateY(-2px); }
+  .stat-value { font-size: 38px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+  .stat-label { font-size: 12px; color: #7a8a9e; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; font-weight: 600; }
+  .stat-sub { font-size: 11px; color: #a0aec0; margin-top: 4px; }
+  .v-good { color: #1a936f; }
+  .v-ok { color: #2d6cdf; }
+  .v-warn { color: #e07a3c; }
+  .v-bad { color: #d64545; }
+
+  /* Card */
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card .desc { color: #5a6b7e; font-size: 13px; margin-bottom: 16px; }
+
+  /* Mouth map */
+  .mouth-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 480px;
+    margin: 0 auto 16px;
+  }
+  .mouth-cell {
+    border-radius: 16px;
+    padding: 18px 12px;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+  }
+  .mouth-cell .zone-name { font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; }
+  .mouth-cell .zone-val { font-size: 22px; font-weight: 800; margin: 4px 0; }
+  .mouth-cell .zone-extra { font-size: 11px; opacity: 0.85; }
+  .mouth-divider {
+    height: 12px;
+    background: linear-gradient(90deg, transparent, #c7d3e0, transparent);
+    margin: 4px 0;
+    border-radius: 999px;
+    max-width: 480px;
+    margin: 4px auto;
+  }
+
+  /* Calendar heatmap */
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .cal-day-label { font-size: 10px; color: #a0aec0; text-align: center; font-weight: 600; }
+  .cal-cell {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: #edf2f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #4a5568;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .cal-cell:hover { transform: scale(1.08); z-index: 2; }
+  .cal-cell .cal-num { font-size: 14px; font-weight: 700; }
+  .cal-cell.empty { background: transparent; cursor: default; }
+  .cal-cell.zero { background: #f5d4d4; color: #c53030; }
+  .cal-cell.l1 { background: #cfe9d6; color: #1a4d3e; }
+  .cal-cell.l2 { background: #95d3a8; color: #0a3a2a; }
+  .cal-cell.l3 { background: #4ab070; color: white; }
+  .cal-cell.l4 { background: #1a936f; color: white; }
+  .cal-tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a2332;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 10;
+    font-weight: 500;
+  }
+  .cal-cell:hover .cal-tooltip { visibility: visible; }
+
+  /* Two columns layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 720px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* Score chart */
+  .chart-container { position: relative; height: 220px; padding: 8px 0; }
+  svg { width: 100%; height: 100%; overflow: visible; }
+
+  /* Hour bars */
+  .hour-bars {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 2px;
+    align-items: end;
+    height: 130px;
+  }
+  .hour-bar {
+    background: linear-gradient(to top, #2d6cdf, #5a8eef);
+    border-radius: 4px 4px 0 0;
+    min-height: 2px;
+    position: relative;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .hour-bar:hover { opacity: 0.75; }
+  .hour-axis {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 2px;
+    margin-top: 6px;
+  }
+  .hour-label { font-size: 9px; color: #a0aec0; text-align: center; }
+
+  /* Habit rings */
+  .habit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .habit {
+    text-align: center;
+    padding: 12px 8px;
+    background: #f7fafc;
+    border-radius: 16px;
+  }
+  .habit-icon { font-size: 24px; margin-bottom: 4px; }
+  .habit-pct { font-size: 24px; font-weight: 800; }
+  .habit-label { font-size: 11px; color: #5a6b7e; margin-top: 2px; font-weight: 600; }
+
+  /* Sessions list */
+  .session-list { display: flex; flex-direction: column; gap: 6px; }
+  .session-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #f7fafc;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+  .session-date { font-weight: 600; min-width: 110px; }
+  .session-meta { color: #5a6b7e; font-size: 12px; }
+  .session-score { font-weight: 800; font-size: 16px; min-width: 50px; text-align: right; }
+
+  /* Recommendations */
+  .reco {
+    background: linear-gradient(135deg, #fef3e2 0%, #fdebd0 100%);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .reco-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: #e07a3c;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .reco h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .reco p { font-size: 13px; color: #5a4a3c; line-height: 1.5; }
+
+  footer { text-align: center; margin-top: 40px; color: #a0aec0; font-size: 12px; }
+
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: repeat(2, 1fr); }
+    .stat-value { font-size: 28px; }
+    h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="logo">🪥</div>
+  <h1>Análisis de cepillado</h1>
+  <div class="subtitle">Mis sesiones con el Oral-B iO</div>
+  <div class="period" id="period"></div>
+</header>
+
+<!-- HERO STATS -->
+<section class="hero" id="hero"></section>
+
+<!-- CALENDAR -->
+<section class="card">
+  <h2>📅 Calendario de hábitos</h2>
+  <div class="desc">Sesiones por día. <span style="color:#1a936f">Verde</span> = cepillado, <span style="color:#c53030">rojo</span> = día sin cepillar. Cuanto más oscuro, más sesiones.</div>
+  <div id="calendar"></div>
+</section>
+
+<!-- MOUTH + ZONES -->
+<section class="card">
+  <h2>👄 Mapa de tu boca</h2>
+  <div class="desc">Tiempo medio dedicado a cada zona (segundos). Lo ideal son ~20-30s por zona. <strong>Cuanto más rojo, más aprietas en esa zona.</strong></div>
+  <div id="mouth"></div>
+  <div style="margin-top:16px; font-size:12px; color:#5a6b7e; text-align:center;" id="mouth-summary"></div>
+</section>
+
+<!-- SCORE EVOLUTION + DURATION -->
+<div class="two-col">
+  <section class="card">
+    <h2>📈 Evolución del score</h2>
+    <div class="desc">Score medio por día (0-100).</div>
+    <div class="chart-container" id="score-chart"></div>
+  </section>
+
+  <section class="card">
+    <h2>⏱️ Distribución horaria</h2>
+    <div class="desc">¿A qué hora del día te cepillas?</div>
+    <div class="hour-bars" id="hour-bars"></div>
+    <div class="hour-axis" id="hour-axis"></div>
+  </section>
+</div>
+
+<!-- HABITS + TOP/BOTTOM SESSIONS -->
+<div class="two-col">
+  <section class="card">
+    <h2>🦷 Hábitos complementarios</h2>
+    <div class="desc">Lo que reportas a la app después de cada sesión.</div>
+    <div class="habit-grid" id="habits"></div>
+  </section>
+
+  <section class="card">
+    <h2>🏆 Top 5 mejores sesiones</h2>
+    <div class="session-list" id="top-sessions"></div>
+  </section>
+</div>
+
+<div class="two-col">
+  <section class="card">
+    <h2>📉 5 sesiones más flojas</h2>
+    <div class="session-list" id="bottom-sessions"></div>
+  </section>
+
+  <section class="card">
+    <h2>🎯 Sesiones por modo</h2>
+    <div id="modes"></div>
+  </section>
+</div>
+
+<!-- RECOMMENDATIONS -->
+<section class="card">
+  <h2>💡 Recomendaciones personalizadas</h2>
+  <div id="recos"></div>
+</section>
+
+<footer>
+  Cepillo Oral-B iO · 61 sesiones analizadas · Generado por Claude
+</footer>
+
+</div>
+
+<script>
+const SESSIONS = [{"date": "2026-03-29", "time": "16:11", "hour": 16, "duration": 30, "score": null, "pressure_events": 0, "pressure_duration": 0, "coverage": "<nil>", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": null, "zone_pressure": null}, {"date": "2026-03-29", "time": "16:12", "hour": 16, "duration": 153, "score": 58, "pressure_events": 13, "pressure_duration": 4, "coverage": "71/100", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 7.0205299854278564, "bottomLeft": 7.023514032363892, "bottomRight": 10.020925998687744, "topCenter": 42.17322397232056, "topLeft": 34.17344307899475, "topRight": 44.383545994758606}, "zone_pressure": {"bottomLeft": 0.5658590793609619, "topRight": 3.17095685005188}}, {"date": "2026-03-29", "time": "21:41", "hour": 21, "duration": 253, "score": 93, "pressure_events": 6, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 26.132616877555847, "bottomLeft": 25.07550597190857, "bottomRight": 43.202038049697876, "topCenter": 49.210463881492615, "topLeft": 58.23782205581665, "topRight": 37.176600098609924}, "zone_pressure": {"bottomLeft": 0.828644871711731, "bottomRight": 0.21003901958465576, "topRight": 0.2700681686401367}}, {"date": "2026-03-30", "time": "06:26", "hour": 6, "duration": 224, "score": 77, "pressure_events": 30, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 15.009850025177002, "bottomLeft": 25.612616419792175, "bottomRight": 35.16083121299744, "topCenter": 48.130444049835205, "topLeft": 46.78096139431, "topRight": 42.222582936286926}, "zone_pressure": {"bottomCenter": 0.1382269263267517, "bottomLeft": 0.17961406707763672, "bottomRight": 2.00442111492157, "topCenter": 0.793398916721344, "topLeft": 0.8163220882415771, "topRight": 0.6990078687667847}}, {"date": "2026-03-30", "time": "15:51", "hour": 15, "duration": 203, "score": 83, "pressure_events": 33, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 26.098367393016815, "bottomLeft": 24.14189451932907, "bottomRight": 32.07469117641449, "topCenter": 32.16676265001297, "topLeft": 33.03100138902664, "topRight": 36.18690299987793}, "zone_pressure": {"bottomCenter": 0.41022413969039917, "bottomRight": 0.5320659875869751, "topCenter": 0.31929999589920044, "topLeft": 0.7240909337997437, "topRight": 1.442318081855774}}, {"date": "2026-03-30", "time": "22:10", "hour": 22, "duration": 211, "score": 83, "pressure_events": 20, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 30.5906862616539, "bottomLeft": 24.648877799510956, "bottomRight": 25.134986996650696, "topCenter": 37.63799041509628, "topLeft": 43.658943474292755, "topRight": 36.17555510997772}, "zone_pressure": {"bottomCenter": 0.04368305206298828, "bottomRight": 0.11933887004852295, "topCenter": 1.0628821849822998, "topLeft": 0.20943021774291992, "topRight": 1.9121769666671753}}, {"date": "2026-03-31", "time": "07:04", "hour": 7, "duration": 215, "score": 76, "pressure_events": 38, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 22.049118041992188, "bottomLeft": 26.128224968910217, "bottomRight": 34.16856801509857, "topCenter": 38.23511207103729, "topLeft": 35.174094796180725, "topRight": 28.08483910560608}, "zone_pressure": {"bottomCenter": 0.1472170352935791, "bottomLeft": 0.8720079660415649, "bottomRight": 1.5337018966674805, "topCenter": 0.540759801864624, "topLeft": 0.2608010768890381, "topRight": 1.4401618242263794}}, {"date": "2026-03-31", "time": "15:40", "hour": 15, "duration": 169, "score": 97, "pressure_events": 4, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 22.078758001327515, "bottomLeft": 26.068832993507385, "bottomRight": 26.1370130777359, "topCenter": 22.01189410686493, "topLeft": 31.184584975242615, "topRight": 28.14179790019989}, "zone_pressure": {"bottomRight": 0.6574819087982178, "topCenter": 0.031174898147583008}}, {"date": "2026-03-31", "time": "22:05", "hour": 22, "duration": 167, "score": 92, "pressure_events": 23, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 21.547471404075623, "bottomLeft": 25.085840106010437, "bottomRight": 25.17315900325775, "topCenter": 24.544870495796204, "topLeft": 26.159879088401794, "topRight": 25.11327290534973}, "zone_pressure": {"bottomCenter": 0.21504878997802734, "bottomLeft": 0.48151683807373047, "bottomRight": 0.8411581516265869, "topCenter": 0.08687996864318848}}, {"date": "2026-04-01", "time": "06:48", "hour": 6, "duration": 204, "score": 100, "pressure_events": 0, "pressure_duration": 0, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 54.178786873817444, "bottomLeft": 25.076449155807495, "bottomRight": 27.148929953575134, "topCenter": 28.214346885681152, "topLeft": 25.133288025856018, "topRight": 26.036049127578735}, "zone_pressure": {}}, {"date": "2026-04-01", "time": "16:28", "hour": 16, "duration": 191, "score": 77, "pressure_events": 28, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 33.11624574661255, "bottomLeft": 29.112800240516663, "bottomRight": 34.172792077064514, "topCenter": 26.10248291492462, "topLeft": 30.154573917388916, "topRight": 27.128575086593628}, "zone_pressure": {"bottomCenter": 0.3182392120361328, "bottomLeft": 1.1383750438690186, "bottomRight": 2.539085865020752, "topCenter": 0.06020200252532959, "topLeft": 0.2705270051956177, "topRight": 0.21130609512329102}}, {"date": "2026-04-01", "time": "22:27", "hour": 22, "duration": 203, "score": 80, "pressure_events": 47, "pressure_duration": 4, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 36.0581431388855, "bottomLeft": 23.192938923835754, "bottomRight": 28.139160990715027, "topCenter": 28.05541503429413, "topLeft": 28.104275107383728, "topRight": 47.248875856399536}, "zone_pressure": {"bottomCenter": 0.15389585494995117, "bottomLeft": 0.41943812370300293, "bottomRight": 1.02180016040802, "topCenter": 0.12093007564544678, "topLeft": 1.4437979459762573, "topRight": 0.7486952543258667}}, {"date": "2026-04-02", "time": "07:30", "hour": 7, "duration": 174, "score": 99, "pressure_events": 4, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 26.118645429611206, "bottomLeft": 26.605582058429718, "bottomRight": 34.20163190364838, "topCenter": 22.11980652809143, "topLeft": 27.513488948345184, "topRight": 25.11311709880829}, "zone_pressure": {"bottomCenter": 0.028344452381134033, "bottomLeft": 0.028947055339813232, "bottomRight": 0.08993792533874512, "topCenter": 0.028344452381134033, "topLeft": 0.08850902318954468}}, {"date": "2026-04-02", "time": "15:31", "hour": 15, "duration": 180, "score": 50, "pressure_events": 128, "pressure_duration": 12, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 33.08232790231705, "bottomLeft": 26.136937975883484, "bottomRight": 25.144613027572632, "topCenter": 24.094980776309967, "topLeft": 27.106385350227356, "topRight": 36.20660209655762}, "zone_pressure": {"bottomCenter": 1.517037272453308, "bottomLeft": 5.335205793380737, "bottomRight": 3.864249348640442, "none": 0.11331498622894287, "topCenter": 0.43143904209136963, "topLeft": 0.23600423336029053, "topRight": 0.486017107963562}}, {"date": "2026-04-02", "time": "22:01", "hour": 22, "duration": 181, "score": 85, "pressure_events": 42, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 28.148045361042023, "bottomLeft": 24.069904565811157, "bottomRight": 39.16302406787872, "topCenter": 20.107549369335175, "topLeft": 33.162264704704285, "topRight": 30.096181988716125}, "zone_pressure": {"bottomCenter": 0.09178692102432251, "bottomLeft": 0.35477882623672485, "bottomRight": 0.7207300662994385, "topCenter": 0.5867541432380676, "topLeft": 1.1717458367347717, "topRight": 0.0003019571304321289}}, {"date": "2026-04-03", "time": "07:28", "hour": 7, "duration": 203, "score": 82, "pressure_events": 59, "pressure_duration": 4, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 41.67531752586365, "bottomLeft": 24.599026322364807, "bottomRight": 25.14051902294159, "topCenter": 38.73601746559143, "topLeft": 29.547476649284363, "topRight": 31.07456600666046}, "zone_pressure": {"bottomCenter": 0.8404477834701538, "bottomRight": 0.7171648740768433, "none": 0.06211400032043457, "topCenter": 0.3728104829788208, "topLeft": 0.7521889209747314, "topRight": 0.9094499349594116}}, {"date": "2026-04-03", "time": "15:34", "hour": 15, "duration": 155, "score": 77, "pressure_events": 56, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 15.575727999210358, "bottomLeft": 23.058225572109222, "bottomRight": 28.13673686981201, "topCenter": 24.59361296892166, "topLeft": 27.131955444812775, "topRight": 25.077584147453308}, "zone_pressure": {"bottomCenter": 0.19444596767425537, "bottomLeft": 0.24815303087234497, "bottomRight": 2.0506820678710938, "none": 0.18226313591003418, "topCenter": 0.6533912420272827, "topLeft": 0.24282711744308472, "topRight": 0.951575756072998}}, {"date": "2026-04-03", "time": "23:43", "hour": 23, "duration": 185, "score": 74, "pressure_events": 60, "pressure_duration": 5, "coverage": "1/1", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 24.575059175491333, "bottomLeft": 26.124204516410828, "bottomRight": 26.119953989982605, "topCenter": 33.67128920555115, "topLeft": 28.105467438697815, "topRight": 36.12156271934509}, "zone_pressure": {"bottomCenter": 0.2127140760421753, "bottomLeft": 0.1622774600982666, "bottomRight": 0.8003727197647095, "topCenter": 1.8798491954803467, "topLeft": 0.6772475242614746, "topRight": 1.3893686532974243}}, {"date": "2026-04-04", "time": "08:09", "hour": 8, "duration": 203, "score": 76, "pressure_events": 58, "pressure_duration": 5, "coverage": "1/1", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 25.66934084892273, "bottomLeft": 24.546988010406494, "bottomRight": 27.098010063171387, "topCenter": 36.6319100856781, "topLeft": 39.68539202213287, "topRight": 35.160300970077515}, "zone_pressure": {"bottomCenter": 2.1054819226264954, "bottomRight": 0.5457108020782471, "topCenter": 1.144166886806488, "topLeft": 0.35757505893707275, "topRight": 0.6666878461837769}}, {"date": "2026-04-04", "time": "16:14", "hour": 16, "duration": 182, "score": 87, "pressure_events": 44, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 17.56159371137619, "bottomLeft": 27.115466833114624, "bottomRight": 26.08015203475952, "topCenter": 33.630416572093964, "topLeft": 33.1286997795105, "topRight": 33.18890309333801}, "zone_pressure": {"bottomCenter": 0.3400486707687378, "bottomLeft": 0.370330810546875, "bottomRight": 0.5707900524139404, "topCenter": 0.727866530418396, "topLeft": 0.2419978380203247, "topRight": 0.2658228874206543}}, {"date": "2026-04-04", "time": "22:51", "hour": 22, "duration": 160, "score": 97, "pressure_events": 5, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 21.123068928718567, "bottomLeft": 25.57710200548172, "bottomRight": 27.119460225105286, "topCenter": 22.08202886581421, "topLeft": 30.696352899074554, "topRight": 23.03774905204773}, "zone_pressure": {"bottomRight": 0.6036908626556396, "topRight": 0.09031593799591064}}, {"date": "2026-04-05", "time": "08:41", "hour": 8, "duration": 185, "score": 71, "pressure_events": 67, "pressure_duration": 6, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 32.60987538099289, "bottomLeft": 23.126948475837708, "bottomRight": 25.08159601688385, "topCenter": 33.66029745340347, "topLeft": 28.351757764816284, "topRight": 31.108972907066345}, "zone_pressure": {"bottomCenter": 0.8149889707565308, "bottomLeft": 0.00018548965454101562, "bottomRight": 1.8591200113296509, "topCenter": 0.5619679689407349, "topLeft": 1.3227217197418213, "topRight": 1.1941667795181274}}, {"date": "2026-04-05", "time": "16:12", "hour": 16, "duration": 182, "score": 73, "pressure_events": 60, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 31.58863741159439, "bottomLeft": 25.1363827586174, "bottomRight": 23.16540002822876, "topCenter": 33.65614861249924, "topLeft": 27.058742463588715, "topRight": 25.119866967201233}, "zone_pressure": {"bottomCenter": 2.056866943836212, "bottomLeft": 0.8257867693901062, "bottomRight": 0.8498901128768921, "none": 0.14380598068237305, "topCenter": 0.8248580098152161, "topLeft": 0.49712568521499634, "topRight": 0.14819908142089844}}, {"date": "2026-04-05", "time": "20:28", "hour": 20, "duration": 173, "score": 89, "pressure_events": 20, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 15.987975120544434, "bottomLeft": 23.155631065368652, "bottomRight": 23.09937584400177, "topCenter": 38.167500019073486, "topLeft": 28.15733814239502, "topRight": 38.16868579387665}, "zone_pressure": {"bottomCenter": 0.06011700630187988, "bottomLeft": 0.09012699127197266, "topCenter": 0.8468359708786011, "topLeft": 0.2781059741973877, "topRight": 0.8292241096496582}}, {"date": "2026-04-06", "time": "07:05", "hour": 7, "duration": 189, "score": 64, "pressure_events": 103, "pressure_duration": 7, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 32.55092763900757, "bottomLeft": 25.664882838726044, "bottomRight": 25.138232946395874, "topCenter": 36.62456440925598, "topLeft": 26.628713190555573, "topRight": 29.127530932426453}, "zone_pressure": {"bottomCenter": 2.105405628681183, "bottomLeft": 1.3585994243621826, "bottomRight": 1.8703964948654175, "topCenter": 1.2660077214241028, "topLeft": 0.20950853824615479, "topRight": 0.33059191703796387}}, {"date": "2026-04-06", "time": "17:22", "hour": 17, "duration": 208, "score": 77, "pressure_events": 61, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 19.483074724674225, "bottomLeft": 28.180492103099823, "bottomRight": 36.18633592128754, "topCenter": 35.63132828474045, "topLeft": 42.18256491422653, "topRight": 38.1965309381485}, "zone_pressure": {"bottomCenter": 0.3200119733810425, "bottomLeft": 0.4959909915924072, "bottomRight": 0.8817861080169678, "topCenter": 0.9372851848602295, "topLeft": 1.6792696714401245, "topRight": 0.24177885055541992}}, {"date": "2026-04-06", "time": "22:13", "hour": 22, "duration": 169, "score": 87, "pressure_events": 31, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 29.147368550300598, "bottomLeft": 25.11542272567749, "bottomRight": 27.066529035568237, "topCenter": 22.118050456047058, "topLeft": 31.135764002799988, "topRight": 27.087977170944214}, "zone_pressure": {"bottomCenter": 0.5381821393966675, "bottomLeft": 0.41983795166015625, "bottomRight": 1.2175318002700806, "topCenter": 0.030018925666809082, "topLeft": 0.1627129316329956, "topRight": 0.2997788190841675}}, {"date": "2026-04-07", "time": "06:20", "hour": 6, "duration": 191, "score": 90, "pressure_events": 28, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 29.612901031970978, "bottomLeft": 22.563955664634705, "bottomRight": 23.10452091693878, "topCenter": 28.61964100599289, "topLeft": 38.72335159778595, "topRight": 29.096137762069702}, "zone_pressure": {"bottomCenter": 0.6080313920974731, "bottomLeft": 0.06046092510223389, "bottomRight": 0.6987471580505371, "none": 0.49428606033325195, "topCenter": 0.08787691593170166, "topLeft": 0.029997944831848145}}, {"date": "2026-04-07", "time": "16:27", "hour": 16, "duration": 165, "score": 96, "pressure_events": 13, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 17.154960989952087, "bottomLeft": 23.55474853515625, "bottomRight": 27.127089142799377, "topCenter": 29.093793153762817, "topLeft": 30.565678358078003, "topRight": 32.16503179073334}, "zone_pressure": {"bottomLeft": 0.0875939130783081, "bottomRight": 0.18219590187072754, "topCenter": 0.11798703670501709, "topLeft": 0.3213162422180176}}, {"date": "2026-04-10", "time": "23:17", "hour": 23, "duration": 195, "score": 96, "pressure_events": 13, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 32.18523824214935, "bottomLeft": 26.13499891757965, "bottomRight": 25.135347962379456, "topCenter": 40.075881004333496, "topLeft": 29.170228958129883, "topRight": 29.095616936683655}, "zone_pressure": {"bottomCenter": 0.062226057052612305, "bottomLeft": 0.18166697025299072, "bottomRight": 0.35085296630859375, "topCenter": 0.12140285968780518, "topLeft": 0.09037816524505615}}, {"date": "2026-04-11", "time": "09:37", "hour": 9, "duration": 197, "score": 98, "pressure_events": 5, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 36.59267461299896, "bottomLeft": 24.113584995269775, "bottomRight": 25.134543895721436, "topCenter": 32.60759937763214, "topLeft": 30.20987117290497, "topRight": 31.091195106506348}, "zone_pressure": {"bottomCenter": 0.19412988424301147, "bottomRight": 0.08991396427154541, "topCenter": 0.044225990772247314}}, {"date": "2026-04-11", "time": "16:19", "hour": 16, "duration": 180, "score": 90, "pressure_events": 28, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 18.528282642364502, "bottomLeft": 24.64776086807251, "bottomRight": 37.1759889125824, "topCenter": 21.6410413980484, "topLeft": 30.574622988700867, "topRight": 31.10664212703705}, "zone_pressure": {"bottomLeft": 0.24103891849517822, "bottomRight": 0.24686408042907715, "topCenter": 1.1117322444915771, "topLeft": 0.17914879322052002, "topRight": 0.2099529504776001}}, {"date": "2026-04-11", "time": "23:53", "hour": 23, "duration": 181, "score": 93, "pressure_events": 27, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 16.08212947845459, "bottomLeft": 22.608779072761536, "bottomRight": 26.09613609313965, "topCenter": 37.14048743247986, "topLeft": 37.66499090194702, "topRight": 34.17672097682953}, "zone_pressure": {"bottomCenter": 0.14810097217559814, "bottomLeft": 0.2905155420303345, "bottomRight": 0.08999097347259521, "topCenter": 0.2090139389038086, "topLeft": 0.38738346099853516, "topRight": 0.2713719606399536}}, {"date": "2026-04-12", "time": "10:24", "hour": 10, "duration": 217, "score": 91, "pressure_events": 25, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 26.574008345603943, "bottomLeft": 26.56209307909012, "bottomRight": 23.134235978126526, "topCenter": 39.6835333108902, "topLeft": 48.789115250110626, "topRight": 43.08614420890808}, "zone_pressure": {"bottomCenter": 0.14816415309906006, "bottomLeft": 0.12087106704711914, "bottomRight": 0.6752159595489502, "topCenter": 0.5327491760253906, "topLeft": 0.13371992111206055, "topRight": 0.14865601062774658}}, {"date": "2026-04-12", "time": "22:51", "hour": 22, "duration": 158, "score": 98, "pressure_events": 6, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 21.068259358406067, "bottomLeft": 25.089653849601746, "bottomRight": 28.13982915878296, "topCenter": 23.10655963420868, "topLeft": 29.126582145690918, "topRight": 25.108518958091736}, "zone_pressure": {"bottomRight": 0.09327101707458496, "none": 0.05901205539703369, "topCenter": 0.062468886375427246, "topRight": 0.15009307861328125}}, {"date": "2026-04-13", "time": "06:52", "hour": 6, "duration": 205, "score": 78, "pressure_events": 59, "pressure_duration": 4, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 35.713056445121765, "bottomLeft": 25.080108046531677, "bottomRight": 25.111667037010193, "topCenter": 34.53740155696869, "topLeft": 25.16867184638977, "topRight": 34.17546904087067}, "zone_pressure": {"bottomCenter": 1.04778653383255, "bottomRight": 1.6364296674728394, "topCenter": 1.2065995335578918, "topLeft": 0.23661315441131592, "topRight": 0.15342497825622559}}, {"date": "2026-04-13", "time": "15:20", "hour": 15, "duration": 167, "score": 57, "pressure_events": 102, "pressure_duration": 9, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 17.11651200056076, "bottomLeft": 24.60277569293976, "bottomRight": 26.096694827079773, "topCenter": 32.08998388051987, "topLeft": 24.60510563850403, "topRight": 35.14558696746826}, "zone_pressure": {"bottomCenter": 0.6546384692192078, "bottomLeft": 0.12016445398330688, "bottomRight": 0.6172277927398682, "topCenter": 1.8301946520805359, "topLeft": 2.5809317231178284, "topRight": 2.7115949392318726}}, {"date": "2026-04-13", "time": "21:46", "hour": 21, "duration": 222, "score": 92, "pressure_events": 31, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 19.55376160144806, "bottomLeft": 25.600611090660095, "bottomRight": 49.259082078933716, "topCenter": 43.63390898704529, "topLeft": 36.72449207305908, "topRight": 35.09337508678436}, "zone_pressure": {"bottomCenter": 0.14729797840118408, "bottomRight": 0.5678082704544067, "topCenter": 0.31187379360198975, "topLeft": 0.4611389636993408, "topRight": 0.12253499031066895}}, {"date": "2026-04-14", "time": "06:53", "hour": 6, "duration": 165, "score": 87, "pressure_events": 30, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 23.099767088890076, "bottomLeft": 25.141556978225708, "bottomRight": 25.078396916389465, "topCenter": 27.048943042755127, "topLeft": 28.14775776863098, "topRight": 28.144501209259033}, "zone_pressure": {"bottomCenter": 0.16158103942871094, "bottomLeft": 0.6551328897476196, "bottomRight": 1.2139527797698975, "topCenter": 0.18074703216552734, "topLeft": 0.41332101821899414}}, {"date": "2026-04-14", "time": "16:40", "hour": 16, "duration": 186, "score": 99, "pressure_events": 3, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 22.07578980922699, "bottomLeft": 26.101245045661926, "bottomRight": 25.139594078063965, "topCenter": 35.142523884773254, "topLeft": 34.13474917411804, "topRight": 36.17478609085083}, "zone_pressure": {"topLeft": 0.11766600608825684, "topRight": 0.09092605113983154}}, {"date": "2026-04-14", "time": "21:34", "hour": 21, "duration": 170, "score": 80, "pressure_events": 59, "pressure_duration": 4, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 31.13244128227234, "bottomLeft": 26.116189122200012, "bottomRight": 26.076173067092896, "topCenter": 18.012149572372437, "topLeft": 28.17505693435669, "topRight": 31.169615983963013}, "zone_pressure": {"bottomCenter": 1.2024166584014893, "bottomLeft": 1.8537514209747314, "bottomRight": 0.7201577425003052, "topCenter": 0.00022494792938232422, "topLeft": 0.15008413791656494}}, {"date": "2026-04-15", "time": "07:48", "hour": 7, "duration": 209, "score": 92, "pressure_events": 16, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 30.12540590763092, "bottomLeft": 26.122784972190857, "bottomRight": 26.159411072731018, "topCenter": 28.129709720611572, "topLeft": 38.11375331878662, "topRight": 35.07598304748535}, "zone_pressure": {"bottomCenter": 0.21009409427642822, "bottomLeft": 0.10839903354644775, "bottomRight": 0.8442592620849609, "topCenter": 0.42414844036102295, "topLeft": 0.02895808219909668}}, {"date": "2026-04-15", "time": "21:37", "hour": 21, "duration": 184, "score": 80, "pressure_events": 63, "pressure_duration": 4, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 29.205542981624603, "bottomLeft": 38.667060017585754, "bottomRight": 32.118377923965454, "topCenter": 27.07226437330246, "topLeft": 27.10952079296112, "topRight": 28.11858594417572}, "zone_pressure": {"bottomCenter": 0.7050138711929321, "bottomLeft": 0.7985607385635376, "bottomRight": 0.804448127746582, "topCenter": 0.429426908493042, "topLeft": 1.109765887260437, "topRight": 0.2102137804031372}}, {"date": "2026-04-16", "time": "06:29", "hour": 6, "duration": 195, "score": 97, "pressure_events": 11, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 22.57043194770813, "bottomLeft": 26.152398943901062, "bottomRight": 26.10441493988037, "topCenter": 34.67212796211243, "topLeft": 25.103248953819275, "topRight": 36.12226414680481}, "zone_pressure": {"bottomCenter": 0.11913299560546875, "bottomRight": 0.2391660213470459, "topCenter": 0.08012497425079346, "topLeft": 0.09942996501922607}}, {"date": "2026-04-16", "time": "15:32", "hour": 15, "duration": 213, "score": 99, "pressure_events": 37, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 16.11757218837738, "bottomLeft": 23.08754789829254, "bottomRight": 31.086869955062866, "topCenter": 47.126201033592224, "topLeft": 27.116642951965332, "topRight": 37.23811995983124}, "zone_pressure": {"bottomRight": 0.08767902851104736, "topCenter": 0.030555009841918945}}, {"date": "2026-04-16", "time": "21:09", "hour": 21, "duration": 125, "score": 91, "pressure_events": 11, "pressure_duration": 1, "coverage": "47/50", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 19.98810386657715, "bottomLeft": 25.081330060958862, "bottomRight": 27.749401926994324, "topCenter": 18.469483852386475, "topLeft": 22.843840956687927, "topRight": 14.061140060424805}, "zone_pressure": {"bottomRight": 0.0319669246673584, "topCenter": 0.1753600835800171, "topLeft": 0.18067693710327148, "topRight": 0.20947504043579102}}, {"date": "2026-04-16", "time": "21:11", "hour": 21, "duration": 55, "score": null, "pressure_events": 0, "pressure_duration": 0, "coverage": "<nil>", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": null, "zone_pressure": null}, {"date": "2026-04-17", "time": "06:26", "hour": 6, "duration": 244, "score": 98, "pressure_events": 8, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 31.142426013946533, "bottomLeft": 25.107468843460083, "bottomRight": 25.139204025268555, "topCenter": 47.15313148498535, "topLeft": 40.205684781074524, "topRight": 42.1778279542923}, "zone_pressure": {"bottomLeft": 0.02939295768737793, "none": 0.03974497318267822, "topCenter": 0.38747406005859375}}, {"date": "2026-04-17", "time": "16:00", "hour": 16, "duration": 226, "score": 92, "pressure_events": 29, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 19.562027871608734, "bottomLeft": 25.538181602954865, "bottomRight": 24.14596116542816, "topCenter": 29.560766875743866, "topLeft": 65.81333249807358, "topRight": 31.218812108039856}, "zone_pressure": {"bottomCenter": 0.10337042808532715, "bottomLeft": 0.12271153926849365, "bottomRight": 0.301672101020813, "topCenter": 0.28806042671203613, "topLeft": 0.6551876068115234, "topRight": 0.17972099781036377}}, {"date": "2026-04-19", "time": "20:40", "hour": 20, "duration": 175, "score": 78, "pressure_events": 45, "pressure_duration": 4, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 25.080760836601257, "bottomLeft": 24.138995885849, "bottomRight": 23.07430624961853, "topCenter": 21.154541015625, "topLeft": 28.076079964637756, "topRight": 43.169484972953796}, "zone_pressure": {"bottomCenter": 0.02827906608581543, "bottomLeft": 0.1199190616607666, "bottomRight": 2.3122438192367554, "topCenter": 1.3423082828521729, "topLeft": 0.4750838279724121, "topRight": 0.09058189392089844}}, {"date": "2026-04-20", "time": "06:41", "hour": 6, "duration": 185, "score": 84, "pressure_events": 54, "pressure_duration": 3, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 39.11301004886627, "bottomLeft": 25.085580110549927, "bottomRight": 23.116693019866943, "topCenter": 23.14455211162567, "topLeft": 32.21672284603119, "topRight": 31.077391862869263}, "zone_pressure": {"bottomCenter": 0.9064316153526306, "bottomLeft": 0.4641808271408081, "bottomRight": 0.9326878786087036, "none": 0.2369621992111206, "topCenter": 0.1432214379310608, "topLeft": 0.38820087909698486, "topRight": 0.08931398391723633}}, {"date": "2026-04-20", "time": "15:29", "hour": 15, "duration": 179, "score": 72, "pressure_events": 62, "pressure_duration": 6, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 17.59533131122589, "bottomLeft": 24.118645071983337, "bottomRight": 36.1447252035141, "topCenter": 37.70270037651062, "topLeft": 30.107813000679016, "topRight": 27.067344069480896}, "zone_pressure": {"bottomCenter": 0.32169657945632935, "bottomLeft": 0.35916292667388916, "bottomRight": 0.12050390243530273, "topCenter": 1.2937625050544739, "topLeft": 2.9184799194335938, "topRight": 0.49028992652893066}}, {"date": "2026-04-20", "time": "21:24", "hour": 21, "duration": 210, "score": 76, "pressure_events": 47, "pressure_duration": 5, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 28.14654779434204, "bottomLeft": 29.11895716190338, "bottomRight": 38.130411982536316, "topCenter": 32.099188804626465, "topLeft": 26.040722131729126, "topRight": 45.30856108665466}, "zone_pressure": {"bottomLeft": 0.7808338403701782, "bottomRight": 2.6205270290374756, "topCenter": 0.9018368721008301, "topLeft": 0.4996371269226074, "topRight": 0.061712026596069336}}, {"date": "2026-04-21", "time": "06:44", "hour": 6, "duration": 209, "score": 86, "pressure_events": 14, "pressure_duration": 1, "coverage": "91/100", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 34.155192852020264, "bottomLeft": 10.036542177200317, "bottomRight": 27.113569021224976, "topCenter": 39.194567918777466, "topLeft": 40.215718150138855, "topRight": 40.140074014663696}, "zone_pressure": {"bottomCenter": 0.0862119197845459, "bottomLeft": 0.2710028886795044, "bottomRight": 0.14972186088562012, "topLeft": 0.47517383098602295}}, {"date": "2026-04-21", "time": "16:20", "hour": 16, "duration": 218, "score": 92, "pressure_events": 25, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 16.083571076393127, "bottomLeft": 25.02802300453186, "bottomRight": 35.15610182285309, "topCenter": 57.31351399421692, "topLeft": 39.00150489807129, "topRight": 29.111759185791016}, "zone_pressure": {"bottomCenter": 0.06611406803131104, "bottomLeft": 0.45329296588897705, "bottomRight": 0.44401609897613525, "topCenter": 0.4490770101547241, "topLeft": 0.0985938310623169, "topRight": 0.030003070831298828}}, {"date": "2026-04-21", "time": "21:36", "hour": 21, "duration": 181, "score": 64, "pressure_events": 51, "pressure_duration": 7, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 50.19881212711334, "bottomLeft": 25.103232860565186, "bottomRight": 28.105432987213135, "topCenter": 19.010754823684692, "topLeft": 26.111773133277893, "topRight": 25.194814085960388}, "zone_pressure": {"bottomCenter": 3.588477611541748, "bottomLeft": 0.44346892833709717, "bottomRight": 2.6664323806762695, "topLeft": 0.17942607402801514, "topRight": 0.23617303371429443}}, {"date": "2026-04-22", "time": "07:52", "hour": 7, "duration": 200, "score": 94, "pressure_events": 16, "pressure_duration": 1, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 42.156283259391785, "bottomLeft": 24.10867989063263, "bottomRight": 25.09945499897003, "topCenter": 27.106253743171692, "topLeft": 31.181954979896545, "topRight": 27.117590188980103}, "zone_pressure": {"bottomCenter": 0.37300000000000005, "bottomLeft": 0.168, "bottomRight": 0.088, "topCenter": 0, "topLeft": 0.112, "topRight": 0.392}}, {"date": "2026-04-22", "time": "15:56", "hour": 15, "duration": 193, "score": 89, "pressure_events": 30, "pressure_duration": 2, "coverage": "1/1", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 20.07782793045044, "bottomLeft": 23.635744094848633, "bottomRight": 41.13735902309418, "topCenter": 38.239832162857056, "topLeft": 33.58408987522125, "topRight": 25.084638953208923}, "zone_pressure": {"bottomCenter": 0.146, "bottomLeft": 0.062, "bottomRight": 1.3800000000000001, "none": 0.036, "topCenter": 0.326, "topLeft": 0.326, "topRight": 0}}, {"date": "2026-04-22", "time": "22:46", "hour": 22, "duration": 217, "score": 99, "pressure_events": 2, "pressure_duration": 0, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 31.167571187019348, "bottomLeft": 31.134673833847046, "bottomRight": 37.003039836883545, "topCenter": 29.14024806022644, "topLeft": 30.198957085609436, "topRight": 42.17047703266144}, "zone_pressure": {"bottomCenter": 0, "bottomLeft": 0, "bottomRight": 0.173, "topCenter": 0, "topLeft": 0, "topRight": 0}}, {"date": "2026-04-23", "time": "08:55", "hour": 8, "duration": 205, "score": 85, "pressure_events": 30, "pressure_duration": 3, "coverage": "1/1", "tongue": false, "floss": false, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 25.11896002292633, "bottomLeft": 24.187855005264282, "bottomRight": 25.0904780626297, "topCenter": 39.28181314468384, "topLeft": 34.3567578792572, "topRight": 43.30068385601044}, "zone_pressure": {"bottomCenter": 0.23299999999999998, "bottomLeft": 0.9500000000000001, "bottomRight": 1.1960000000000002, "none": 0.03, "topCenter": 0.033, "topLeft": 0.624, "topRight": 0.034}}, {"date": "2026-04-23", "time": "15:53", "hour": 15, "duration": 210, "score": 86, "pressure_events": 32, "pressure_duration": 2, "coverage": "1/1", "tongue": true, "floss": true, "bleeding": false, "mode": "DAILY_CLEAN", "zones": {"bottomCenter": 22.12155020236969, "bottomLeft": 37.0869175195694, "bottomRight": 41.02951002120972, "topCenter": 39.58130240440369, "topLeft": 29.102980136871338, "topRight": 29.176474809646606}, "zone_pressure": {"bottomCenter": 0.14600000000000002, "bottomLeft": 0.787, "bottomRight": 0.7599999999999999, "topCenter": 0.313, "topLeft": 0.8649999999999999, "topRight": 0}}];
+const DAILY = [{"date": "2026-03-29", "count": 3, "avg_score": 75.5, "avg_duration": 145.0, "avg_pressure": 6.3}, {"date": "2026-03-30", "count": 3, "avg_score": 81.0, "avg_duration": 213.0, "avg_pressure": 27.7}, {"date": "2026-03-31", "count": 3, "avg_score": 88.3, "avg_duration": 184.0, "avg_pressure": 21.7}, {"date": "2026-04-01", "count": 3, "avg_score": 85.7, "avg_duration": 199.0, "avg_pressure": 25.0}, {"date": "2026-04-02", "count": 3, "avg_score": 78.0, "avg_duration": 178.0, "avg_pressure": 58.0}, {"date": "2026-04-03", "count": 3, "avg_score": 77.7, "avg_duration": 181.0, "avg_pressure": 58.3}, {"date": "2026-04-04", "count": 3, "avg_score": 86.7, "avg_duration": 182.0, "avg_pressure": 35.7}, {"date": "2026-04-05", "count": 3, "avg_score": 77.7, "avg_duration": 180.0, "avg_pressure": 49.0}, {"date": "2026-04-06", "count": 3, "avg_score": 76.0, "avg_duration": 189.0, "avg_pressure": 65.0}, {"date": "2026-04-07", "count": 2, "avg_score": 93.0, "avg_duration": 178.0, "avg_pressure": 20.5}, {"date": "2026-04-08", "count": 0, "avg_score": null, "avg_duration": null, "avg_pressure": null}, {"date": "2026-04-09", "count": 0, "avg_score": null, "avg_duration": null, "avg_pressure": null}, {"date": "2026-04-10", "count": 1, "avg_score": 96.0, "avg_duration": 195.0, "avg_pressure": 13.0}, {"date": "2026-04-11", "count": 3, "avg_score": 93.7, "avg_duration": 186.0, "avg_pressure": 20.0}, {"date": "2026-04-12", "count": 2, "avg_score": 94.5, "avg_duration": 188.0, "avg_pressure": 15.5}, {"date": "2026-04-13", "count": 3, "avg_score": 75.7, "avg_duration": 198.0, "avg_pressure": 64.0}, {"date": "2026-04-14", "count": 3, "avg_score": 88.7, "avg_duration": 174.0, "avg_pressure": 30.7}, {"date": "2026-04-15", "count": 2, "avg_score": 86.0, "avg_duration": 196.0, "avg_pressure": 39.5}, {"date": "2026-04-16", "count": 4, "avg_score": 95.7, "avg_duration": 147.0, "avg_pressure": 14.8}, {"date": "2026-04-17", "count": 2, "avg_score": 95.0, "avg_duration": 235.0, "avg_pressure": 18.5}, {"date": "2026-04-18", "count": 0, "avg_score": null, "avg_duration": null, "avg_pressure": null}, {"date": "2026-04-19", "count": 1, "avg_score": 78.0, "avg_duration": 175.0, "avg_pressure": 45.0}, {"date": "2026-04-20", "count": 3, "avg_score": 77.3, "avg_duration": 191.0, "avg_pressure": 54.3}, {"date": "2026-04-21", "count": 3, "avg_score": 80.7, "avg_duration": 203.0, "avg_pressure": 30.0}, {"date": "2026-04-22", "count": 3, "avg_score": 94.0, "avg_duration": 203.0, "avg_pressure": 16.0}, {"date": "2026-04-23", "count": 2, "avg_score": 85.5, "avg_duration": 208.0, "avg_pressure": 31.0}];
+const ZONES = {"time": {"bottomCenter": 26.355835115505478, "bottomLeft": 25.08202326903909, "bottomRight": 28.864215099205406, "topCenter": 32.36601540092695, "topLeft": 32.70621362985191, "topRight": 32.68722200999826}, "pressure": {"bottomLeft": 0.5387454180175607, "topRight": 0.5359093059409749, "bottomRight": 0.896964795006646, "bottomCenter": 0.5230350027498991, "topCenter": 0.49503031963568467, "topLeft": 0.5261188334737505, "none": 0.1397503391265869}};
+
+// ========== HELPERS ==========
+const fmt = (n, d=0) => Number(n).toFixed(d);
+const validScores = SESSIONS.filter(s => s.score !== null).map(s => s.score);
+const validDurs = SESSIONS.filter(s => s.duration !== null).map(s => s.duration);
+const avg = arr => arr.reduce((a,b)=>a+b,0)/arr.length;
+const median = arr => { const s=[...arr].sort((a,b)=>a-b); return s[Math.floor(s.length/2)]; };
+
+const avgScore = avg(validScores);
+const avgDur = avg(validDurs);
+const totalDays = DAILY.length;
+const activeDays = DAILY.filter(d => d.count > 0).length;
+const totalSessions = SESSIONS.length;
+const adherence = (activeDays/totalDays*100).toFixed(0);
+
+// ========== PERIOD ==========
+const firstDate = SESSIONS[0].date;
+const lastDate = SESSIONS[SESSIONS.length-1].date;
+document.getElementById('period').textContent = `${firstDate} → ${lastDate} · ${totalDays} días`;
+
+// ========== HERO STATS ==========
+const scoreColor = avgScore >= 90 ? 'v-good' : avgScore >= 75 ? 'v-ok' : avgScore >= 60 ? 'v-warn' : 'v-bad';
+const adhColor = adherence >= 90 ? 'v-good' : adherence >= 75 ? 'v-ok' : 'v-warn';
+const durMin = (avgDur/60).toFixed(2);
+const durColor = avgDur >= 120 ? 'v-good' : 'v-warn';
+
+const heroHTML = `
+  <div class="stat">
+    <div class="stat-value ${scoreColor}">${fmt(avgScore,1)}</div>
+    <div class="stat-label">Score medio</div>
+    <div class="stat-sub">mediana ${median(validScores)} · max ${Math.max(...validScores)}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value ${durColor}">${durMin}</div>
+    <div class="stat-label">Min / sesión</div>
+    <div class="stat-sub">objetivo: 2:00</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value ${adhColor}">${adherence}%</div>
+    <div class="stat-label">Días activos</div>
+    <div class="stat-sub">${activeDays} de ${totalDays}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value v-ok">${totalSessions}</div>
+    <div class="stat-label">Sesiones</div>
+    <div class="stat-sub">~${(totalSessions/activeDays).toFixed(1)} / día activo</div>
+  </div>
+`;
+document.getElementById('hero').innerHTML = heroHTML;
+
+// ========== CALENDAR ==========
+function buildCalendar() {
+  const cal = document.getElementById('calendar');
+  // Day labels
+  const labels = ['L','M','X','J','V','S','D'];
+  let html = '<div class="calendar">';
+  labels.forEach(l => html += `<div class="cal-day-label">${l}</div>`);
+  // Find first weekday (mon=0..sun=6, JS: sun=0)
+  const first = new Date(DAILY[0].date + 'T00:00:00');
+  let dow = first.getDay(); // 0=sun..6=sat
+  let mondayBased = (dow + 6) % 7; // mon=0..sun=6
+  for (let i = 0; i < mondayBased; i++) html += '<div class="cal-cell empty"></div>';
+  DAILY.forEach(d => {
+    let cls = 'cal-cell ';
+    if (d.count === 0) cls += 'zero';
+    else if (d.count === 1) cls += 'l1';
+    else if (d.count === 2) cls += 'l2';
+    else if (d.count === 3) cls += 'l3';
+    else cls += 'l4';
+    const day = parseInt(d.date.slice(8,10));
+    const score = d.avg_score !== null ? `score ${d.avg_score}` : 'sin sesiones';
+    html += `<div class="${cls}">
+      <div class="cal-num">${day}</div>
+      <div style="font-size:9px;opacity:0.85">${d.count}x</div>
+      <div class="cal-tooltip">${d.date} · ${d.count} ses. · ${score}</div>
+    </div>`;
+  });
+  html += '</div>';
+  cal.innerHTML = html;
+}
+buildCalendar();
+
+// ========== MOUTH MAP ==========
+function buildMouth() {
+  const order = [
+    ['topLeft', 'Arriba Izq.'],
+    ['topCenter', 'Arriba Centro'],
+    ['topRight', 'Arriba Der.'],
+    ['bottomLeft', 'Abajo Izq.'],
+    ['bottomCenter', 'Abajo Centro'],
+    ['bottomRight', 'Abajo Der.'],
+  ];
+  // Color by pressure: more pressure = more red. Less pressure = green.
+  const presses = Object.entries(ZONES.pressure).filter(([k]) => k !== 'none').map(([_,v])=>v);
+  const minP = Math.min(...presses), maxP = Math.max(...presses);
+  function pressColor(p) {
+    const t = (p - minP) / (maxP - minP);
+    // green to red
+    const r = Math.round(34 + (214-34)*t);
+    const g = Math.round(147 + (69-147)*t);
+    const b = Math.round(111 + (69-111)*t);
+    return `rgb(${r},${g},${b})`;
+  }
+  let html = '<div class="mouth-grid">';
+  // Top row
+  for (let i = 0; i < 3; i++) {
+    const [k, label] = order[i];
+    const t = ZONES.time[k];
+    const p = ZONES.pressure[k];
+    html += `<div class="mouth-cell" style="background:${pressColor(p)}">
+      <div class="zone-name">${label}</div>
+      <div class="zone-val">${fmt(t,1)}s</div>
+      <div class="zone-extra">presión ${fmt(p,2)}s</div>
+    </div>`;
+  }
+  html += '</div><div class="mouth-divider"></div><div class="mouth-grid">';
+  // Bottom row
+  for (let i = 3; i < 6; i++) {
+    const [k, label] = order[i];
+    const t = ZONES.time[k];
+    const p = ZONES.pressure[k];
+    html += `<div class="mouth-cell" style="background:${pressColor(p)}">
+      <div class="zone-name">${label}</div>
+      <div class="zone-val">${fmt(t,1)}s</div>
+      <div class="zone-extra">presión ${fmt(p,2)}s</div>
+    </div>`;
+  }
+  html += '</div>';
+  document.getElementById('mouth').innerHTML = html;
+
+  // Summary
+  const topAvg = (ZONES.time.topLeft + ZONES.time.topCenter + ZONES.time.topRight) / 3;
+  const botAvg = (ZONES.time.bottomLeft + ZONES.time.bottomCenter + ZONES.time.bottomRight) / 3;
+  const diff = topAvg - botAvg;
+  document.getElementById('mouth-summary').innerHTML = `
+    Dedicas <strong>${fmt(diff,1)}s más por zona</strong> a la mandíbula superior que a la inferior.
+    Donde más aprietas: <strong>Abajo derecha</strong> (${fmt(ZONES.pressure.bottomRight,2)}s vs ~0.5s en el resto).
+  `;
+}
+buildMouth();
+
+// ========== SCORE CHART ==========
+function buildScoreChart() {
+  const el = document.getElementById('score-chart');
+  const w = 500, h = 200;
+  const pts = DAILY.filter(d => d.avg_score !== null);
+  const xs = (i) => (i / (DAILY.length-1)) * (w-40) + 20;
+  const ys = (s) => h - 10 - ((s-50)/50) * (h-30);
+  let path = '';
+  let circles = '';
+  DAILY.forEach((d, i) => {
+    if (d.avg_score === null) return;
+    const x = xs(i);
+    const y = ys(d.avg_score);
+    path += (path === '' ? `M ${x} ${y}` : ` L ${x} ${y}`);
+    circles += `<circle cx="${x}" cy="${y}" r="4" fill="#2d6cdf"/>`;
+  });
+  // Avg line
+  const avgY = ys(avgScore);
+  const labels = [50, 75, 100].map(v => `<text x="2" y="${ys(v)+3}" font-size="9" fill="#a0aec0">${v}</text>`).join('');
+  const grid = [50, 75, 100].map(v => `<line x1="20" y1="${ys(v)}" x2="${w-10}" y2="${ys(v)}" stroke="#edf2f7" stroke-width="1"/>`).join('');
+
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    ${grid}
+    ${labels}
+    <line x1="20" y1="${avgY}" x2="${w-10}" y2="${avgY}" stroke="#e07a3c" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="${w-10}" y="${avgY-4}" font-size="10" fill="#e07a3c" text-anchor="end">media ${fmt(avgScore,1)}</text>
+    <path d="${path}" fill="none" stroke="#2d6cdf" stroke-width="2"/>
+    ${circles}
+  </svg>`;
+}
+buildScoreChart();
+
+// ========== HOUR BARS ==========
+function buildHours() {
+  const counts = new Array(24).fill(0);
+  SESSIONS.forEach(s => counts[s.hour]++);
+  const max = Math.max(...counts);
+  const bars = document.getElementById('hour-bars');
+  const axis = document.getElementById('hour-axis');
+  bars.innerHTML = counts.map((c, i) => {
+    const h = max ? (c/max)*100 : 0;
+    return `<div class="hour-bar" style="height:${h}%" title="${i}:00 — ${c} sesiones"></div>`;
+  }).join('');
+  axis.innerHTML = counts.map((_, i) =>
+    i % 4 === 0 ? `<div class="hour-label">${i}h</div>` : `<div></div>`
+  ).join('');
+}
+buildHours();
+
+// ========== HABITS ==========
+function buildHabits() {
+  const total = SESSIONS.length;
+  const tongue = SESSIONS.filter(s => s.tongue).length;
+  const floss = SESSIONS.filter(s => s.floss).length;
+  const noBleeding = SESSIONS.filter(s => s.bleeding === false).length;
+  const html = `
+    <div class="habit"><div class="habit-icon">👅</div><div class="habit-pct v-good">${fmt(tongue/total*100,0)}%</div><div class="habit-label">Limpiaste lengua</div></div>
+    <div class="habit"><div class="habit-icon">🧵</div><div class="habit-pct v-good">${fmt(floss/total*100,0)}%</div><div class="habit-label">Usaste hilo</div></div>
+    <div class="habit"><div class="habit-icon">🩸</div><div class="habit-pct v-good">${fmt(noBleeding/total*100,0)}%</div><div class="habit-label">Sin sangrado</div></div>
+  `;
+  document.getElementById('habits').innerHTML = html;
+}
+buildHabits();
+
+// ========== TOP / BOTTOM SESSIONS ==========
+function buildSessions() {
+  const valid = SESSIONS.filter(s => s.score !== null);
+  const top = [...valid].sort((a,b) => b.score - a.score).slice(0, 5);
+  const bot = [...valid].sort((a,b) => a.score - b.score).slice(0, 5);
+  const render = (s) => {
+    const cls = s.score >= 90 ? 'v-good' : s.score >= 75 ? 'v-ok' : 'v-warn';
+    return `<div class="session-row">
+      <div>
+        <div class="session-date">${s.date} ${s.time}</div>
+        <div class="session-meta">${s.duration}s · ${s.pressure_events} ev. presión</div>
+      </div>
+      <div class="session-score ${cls}">${s.score}</div>
+    </div>`;
+  };
+  document.getElementById('top-sessions').innerHTML = top.map(render).join('');
+  document.getElementById('bottom-sessions').innerHTML = bot.map(render).join('');
+}
+buildSessions();
+
+// ========== MODES ==========
+function buildModes() {
+  const modes = {};
+  SESSIONS.forEach(s => modes[s.mode] = (modes[s.mode]||0)+1);
+  const total = SESSIONS.length;
+  const html = Object.entries(modes).sort((a,b)=>b[1]-a[1]).map(([m, c]) => {
+    const pct = (c/total*100).toFixed(0);
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px">
+        <span style="font-weight:600">${m.replace(/_/g,' ')}</span>
+        <span>${c} sesiones · ${pct}%</span>
+      </div>
+      <div style="background:#edf2f7;border-radius:8px;height:8px;overflow:hidden">
+        <div style="background:linear-gradient(90deg,#2d6cdf,#5a8eef);height:100%;width:${pct}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('modes').innerHTML = html;
+}
+buildModes();
+
+// ========== RECOMENDACIONES ==========
+function buildRecos() {
+  const recos = [
+    {
+      title: 'Más tiempo en la mandíbula inferior',
+      text: 'Dedicas ~7s menos por zona a las muelas inferiores que a las superiores. Compensa especialmente en <strong>Abajo Izquierda</strong> (la zona menos cepillada).'
+    },
+    {
+      title: 'Aflojar presión en Abajo Derecha',
+      text: 'Es la única zona donde aprietas significativamente más (0.9s vs ~0.5s). Probablemente fuerzas porque cuesta llegar — prueba a girar la muñeca en vez de empujar.'
+    },
+    {
+      title: 'Suavizar el contacto en general',
+      text: '54 de 61 sesiones tienen 5+ avisos de presión. Son toques cortos, pero si quieres subir el score por encima de 90 baja un poco la fuerza al inicio.'
+    },
+    {
+      title: '3 días sin cepillar este mes',
+      text: 'Saltaste el 8, 9 y 18 de abril. Si fuera por viaje, llévate el cepillo o un cabezal manual de repuesto.'
+    },
+    {
+      title: 'Buen trabajo de base',
+      text: '88% de adherencia, 3:07 min de duración media, hilo y lengua reportados en 89% de sesiones. Estás muy por encima de la media — solo te falta afinar.'
+    },
+  ];
+  const html = recos.map((r, i) => `
+    <div class="reco">
+      <div class="reco-num">${i+1}</div>
+      <div>
+        <h3>${r.title}</h3>
+        <p>${r.text}</p>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('recos').innerHTML = html;
+}
+buildRecos();
+</script>
+</body>
+</html>
