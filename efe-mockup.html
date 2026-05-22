@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engagement for Everyone — mockups</title>
+<style>
+:root {
+  --orange: #FC4E0F;
+  --blue:   #3898FF;
+  --blue-soft: #D6ECFF;
+  --blue-page: #E8F4FF;
+  --text-primary: #3D312D;
+  --text-secondary: #7A6D69;
+  --text-subtle: #B5A9A5;
+  --r-card: 40px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
+  background: #F4F1ED;
+  -webkit-font-smoothing: antialiased;
+  padding: 40px 0 80px;
+}
+.picker {
+  max-width: 1400px;
+  margin: 0 auto 36px;
+  padding: 0 24px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.picker-title { font-size: 14px; font-weight: 700; color: var(--text-secondary); }
+.picker-link {
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.picker-link.active { background: var(--orange); color: #fff; }
+
+.option-label {
+  max-width: 1400px;
+  margin: 0 auto 16px;
+  padding: 0 24px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--orange);
+}
+.option-label .sub {
+  display: inline-block;
+  margin-left: 14px;
+  color: var(--text-subtle);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Option A: single-column narrative ───────────────────────────────── */
+.optA-page {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 24px;
+  padding: 56px 64px 80px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.06);
+}
+.optA-brand {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--text-subtle); margin-bottom: 6px;
+}
+.optA-h1 { font-size: 44px; font-weight: 700; line-height: 1.1; margin-bottom: 14px; }
+.optA-lead { font-size: 16px; color: var(--text-secondary); line-height: 1.55; max-width: 720px; margin-bottom: 48px; }
+
+.optA-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #F0EBE8;
+}
+.optA-section-tag {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--orange); margin-bottom: 12px;
+}
+.optA-section-h2 { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 20px; }
+.optA-body { font-size: 15px; color: var(--text-primary); line-height: 1.65; }
+.optA-body p { margin-bottom: 14px; }
+.optA-body a { color: var(--blue); }
+.optA-body ul { margin: 10px 0 14px 22px; }
+.optA-body ul li { margin-bottom: 6px; }
+.optA-body em { color: var(--text-secondary); font-style: italic; }
+
+.optA-cards { display: flex; flex-direction: column; gap: 18px; margin-top: 22px; }
+.card {
+  background: #fff;
+  border-radius: var(--r-card);
+  padding: 28px 32px 26px;
+  box-shadow: 0 4px 24px rgba(61,49,45,0.08);
+}
+.card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.card-period { font-size: 11px; color: var(--text-subtle); margin-bottom: 14px; }
+.kpi-value { font-size: 56px; font-weight: 700; line-height: 1; }
+.kpi-label { font-size: 13px; color: var(--text-secondary); margin: 6px 0 14px; }
+.deltas { display: flex; gap: 10px; flex-wrap: wrap; }
+.delta {
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--blue-soft); border-radius: 100px;
+  padding: 8px 16px; font-size: 12px;
+}
+.delta-label { color: var(--text-secondary); font-size: 11px; }
+.delta-up   { color: #166534; font-weight: 700; }
+.delta-down { color: #991B1B; font-weight: 700; }
+.amp-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+.amp-link { font-size: 13px; color: var(--blue); font-weight: 600; text-decoration: none; }
+.chip-row { display: flex; gap: 8px; align-items: center; }
+.chip-code { font-size: 9px; font-weight: 700; color: #9E8F89; letter-spacing: .08em; }
+.chip-type { font-size: 9px; color: #C5BCB7; text-transform: uppercase; letter-spacing: .08em; }
+
+/* ── Option B: sidebar + grid ────────────────────────────────────────── */
+.optB-shell { max-width: 1400px; margin: 0 auto; display: flex; gap: 0; }
+.optB-side {
+  width: 240px; flex-shrink: 0;
+  background: #fff; border-radius: 24px;
+  padding: 28px 18px; align-self: flex-start;
+  position: sticky; top: 24px;
+}
+.optB-side-product { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-subtle); padding: 0 6px; margin: 14px 0 4px; }
+.optB-side-title   { font-size: 15px; font-weight: 700; padding: 0 6px; margin-bottom: 12px; }
+.nav { display: flex; flex-direction: column; gap: 3px; }
+.nav-item {
+  padding: 8px 12px; border-radius: 12px;
+  font-size: 13px; color: var(--text-secondary);
+  cursor: pointer; text-decoration: none;
+}
+.nav-item.active { background: var(--blue-soft); color: var(--text-primary); font-weight: 600; }
+
+.optB-main { flex: 1; min-width: 0; padding-left: 32px; }
+.optB-header {
+  background: #fff; border-radius: 24px;
+  padding: 32px 40px; margin-bottom: 22px;
+  box-shadow: 0 4px 24px rgba(61,49,45,0.06);
+}
+.optB-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--orange); margin-bottom: 8px; }
+.optB-h1 { font-size: 32px; font-weight: 700; line-height: 1.15; margin-bottom: 10px; }
+.optB-lead { font-size: 14px; color: var(--text-secondary); line-height: 1.55; max-width: 720px; }
+
+.optB-section-tag {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--text-subtle);
+  margin: 14px 0 10px;
+}
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.optB-body {
+  background: #fff; border-radius: 24px;
+  padding: 26px 36px; margin-bottom: 22px;
+  font-size: 14px; color: var(--text-primary); line-height: 1.65;
+}
+.optB-body p { margin-bottom: 10px; }
+.optB-body a { color: var(--blue); }
+
+.note {
+  max-width: 960px; margin: 12px auto 24px; padding: 0 24px;
+  font-size: 12px; color: var(--text-subtle); line-height: 1.55;
+}
+.note strong { color: var(--text-secondary); }
+
+</style>
+<script src="/guard.js"></script>
+</head>
+<body>
+
+<div class="picker">
+  <span class="picker-title">Mockups for /p/engagement-for-everyone:</span>
+  <a class="picker-link" href="#option-A">▾ Option A</a>
+  <a class="picker-link" href="#option-B">▾ Option B</a>
+</div>
+
+<p class="note">Datos de cards = placeholders. La idea es comparar <strong>layout y jerarquía visual</strong>, no los números.</p>
+
+<!-- ════════════════ OPTION A ════════════════ -->
+<div id="option-A" class="option-label">Option A · Narrativa single-column <span class="sub">— story-first, lectura de arriba a abajo, sin sidebar</span></div>
+
+<div class="optA-page">
+  <div class="optA-brand">Barkibu · Engagement system</div>
+  <h1 class="optA-h1">Engagement for everyone</h1>
+  <p class="optA-lead">A company-wide view of the engagement system — what it is, where the opportunity sits, and how the basic metrics are evolving.</p>
+
+  <!-- Intro -->
+  <div class="optA-section">
+    <div class="optA-section-tag">Intro</div>
+    <div class="optA-body">
+      <p>This dashboard attempts to expose some basic metrics related to the engagement system, and remind of the goals and process.</p>
+      <p>The Engagement System is the response to the 2024 question <em>"What should we build now that it provides a competitive advantage 2 years from today?"</em>, and in <a href="#">this message</a> I described the process, method and a number of related aspects to product development.</p>
+      <p>The specifics of the system were described <a href="#">here</a>.</p>
+      <p>Conceptually & methodologically, nothing has changed. The objective remains unchanged: <strong>convert clients into referrers.</strong></p>
+      <p>We have shipped some basic infrastructure: social browsing (streams), interactions (follows, reactions to content), communications (in-app & push notifications), and uses of cashback (donate & deduct).</p>
+      <p style="margin-top:16px;"><strong>Areas that come next:</strong></p>
+      <ul>
+        <li>Expand the communication layer (new-clients funnel via customer.io, feature discovery, donations trust, linking deductions/donations/claims to the social aspect).</li>
+        <li>Work on the discoverability of social browsing, interactions and uses of cashback.</li>
+        <li>Build a solid narrative — communicate value created by donations, make new clients perceive Barkibu as a place to be with friends, strengthen identity.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Opportunity -->
+  <div class="optA-section">
+    <div class="optA-section-tag">The opportunity</div>
+    <div class="optA-body">
+      <p>A large number of clients come to the app — <a href="#">68k</a> in April 2026. Many come <a href="#">once a week</a>, and not only for claims-related reasons (<a href="#">link</a>).</p>
+      <p>From friend-brings-friend (in or out of the referrals program), our performance couldn't be poorer: between 800 and 1,000 referrers per month out of almost 70k monthly uniques. We're perceived as Mapfre, la Mutua, etc. — <em>can we be perceived how we perceive ourselves?</em></p>
+      <p>The Engagement System should impact both issues. It seeks something very, very difficult. <strong>But we are not at zero anymore.</strong></p>
+    </div>
+  </div>
+
+  <!-- Data -->
+  <div class="optA-section">
+    <div class="optA-section-tag">Data</div>
+    <div class="optA-body" style="margin-bottom:22px;">
+      <p>Below: a curated set of cards mirroring the live engagement-analytics dashboard. Any change there is reflected here automatically.</p>
+    </div>
+    <div class="optA-cards">
+
+      <div class="card">
+        <div class="card-title">App visitors</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">12,847</div>
+        <div class="kpi-label">unique users who opened the app</div>
+        <div class="deltas">
+          <div class="delta"><span class="delta-label">Apr 2026</span><span class="delta-up">▲ 67,990</span></div>
+          <div class="delta"><span class="delta-label">Mar 2026</span><span class="delta-up">▲ 64,210</span></div>
+        </div>
+        <div class="amp-row">
+          <a class="amp-link" href="#">Monthly trend ↗</a>
+          <div class="chip-row"><span class="chip-code">AERN</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Claim-related visits</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">44.2%</div>
+        <div class="kpi-label">of app-openers did something on the Claims tab</div>
+        <div class="deltas">
+          <div class="delta"><span class="delta-label">Apr 2026</span><span class="delta-up">▲ 51%</span></div>
+          <div class="delta"><span class="delta-label">Mar 2026</span><span class="delta-up">▲ 48%</span></div>
+        </div>
+        <div class="amp-row">
+          <a class="amp-link" href="#">Monthly trend ↗</a>
+          <div class="chip-row"><span class="chip-code">AHAX</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Social browses — últimos 7 días</div>
+        <div class="card-period">14 May – 20 May 2026</div>
+        <div class="kpi-value">8,142</div>
+        <div class="kpi-label">unique users who socially browsed (exc own profile)</div>
+        <div class="deltas">
+          <div class="delta"><span class="delta-label">vs 7 días anteriores</span><span class="delta-up">▲ +11%</span></div>
+          <div class="delta"><span class="delta-label">vs media 4 períodos</span><span class="delta-up">▲ +8%</span></div>
+        </div>
+        <div class="amp-row">
+          <a class="amp-link" href="#">Ver en Amplitude ↗</a>
+          <div class="chip-row"><span class="chip-code">CBCQ</span><span class="chip-type">Segment Card</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="height:80px;"></div>
+
+<!-- ════════════════ OPTION B ════════════════ -->
+<div id="option-B" class="option-label">Option B · Sidebar + grid <span class="sub">— mismo shell que engagement-analytics, narrativa en el header</span></div>
+
+<div class="optB-shell">
+  <aside class="optB-side">
+    <div class="optB-side-product">Barkibu</div>
+    <div class="optB-side-title">Engagement for everyone</div>
+    <nav class="nav">
+      <a class="nav-item active" href="#">Overview</a>
+      <a class="nav-item" href="#">Engagement system</a>
+      <a class="nav-item" href="#">Process & method</a>
+    </nav>
+    <div class="optB-side-product" style="margin-top:24px;">Related</div>
+    <nav class="nav">
+      <a class="nav-item" href="#">Engagement analytics</a>
+    </nav>
+  </aside>
+
+  <main class="optB-main">
+    <div class="optB-header">
+      <div class="optB-tag">Intro</div>
+      <h1 class="optB-h1">Engagement for everyone</h1>
+      <p class="optB-lead">A company-wide view of the engagement system. Conceptually & methodologically nothing has changed: <strong>convert clients into referrers.</strong> What follows is the opportunity and the basic metrics.</p>
+    </div>
+
+    <div class="optB-body">
+      <p>The Engagement System is the response to the 2024 question <em>"What should we build now that it provides a competitive advantage 2 years from today?"</em>, and in <a href="#">this message</a> I described the process, method and a number of related aspects to product development. Specifics <a href="#">here</a>.</p>
+      <p>We have shipped some basic infrastructure: social browsing, interactions, communications and uses of cashback.</p>
+    </div>
+
+    <div class="optB-section-tag">The opportunity</div>
+    <div class="optB-body">
+      <p>A large number of clients come to the app — <a href="#">68k</a> in April 2026. Many come <a href="#">once a week</a>, and not only for claims-related reasons (<a href="#">link</a>).</p>
+      <p>From friend-brings-friend, our performance couldn't be poorer: 800-1,000 referrers/month out of ~70k monthly uniques. <strong>We are not at zero anymore.</strong></p>
+    </div>
+
+    <div class="optB-section-tag">Data</div>
+    <div class="dashboard">
+
+      <div class="card">
+        <div class="card-title">App visitors</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">12,847</div>
+        <div class="kpi-label" style="font-size:12px;">unique users who opened the app</div>
+        <div class="amp-row" style="margin-top:14px;">
+          <a class="amp-link" href="#">Monthly ↗</a>
+          <div class="chip-row"><span class="chip-code">AERN</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Claim-related visits</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">44.2%</div>
+        <div class="kpi-label" style="font-size:12px;">of app-openers did something on Claims</div>
+        <div class="amp-row" style="margin-top:14px;">
+          <a class="amp-link" href="#">Monthly ↗</a>
+          <div class="chip-row"><span class="chip-code">AHAX</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">iOS Visits</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">58%</div>
+        <div class="kpi-label" style="font-size:12px;">of unique visitors used iOS</div>
+        <div class="amp-row" style="margin-top:14px;">
+          <a class="amp-link" href="#">Monthly ↗</a>
+          <div class="chip-row"><span class="chip-code">ASRN</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">% of solved claims approved</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">82.4%</div>
+        <div class="kpi-label" style="font-size:12px;">closed claims approved or partially</div>
+        <div class="amp-row" style="margin-top:14px;">
+          <a class="amp-link" href="#">Monthly ↗</a>
+          <div class="chip-row"><span class="chip-code">BFCG</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Renewals contract ready</div>
+        <div class="card-period">Yesterday</div>
+        <div class="kpi-value">3,421</div>
+        <div class="kpi-label" style="font-size:12px;">unique users with renewal ready</div>
+        <div class="amp-row" style="margin-top:14px;">
+          <a class="amp-link" href="#">Monthly ↗</a>
+          <div class="chip-row"><span class="chip-code">BTTC</span><span class="chip-type">Yesterday card</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Social browses — últimos 7 días</div>
+        <div class="card-period">14 May – 20 May 2026</div>
+        <div class="kpi-value">8,142</div>
+        <div class="kpi-label" style="font-size:12px;">unique users socially browsed</div>
+        <div class="amp-row" style="margin-top:14px;">
+          <a class="amp-link" href="#">Ver en Amplitude ↗</a>
+          <div class="chip-row"><span class="chip-code">CBCQ</span><span class="chip-type">Segment Card</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
