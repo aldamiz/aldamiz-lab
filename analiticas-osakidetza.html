@@ -331,6 +331,9 @@
                     <option value="hematologia">Hematología</option>
                     <option value="hierro">Metabolismo Hierro</option>
                     <option value="electrolitos">Electrolitos</option>
+                    <option value="inmunologia">Inmunología y Otros</option>
+                    <option value="orina">Orina</option>
+                    <option value="heces">Heces</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -419,8 +422,16 @@ const ANALÍTICAS = [
             leucocitos: 5.49, neutrofilos_pct: 46.5, linfocitos_pct: 42.8,
             monocitos_pct: 8.7, eosinofilos_pct: 1.5, vsg: 5,
             basofilos_pct: 0.5,
-            alfa1_globulina: 0.23, alfa2_globulina: 0.52, beta1_globulina: 0.45, beta2_globulina: 0.37, gamma_globulina: 1.02, ratio_alb_glob: 1.57
+            alfa1_globulina: 0.23, alfa2_globulina: 0.52, beta1_globulina: 0.45, beta2_globulina: 0.37, gamma_globulina: 1.02, ratio_alb_glob: 1.57,
+            monocitos: 0.48, eosinofilos: 0.08, basofilos: 0.03, granulocitos_inmaduros_pct: 0.4, eritroblastos_pct: 0.0
         }
+    },
+    {
+        date: "2025-04-10",
+        label: "ABR 2025 (heces)",
+        source: "Osakidetza — C.S. Albia (estudio por astenia)",
+        doctor: "",
+        values: { hemoglobina_fecal: 0 }
     },
     {
         date: "2025-03-28",
@@ -439,7 +450,8 @@ const ANALÍTICAS = [
             chcm: 33.8, hcm: 31.6, ade: 13.6, plaquetas: 256,
             leucocitos: 5.08, neutrofilos_pct: 44.8, linfocitos_pct: 44.7,
             monocitos_pct: 8.7, eosinofilos_pct: 1.4, vsg: 4,
-            psa: 1.34, vpm: 9.9, neutrofilos: 2.28, linfocitos: 2.27, basofilos_pct: 0.4
+            psa: 1.34, vpm: 9.9, neutrofilos: 2.28, linfocitos: 2.27, basofilos_pct: 0.4,
+            monocitos: 0.44, eosinofilos: 0.07, basofilos: 0.02, granulocitos_inmaduros_pct: 0.2, granulocitos_inmaduros: 0.01, eritroblastos_pct: 0.0, densidad_orina: 1.026, ph_orina: 6.0
         }
     },
     {
@@ -457,7 +469,8 @@ const ANALÍTICAS = [
             chcm: 33.4, hcm: 32.7, ade: 13.2, plaquetas: 206,
             leucocitos: 4.34, neutrofilos_pct: 49.7, linfocitos_pct: 39.9,
             monocitos_pct: 7.6, eosinofilos_pct: 2.1,
-            homocisteina: 12.5, reticulocitos: 1.36, rethe: 36.1, basofilos_pct: 0.7, neutrofilos: 2.16, linfocitos: 1.73
+            homocisteina: 12.5, reticulocitos: 1.36, rethe: 36.1, basofilos_pct: 0.7, neutrofilos: 2.16, linfocitos: 1.73,
+            monocitos: 0.33, eosinofilos: 0.09, basofilos: 0.03, granulocitos_inmaduros_pct: 0.2, granulocitos_inmaduros: 0.01, eritroblastos_pct: 0.0, ret_lfr: 90.2, ret_mfr: 8.1, ret_hfr: 1.7
         }
     },
     {
@@ -475,8 +488,16 @@ const ANALÍTICAS = [
             chcm: 34.8, hcm: 32.4, ade: 13.0, plaquetas: 269,
             leucocitos: 5.49, neutrofilos_pct: 41.1, linfocitos_pct: 47.5,
             monocitos_pct: 9.1, eosinofilos_pct: 1.6,
-            psa: 1.50, basofilos_pct: 0.7
+            psa: 1.50, basofilos_pct: 0.7,
+            monocitos: 0.50, eosinofilos: 0.09, basofilos: 0.04, granulocitos_inmaduros_pct: 0.2, eritroblastos_pct: 0.0
         }
+    },
+    {
+        date: "2023-09-21",
+        label: "SEP 2023 (heces)",
+        source: "Osakidetza — cribado cáncer colorrectal",
+        doctor: "",
+        values: { hemoglobina_fecal: 0 }
     },
     {
         date: "2023-06-19",
@@ -501,7 +522,8 @@ const ANALÍTICAS = [
             hematies: 5.05, hemoglobina: 16.0, hematocrito: 45.3, vcm: 89.7,
             chcm: 35.3, hcm: 31.7, plaquetas: 255, vpm: 9.0,
             leucocitos: 6.82, neutrofilos_pct: 61.9, neutrofilos: 4.22, linfocitos_pct: 31.1, linfocitos: 2.12,
-            monocitos_pct: 6.0, eosinofilos_pct: 0.6, basofilos_pct: 0.4
+            monocitos_pct: 6.0, eosinofilos_pct: 0.6, basofilos_pct: 0.4,
+            monocitos: 0.41, eosinofilos: 0.04, basofilos: 0.03
         }
     },
     {
@@ -521,8 +543,16 @@ const ANALÍTICAS = [
             leucocitos: 5.22, neutrofilos_pct: 46.0, linfocitos_pct: 43.3,
             monocitos_pct: 8.4, eosinofilos_pct: 1.7,
             reticulocitos: 0.88, rethe: 36.5, basofilos_pct: 0.6,
-            amilasa: 79, ttpa: 33, tiempo_protrombina: 89, inr: 1.1, alfa1_globulina: 0.28, alfa2_globulina: 0.47, beta1_globulina: 0.43, beta2_globulina: 0.36, gamma_globulina: 1.14, ratio_alb_glob: 1.53
+            amilasa: 79, ttpa: 33, tiempo_protrombina: 89, inr: 1.1, alfa1_globulina: 0.28, alfa2_globulina: 0.47, beta1_globulina: 0.43, beta2_globulina: 0.36, gamma_globulina: 1.14, ratio_alb_glob: 1.53,
+            monocitos: 0.44, eosinofilos: 0.09, basofilos: 0.03, granulocitos_inmaduros_pct: 0.6, eritroblastos_pct: 0.0, ret_lfr: 92.7, ret_mfr: 6.5, ret_hfr: 0.8
         }
+    },
+    {
+        date: "2021-06-15",
+        label: "JUN 2021 (heces)",
+        source: "Osakidetza — sangre oculta en heces",
+        doctor: "",
+        values: { hemoglobina_fecal: 23 }
     },
     {
         date: "2021-06-04",
@@ -539,7 +569,8 @@ const ANALÍTICAS = [
             chcm: 32.6, hcm: 30.6, ade: 14.4, plaquetas: 257, vpm: 10.1,
             leucocitos: 7.84, neutrofilos_pct: 53.50, linfocitos_pct: 36.90,
             monocitos_pct: 7.80, eosinofilos_pct: 1.30,
-            reticulocitos: 1.15, rethe: 34.6, basofilos_pct: 0.5
+            reticulocitos: 1.15, rethe: 34.6, basofilos_pct: 0.5,
+            monocitos: 0.61, eosinofilos: 0.10, basofilos: 0.04, granulocitos_inmaduros_pct: 0.3, eritroblastos_pct: 0.0, ret_lfr: 89.6, ret_mfr: 8.8, ret_hfr: 1.6
         }
     },
     {
@@ -577,7 +608,8 @@ const ANALÍTICAS = [
             chcm: 33.2, hcm: 31.4, ade: 13.2, plaquetas: 260, vpm: 9.5,
             leucocitos: 8.00, neutrofilos_pct: 51.3, linfocitos_pct: 38.4,
             monocitos_pct: 8.8, eosinofilos_pct: 1.1,
-            anti_tpo: 305, basofilos_pct: 0.4
+            anti_tpo: 305, basofilos_pct: 0.4,
+            monocitos: 0.70, eosinofilos: 0.09, basofilos: 0.03, granulocitos_inmaduros_pct: 0.1, eritroblastos_pct: 0.0
         }
     },
     {
@@ -596,7 +628,8 @@ const ANALÍTICAS = [
             chcm: 34.7, hcm: 31.0, ade: 13.5, plaquetas: 264, vpm: 9.3,
             leucocitos: 7.79, neutrofilos_pct: 52.4, linfocitos_pct: 35.8,
             monocitos_pct: 9.2, eosinofilos_pct: 2.1, vsg: 5,
-            basofilos_pct: 0.5
+            basofilos_pct: 0.5,
+            monocitos: 0.72, eosinofilos: 0.16, basofilos: 0.04, granulocitos_inmaduros_pct: 0.4, granulocitos_inmaduros: 0.03, eritroblastos_pct: 0.0
         }
     },
     {
@@ -611,7 +644,8 @@ const ANALÍTICAS = [
             tsh: 9.94, hematies: 5.58, hemoglobina: 16.2, hematocrito: 50.0, vcm: 89.6,
             hcm: 29.0, chcm: 32.4, ade: 15.4, plaquetas: 257, vpm: 9.5,
             leucocitos: 6.4, neutrofilos_pct: 50.1, linfocitos_pct: 40.1,
-            monocitos_pct: 7.6, eosinofilos_pct: 1.6, vsg: 5
+            monocitos_pct: 7.6, eosinofilos_pct: 1.6, vsg: 5,
+            monocitos: 0.5, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.3, eritroblastos_pct: 0.0
         }
     },
     {
@@ -624,7 +658,8 @@ const ANALÍTICAS = [
             hematies: 5.92, hemoglobina: 13.4, hematocrito: 45.2, vcm: 76.4,
             hcm: 22.6, chcm: 29.6, ade: 23.6, plaquetas: 388, vpm: 9.3,
             leucocitos: 8.2, neutrofilos_pct: 51.7, linfocitos_pct: 37.7,
-            monocitos_pct: 8.3, eosinofilos_pct: 1.7
+            monocitos_pct: 8.3, eosinofilos_pct: 1.7,
+            monocitos: 0.7, eosinofilos: 0.1, basofilos: 0.1, granulocitos_inmaduros_pct: 0.2, eritroblastos_pct: 0.0
         }
     },
     {
@@ -637,7 +672,8 @@ const ANALÍTICAS = [
             hematies: 5.12, hemoglobina: 10.8, hematocrito: 36.4, vcm: 71.1,
             hcm: 21.1, chcm: 29.7, ade: 17.9, plaquetas: 365, vpm: 9.5,
             leucocitos: 5.4, neutrofilos_pct: 54.2, linfocitos_pct: 34.7,
-            monocitos_pct: 8.8, eosinofilos_pct: 1.7
+            monocitos_pct: 8.8, eosinofilos_pct: 1.7,
+            monocitos: 0.5, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.2, eritroblastos_pct: 0.0
         }
     },
     {
@@ -650,7 +686,8 @@ const ANALÍTICAS = [
             hematies: 5.19, hemoglobina: 11.6, hematocrito: 38.6, vcm: 74.4,
             hcm: 22.4, chcm: 30.1, ade: 18.6, plaquetas: 384, vpm: 9.4,
             leucocitos: 6.9, neutrofilos_pct: 51.4, linfocitos_pct: 38,
-            monocitos_pct: 8.1, eosinofilos_pct: 1.9
+            monocitos_pct: 8.1, eosinofilos_pct: 1.9,
+            monocitos: 0.6, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.3, eritroblastos_pct: 0.0
         }
     },
     {
@@ -668,7 +705,8 @@ const ANALÍTICAS = [
             hematies: 5.36, hemoglobina: 11.9, hematocrito: 40.4, vcm: 75.4,
             hcm: 22.2, chcm: 29.5, ade: 18.5, plaquetas: 370, vpm: 9.8,
             leucocitos: 7.1, neutrofilos_pct: 45.7, linfocitos_pct: 43.1,
-            monocitos_pct: 9.2, eosinofilos_pct: 1.4
+            monocitos_pct: 9.2, eosinofilos_pct: 1.4,
+            igg: 1230, iga: 313, igm: 105, anti_transglutaminasa: 0.9, fibrinogeno: 380, tiempo_protrombina: 80, ttpa: 37.3, inr: 1.15, monocitos: 0.7, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.1, eritroblastos_pct: 0.0
         }
     },
     {
@@ -679,7 +717,8 @@ const ANALÍTICAS = [
         values: {
             hierro: 35, ferritina: 6, folato: 2.2, vitamina_b12: 248.9,
             hematies: 5.35, hemoglobina: 12.0, hematocrito: 39.8, vcm: 74.4,
-            hcm: 22.4, chcm: 30.2, ade: 17.6, plaquetas: 368, vpm: 9.6
+            hcm: 22.4, chcm: 30.2, ade: 17.6, plaquetas: 368, vpm: 9.6,
+            ret_lfr: 75.2, ret_mfr: 15.1, ret_hfr: 9.7, monocitos: 0.8, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.3
         }
     },
     {
@@ -696,8 +735,16 @@ const ANALÍTICAS = [
             hematies: 5.17, hemoglobina: 12.0, hematocrito: 39.0, vcm: 75.4,
             hcm: 23.2, chcm: 30.8, ade: 17.2, plaquetas: 368, vpm: 9.8,
             leucocitos: 7.3, neutrofilos_pct: 45.4, linfocitos_pct: 43.2,
-            monocitos_pct: 8.7, eosinofilos_pct: 2.2, vsg: 11
+            monocitos_pct: 8.7, eosinofilos_pct: 2.2, vsg: 11,
+            monocitos: 0.6, eosinofilos: 0.2, basofilos: 0.0, granulocitos_inmaduros_pct: 0.1, densidad_orina: 1.029, ph_orina: 5.5, proteinas_orina: 10, hemoglobina_orina: 0.00
         }
+    },
+    {
+        date: "2014-11-26",
+        label: "NOV 2014 (orina)",
+        source: "Osakidetza — C.S. Albia (orina + urocultivo negativo)",
+        doctor: "",
+        values: { densidad_orina: 1.032, hemoglobina_orina: 0.06 }
     },
     {
         date: "2014-11-05",
@@ -712,7 +759,8 @@ const ANALÍTICAS = [
             hematies: 5.38, hemoglobina: 13.2, hematocrito: 43.6, vcm: 81.0,
             chcm: 30.3, hcm: 24.5, ade: 16.6, plaquetas: 330, vpm: 10,
             leucocitos: 8.4, neutrofilos_pct: 52.2, linfocitos_pct: 37.4,
-            monocitos_pct: 8.0, eosinofilos_pct: 1.9
+            monocitos_pct: 8.0, eosinofilos_pct: 1.9,
+            monocitos: 0.7, eosinofilos: 0.2, basofilos: 0.0, granulocitos_inmaduros_pct: 0.4, densidad_orina: 1.027, ph_orina: 6, proteinas_orina: 10, hemoglobina_orina: 0.03
         }
     },
     {
@@ -729,7 +777,8 @@ const ANALÍTICAS = [
             hematies: 5.04, hemoglobina: 13.5, hematocrito: 41.8, vcm: 82.9,
             hcm: 26.8, chcm: 32.3, ade: 15.5, plaquetas: 302, vpm: 9,
             leucocitos: 9.3, neutrofilos_pct: 60.3, linfocitos_pct: 28.4,
-            monocitos_pct: 9.8, eosinofilos_pct: 1.2, vsg: 14
+            monocitos_pct: 9.8, eosinofilos_pct: 1.2, vsg: 14,
+            factor_reumatoide: 8.5, aslo: 203, monocitos: 0.9, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.1
         }
     },
     {
@@ -746,7 +795,8 @@ const ANALÍTICAS = [
             hematies: 5.28, hemoglobina: 14.4, hematocrito: 43.9, vcm: 83.1,
             chcm: 32.8, hcm: 27.3, ade: 15.7, plaquetas: 292, vpm: 10,
             leucocitos: 6.2, neutrofilos_pct: 45.2, linfocitos_pct: 41.4,
-            monocitos_pct: 11.2, eosinofilos_pct: 1.9
+            monocitos_pct: 11.2, eosinofilos_pct: 1.9,
+            cortisol: 23.1, monocitos: 0.7, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.2
         }
     },
     {
@@ -760,7 +810,8 @@ const ANALÍTICAS = [
             hematies: 4.94, hemoglobina: 15.1, hematocrito: 45.4, vcm: 91.9,
             hcm: 30.6, chcm: 33.3, ade: 13.7, plaquetas: 290, vpm: 9.9,
             leucocitos: 10.3, neutrofilos_pct: 56.5, linfocitos_pct: 33.9,
-            monocitos_pct: 8.1, eosinofilos_pct: 1.3
+            monocitos_pct: 8.1, eosinofilos_pct: 1.3,
+            monocitos: 0.8, eosinofilos: 0.1, basofilos: 0.0
         }
     },
     {
@@ -776,7 +827,8 @@ const ANALÍTICAS = [
             hematies: 4.99, hemoglobina: 15.1, hematocrito: 44.7, vcm: 89.6,
             chcm: 33.8, hcm: 30.3, ade: 13.6, plaquetas: 271, vpm: 9.4,
             leucocitos: 7.5, neutrofilos_pct: 43.2, linfocitos_pct: 40.5,
-            monocitos_pct: 13.3, eosinofilos_pct: 2.6, vsg: 7
+            monocitos_pct: 13.3, eosinofilos_pct: 2.6, vsg: 7,
+            monocitos: 1.0, eosinofilos: 0.2, basofilos: 0.0
         }
     }
 ];
@@ -832,6 +884,19 @@ const PARAMS = {
     beta2_globulina:     { name: "Beta-2 globulina", unit: "g/dL", min: 0.20, max: 0.51, category: "bioquimica" },
     gamma_globulina:     { name: "Gamma globulina", unit: "g/dL", min: 0.67, max: 1.51, category: "bioquimica" },
     ratio_alb_glob:      { name: "Ratio Albúmina/Globulina", unit: "ratio", min: 1.2, max: 1.9, category: "bioquimica" },
+    cortisol:            { name: "Cortisol (8h)", unit: "µg/dL", min: 5, max: 25, category: "bioquimica" },
+    factor_reumatoide:   { name: "Factor Reumatoide", unit: "U/mL", min: 0, max: 14, category: "inmunologia" },
+    aslo:                { name: "ASLO", unit: "UI/mL", min: 0, max: 200, category: "inmunologia" },
+    igg:                 { name: "Inmunoglobulina G", unit: "mg/dL", min: 690, max: 1400, category: "inmunologia" },
+    iga:                 { name: "Inmunoglobulina A", unit: "mg/dL", min: 70, max: 410, category: "inmunologia" },
+    igm:                 { name: "Inmunoglobulina M", unit: "mg/dL", min: 34, max: 240, category: "inmunologia" },
+    anti_transglutaminasa: { name: "Ac. anti-transglutaminasa IgA", unit: "U/mL", min: 0, max: 7, category: "inmunologia" },
+    fibrinogeno:         { name: "Fibrinógeno funcional", unit: "mg/dL", min: 200, max: 450, category: "bioquimica" },
+    densidad_orina:      { name: "Densidad (orina)", unit: "", min: 1.005, max: 1.030, category: "orina" },
+    ph_orina:            { name: "pH (orina)", unit: "", min: 5, max: 7, category: "orina" },
+    proteinas_orina:     { name: "Proteínas (orina)", unit: "mg/dL", min: 0, max: 20, category: "orina" },
+    hemoglobina_orina:   { name: "Hemoglobina (orina)", unit: "mg/dL", min: 0, max: 0.03, category: "orina" },
+    hemoglobina_fecal:   { name: "Hemoglobina fecal (cribado CCR)", unit: "µg/L", min: 0, max: 50, category: "heces" },
     vitamina_b12:        { name: "Vitamina B12", unit: "pg/mL", min: 197, max: 771, category: "bioquimica" },
     folato:              { name: "Folato", unit: "ng/mL", min: 2.8, max: 17, category: "bioquimica" },
     hematies:            { name: "Hematíes", unit: "×10⁶/µL", min: 4.5, max: 5.99, category: "hematologia" },
@@ -853,7 +918,16 @@ const PARAMS = {
     vsg:                 { name: "VSG", unit: "mm", min: 0, max: 30, category: "hematologia" },
     basofilos_pct:       { name: "Basófilos %", unit: "%", min: 0, max: 1.5, category: "hematologia" },
     reticulocitos:       { name: "Reticulocitos", unit: "%", min: 1.0, max: 2.1, category: "hematologia" },
-    rethe:               { name: "RetHe (Hb reticulocitaria)", unit: "pg", min: 28, max: 99, category: "hematologia" }
+    rethe:               { name: "RetHe (Hb reticulocitaria)", unit: "pg", min: 28, max: 99, category: "hematologia" },
+    ret_lfr:             { name: "Reticulocitos LFR (baja fluor.)", unit: "%", min: 75, max: 95, category: "hematologia" },
+    ret_mfr:             { name: "Reticulocitos MFR (media fluor.)", unit: "%", min: 5, max: 20, category: "hematologia" },
+    ret_hfr:             { name: "Reticulocitos HFR (alta fluor.)", unit: "%", min: 0.1, max: 2.5, category: "hematologia" },
+    monocitos:           { name: "Monocitos", unit: "×10³/µL", min: 0, max: 0.8, category: "hematologia" },
+    eosinofilos:         { name: "Eosinófilos", unit: "×10³/µL", min: 0, max: 0.5, category: "hematologia" },
+    basofilos:           { name: "Basófilos", unit: "×10³/µL", min: 0, max: 0.2, category: "hematologia" },
+    granulocitos_inmaduros_pct: { name: "Granulocitos inmaduros %", unit: "%", min: 0, max: 2, category: "hematologia" },
+    granulocitos_inmaduros: { name: "Granulocitos inmaduros", unit: "×10³/µL", min: 0, max: 0.2, category: "hematologia" },
+    eritroblastos_pct:   { name: "Eritroblastos (eritr. nucleados) %", unit: "%", min: 0, max: 0.1, category: "hematologia" }
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -867,7 +941,10 @@ const CATEGORIES = {
     tiroides:     { name: "Tiroides", icon: "🦋", order: 5 },
     hematologia:  { name: "Hematología", icon: "🩸", order: 6 },
     hierro:       { name: "Metabolismo del Hierro", icon: "⚙️", order: 7 },
-    electrolitos: { name: "Electrolitos y Minerales", icon: "⚡", order: 8 }
+    electrolitos: { name: "Electrolitos y Minerales", icon: "⚡", order: 8 },
+    inmunologia:  { name: "Inmunología y Otros", icon: "🛡️", order: 9 },
+    orina:        { name: "Orina", icon: "💧", order: 10 },
+    heces:        { name: "Heces", icon: "🟤", order: 11 }
 };
 
 const COLORS = ['#4C72B0','#DD8452','#55A868','#C44E52','#8172B3','#937860','#DA8BC3','#8C8C8C','#CCB974','#64B5CD'];
