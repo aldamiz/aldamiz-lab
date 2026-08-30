@@ -362,7 +362,7 @@
     <div id="table-container"></div>
 
     <footer class="dashboard-footer">
-        Datos extraídos de Osakidetza Carpeta Berria · Última actualización: 26 Mar 2026 · Generado automáticamente
+        Datos de Osakidetza Carpeta Berria + Laboratorio Axpe/Sanitas (abr 2023) · Última actualización: 30 Ago 2026 · Generado automáticamente
         <br><button onclick="document.getElementById('recipe-modal').style.display='flex'" style="margin-top:8px;background:none;border:1px solid #a0aec0;border-radius:6px;padding:4px 14px;font-size:12px;color:#4a5568;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#2b6cb0';this.style.color='#2b6cb0'" onmouseout="this.style.borderColor='#a0aec0';this.style.color='#4a5568'">📋 View recipe</button>
     </footer>
 </div>
@@ -391,10 +391,9 @@
 // ═══════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════════
 // ⚠️ REGLA AL REGENERAR ESTA PÁGINA (añadida 30-ago-2026):
-// Existen analíticas EXTERNAS a Osakidetza que NO están en este array y NO deben perderse:
-//  · Laboratorio Axpe/Sanitas 14-abr-2023: homocisteína 12.5 µmol/L [<15], vitamina D 32.9 ng/mL,
-//    folato 19.0, B12 418, ferritina 69, anti-TPO POSITIVO 186 UI/mL, TSH 7.28, T4L 1.14, T3L 2.58.
-//  · La analítica Osakidetza de may-2024 incluye homocisteína 12.50 µmol/L [5-15] no extraída aquí.
+// Este array YA INCLUYE datos externos a Osakidetza que NO deben perderse al regenerar:
+//  · Entrada 2023-04-14 = Laboratorio Axpe/Sanitas (rangos de ese lab distintos: B12 191-943, TSH 0.30-4.70, folato 3.89-20 — su folato 19.0 es NORMAL en Axpe aunque el rango global lo marque alto).
+//  · homocisteína (2023, 2024), vitamina D (2023 Axpe, jun-2023), anti-TPO (2019, 2023), PSA (2024, 2025), T3L, reticulocitos/RetHe, basófilos — añadidos el 30-ago-2026 desde los PDFs.
 //  · PDFs fuente: Dropbox/06-salud/0. Análisis de sangre Gabi/ (hay más externos: dic-2022, jun-2023, ene-2024, mar-2025).
 //  · Contexto canónico: ~/Documents/salud/salud-cognitiva-contexto.md
 // Al regenerar o actualizar esta página: conservar/incorporar estos datos externos y NO tocar
@@ -418,7 +417,8 @@ const ANALÍTICAS = [
             hematies: 4.59, hemoglobina: 14.7, hematocrito: 43.4, vcm: 94.6,
             chcm: 33.9, hcm: 32.0, ade: 14.6, plaquetas: 233, vpm: 9.7,
             leucocitos: 5.49, neutrofilos_pct: 46.5, linfocitos_pct: 42.8,
-            monocitos_pct: 8.7, eosinofilos_pct: 1.5, vsg: 5
+            monocitos_pct: 8.7, eosinofilos_pct: 1.5, vsg: 5,
+            basofilos_pct: 0.5
         }
     },
     {
@@ -437,7 +437,8 @@ const ANALÍTICAS = [
             hematies: 5.10, hemoglobina: 16.1, hematocrito: 47.7, vcm: 93.5,
             chcm: 33.8, hcm: 31.6, ade: 13.6, plaquetas: 256,
             leucocitos: 5.08, neutrofilos_pct: 44.8, linfocitos_pct: 44.7,
-            monocitos_pct: 8.7, eosinofilos_pct: 1.4, vsg: 4
+            monocitos_pct: 8.7, eosinofilos_pct: 1.4, vsg: 4,
+            psa: 1.34, vpm: 9.9, neutrofilos: 2.28, linfocitos: 2.27, basofilos_pct: 0.4
         }
     },
     {
@@ -454,7 +455,8 @@ const ANALÍTICAS = [
             hematies: 4.49, hemoglobina: 14.7, hematocrito: 44.0, vcm: 98.0,
             chcm: 33.4, hcm: 32.7, ade: 13.2, plaquetas: 206,
             leucocitos: 4.34, neutrofilos_pct: 49.7, linfocitos_pct: 39.9,
-            monocitos_pct: 7.6, eosinofilos_pct: 2.1
+            monocitos_pct: 7.6, eosinofilos_pct: 2.1,
+            homocisteina: 12.5, reticulocitos: 1.36, rethe: 36.1, basofilos_pct: 0.7, neutrofilos: 2.16, linfocitos: 1.73
         }
     },
     {
@@ -471,7 +473,8 @@ const ANALÍTICAS = [
             hematies: 5.16, hemoglobina: 16.7, hematocrito: 48.0, vcm: 93.0,
             chcm: 34.8, hcm: 32.4, ade: 13.0, plaquetas: 269,
             leucocitos: 5.49, neutrofilos_pct: 41.1, linfocitos_pct: 47.5,
-            monocitos_pct: 9.1, eosinofilos_pct: 1.6
+            monocitos_pct: 9.1, eosinofilos_pct: 1.6,
+            psa: 1.50, basofilos_pct: 0.7
         }
     },
     {
@@ -480,7 +483,24 @@ const ANALÍTICAS = [
         source: "Medicina Familiar (AP) — C.S. Balmaseda",
         doctor: "Dr. Campayo Pérez, Juan Miguel",
         values: {
-            tsh: 6.48
+            tsh: 6.48,
+            vitamina_d: 38
+        }
+    },
+    {
+        date: "2023-04-14",
+        label: "ABR 2023",
+        source: "Laboratorio Axpe (Sanitas) — Ercilla 18, Bilbao",
+        doctor: "Dr. Martín Axpe Fernández (validación)",
+        values: {
+            homocisteina: 12.5, vitamina_d: 32.9,
+            hierro: 86, ferritina: 69,
+            tsh: 7.28, t4_libre: 1.14, t3_libre: 2.58, anti_tpo: 186,
+            vitamina_b12: 418, folato: 19.0,
+            hematies: 5.05, hemoglobina: 16.0, hematocrito: 45.3, vcm: 89.7,
+            chcm: 35.3, hcm: 31.7, plaquetas: 255, vpm: 9.0,
+            leucocitos: 6.82, neutrofilos_pct: 61.9, neutrofilos: 4.22, linfocitos_pct: 31.1, linfocitos: 2.12,
+            monocitos_pct: 6.0, eosinofilos_pct: 0.6, basofilos_pct: 0.4
         }
     },
     {
@@ -498,7 +518,8 @@ const ANALÍTICAS = [
             hematies: 5.12, hemoglobina: 15.8, hematocrito: 47.7, vcm: 93.2,
             chcm: 33.1, hcm: 30.9, ade: 14.4, plaquetas: 231,
             leucocitos: 5.22, neutrofilos_pct: 46.0, linfocitos_pct: 43.3,
-            monocitos_pct: 8.4, eosinofilos_pct: 1.7
+            monocitos_pct: 8.4, eosinofilos_pct: 1.7,
+            reticulocitos: 0.88, rethe: 36.5, basofilos_pct: 0.6
         }
     },
     {
@@ -515,7 +536,8 @@ const ANALÍTICAS = [
             hematies: 4.74, hemoglobina: 14.5, hematocrito: 44.5, vcm: 93.9,
             chcm: 32.6, hcm: 30.6, ade: 14.4, plaquetas: 257, vpm: 10.1,
             leucocitos: 7.84, neutrofilos_pct: 53.50, linfocitos_pct: 36.90,
-            monocitos_pct: 7.80, eosinofilos_pct: 1.30
+            monocitos_pct: 7.80, eosinofilos_pct: 1.30,
+            reticulocitos: 1.15, rethe: 34.6, basofilos_pct: 0.5
         }
     },
     {
@@ -552,7 +574,8 @@ const ANALÍTICAS = [
             hematies: 5.25, hemoglobina: 16.5, hematocrito: 49.7, vcm: 94.7,
             chcm: 33.2, hcm: 31.4, ade: 13.2, plaquetas: 260, vpm: 9.5,
             leucocitos: 8.00, neutrofilos_pct: 51.3, linfocitos_pct: 38.4,
-            monocitos_pct: 8.8, eosinofilos_pct: 1.1
+            monocitos_pct: 8.8, eosinofilos_pct: 1.1,
+            anti_tpo: 305, basofilos_pct: 0.4
         }
     },
     {
@@ -570,7 +593,8 @@ const ANALÍTICAS = [
             hematies: 5.35, hemoglobina: 16.6, hematocrito: 47.9, vcm: 89.5,
             chcm: 34.7, hcm: 31.0, ade: 13.5, plaquetas: 264, vpm: 9.3,
             leucocitos: 7.79, neutrofilos_pct: 52.4, linfocitos_pct: 35.8,
-            monocitos_pct: 9.2, eosinofilos_pct: 2.1, vsg: 5
+            monocitos_pct: 9.2, eosinofilos_pct: 2.1, vsg: 5,
+            basofilos_pct: 0.5
         }
     },
     {
@@ -791,6 +815,11 @@ const PARAMS = {
     ferritina:           { name: "Ferritina", unit: "ng/mL", min: 30, max: 400, category: "hierro", important: true },
     tsh:                 { name: "TSH", unit: "mU/L", min: 0.27, max: 4.2, category: "tiroides", important: true },
     t4_libre:            { name: "T4 Libre", unit: "ng/dL", min: 0.8, max: 1.8, category: "tiroides", important: true },
+    t3_libre:            { name: "T3 Libre", unit: "pg/mL", min: 2.0, max: 4.4, category: "tiroides" },
+    anti_tpo:            { name: "Anti-TPO (Ac. tiroperoxidasa)", unit: "UI/mL", min: 0, max: 34, category: "tiroides", important: true },
+    homocisteina:        { name: "Homocisteína", unit: "µmol/L", min: 5, max: 15, category: "bioquimica", important: true },
+    vitamina_d:          { name: "Vitamina D (25-OH)", unit: "ng/mL", min: 20, max: 100, category: "bioquimica" },
+    psa:                 { name: "PSA", unit: "ng/mL", min: 0, max: 4, category: "bioquimica" },
     vitamina_b12:        { name: "Vitamina B12", unit: "pg/mL", min: 197, max: 771, category: "bioquimica" },
     folato:              { name: "Folato", unit: "ng/mL", min: 2.8, max: 17, category: "bioquimica" },
     hematies:            { name: "Hematíes", unit: "×10⁶/µL", min: 4.5, max: 5.99, category: "hematologia" },
@@ -809,7 +838,10 @@ const PARAMS = {
     linfocitos:          { name: "Linfocitos", unit: "×10³/µL", min: 1, max: 4, category: "hematologia" },
     monocitos_pct:       { name: "Monocitos %", unit: "%", min: 0, max: 15, category: "hematologia" },
     eosinofilos_pct:     { name: "Eosinófilos %", unit: "%", min: 0, max: 5, category: "hematologia" },
-    vsg:                 { name: "VSG", unit: "mm", min: 0, max: 30, category: "hematologia" }
+    vsg:                 { name: "VSG", unit: "mm", min: 0, max: 30, category: "hematologia" },
+    basofilos_pct:       { name: "Basófilos %", unit: "%", min: 0, max: 1.5, category: "hematologia" },
+    reticulocitos:       { name: "Reticulocitos", unit: "%", min: 1.0, max: 2.1, category: "hematologia" },
+    rethe:               { name: "RetHe (Hb reticulocitaria)", unit: "pg", min: 28, max: 99, category: "hematologia" }
 };
 
 // ═══════════════════════════════════════════════════════════
