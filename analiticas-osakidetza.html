@@ -418,7 +418,8 @@ const ANALÍTICAS = [
             chcm: 33.9, hcm: 32.0, ade: 14.6, plaquetas: 233, vpm: 9.7,
             leucocitos: 5.49, neutrofilos_pct: 46.5, linfocitos_pct: 42.8,
             monocitos_pct: 8.7, eosinofilos_pct: 1.5, vsg: 5,
-            basofilos_pct: 0.5
+            basofilos_pct: 0.5,
+            alfa1_globulina: 0.23, alfa2_globulina: 0.52, beta1_globulina: 0.45, beta2_globulina: 0.37, gamma_globulina: 1.02, ratio_alb_glob: 1.57
         }
     },
     {
@@ -519,7 +520,8 @@ const ANALÍTICAS = [
             chcm: 33.1, hcm: 30.9, ade: 14.4, plaquetas: 231,
             leucocitos: 5.22, neutrofilos_pct: 46.0, linfocitos_pct: 43.3,
             monocitos_pct: 8.4, eosinofilos_pct: 1.7,
-            reticulocitos: 0.88, rethe: 36.5, basofilos_pct: 0.6
+            reticulocitos: 0.88, rethe: 36.5, basofilos_pct: 0.6,
+            amilasa: 79, ttpa: 33, tiempo_protrombina: 89, inr: 1.1, alfa1_globulina: 0.28, alfa2_globulina: 0.47, beta1_globulina: 0.43, beta2_globulina: 0.36, gamma_globulina: 1.14, ratio_alb_glob: 1.53
         }
     },
     {
@@ -820,6 +822,16 @@ const PARAMS = {
     homocisteina:        { name: "Homocisteína", unit: "µmol/L", min: 5, max: 15, category: "bioquimica", important: true },
     vitamina_d:          { name: "Vitamina D (25-OH)", unit: "ng/mL", min: 20, max: 100, category: "bioquimica" },
     psa:                 { name: "PSA", unit: "ng/mL", min: 0, max: 4, category: "bioquimica" },
+    amilasa:             { name: "Amilasa", unit: "U/L", min: 28, max: 100, category: "bioquimica" },
+    ttpa:                { name: "TTPA", unit: "sg", min: 25, max: 40, category: "bioquimica" },
+    tiempo_protrombina:  { name: "Tiempo de Protrombina", unit: "%", min: 65, max: 120, category: "bioquimica" },
+    inr:                 { name: "INR", unit: "ratio", min: 0.9, max: 1.2, category: "bioquimica" },
+    alfa1_globulina:     { name: "Alfa-1 globulina", unit: "g/dL", min: 0.20, max: 0.46, category: "bioquimica" },
+    alfa2_globulina:     { name: "Alfa-2 globulina", unit: "g/dL", min: 0.52, max: 1.05, category: "bioquimica" },
+    beta1_globulina:     { name: "Beta-1 globulina", unit: "g/dL", min: 0.32, max: 0.60, category: "bioquimica" },
+    beta2_globulina:     { name: "Beta-2 globulina", unit: "g/dL", min: 0.20, max: 0.51, category: "bioquimica" },
+    gamma_globulina:     { name: "Gamma globulina", unit: "g/dL", min: 0.67, max: 1.51, category: "bioquimica" },
+    ratio_alb_glob:      { name: "Ratio Albúmina/Globulina", unit: "ratio", min: 1.2, max: 1.9, category: "bioquimica" },
     vitamina_b12:        { name: "Vitamina B12", unit: "pg/mL", min: 197, max: 771, category: "bioquimica" },
     folato:              { name: "Folato", unit: "ng/mL", min: 2.8, max: 17, category: "bioquimica" },
     hematies:            { name: "Hematíes", unit: "×10⁶/µL", min: 4.5, max: 5.99, category: "hematologia" },
