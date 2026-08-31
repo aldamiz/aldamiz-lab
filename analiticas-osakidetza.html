@@ -334,6 +334,7 @@
                     <option value="inmunologia">Inmunología y Otros</option>
                     <option value="orina">Orina</option>
                     <option value="heces">Heces</option>
+                    <option value="constantes">Constantes Vitales</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -403,6 +404,20 @@
 // el informe cifrado private/b12-etc.html, que se gestiona aparte.
 // ═══════════════════════════════════════════════════════════
 const ANALÍTICAS = [
+    {
+        date: "2026-08-31",
+        label: "31 AGO 2026 (tensión)",
+        source: "Tensiómetro de farmacia — Bilbao",
+        doctor: "",
+        values: { tension_sistolica: 124, tension_diastolica: 75, pulso_reposo: 53 }
+    },
+    {
+        date: "2026-08-30",
+        label: "30 AGO 2026 (tensión)",
+        source: "Tensiómetro de farmacia — Bilbao",
+        doctor: "",
+        values: { tension_sistolica: 127, tension_diastolica: 76, pulso_reposo: 52 }
+    },
     {
         date: "2025-07-08",
         label: "JUL 2025",
@@ -897,6 +912,9 @@ const PARAMS = {
     proteinas_orina:     { name: "Proteínas (orina)", unit: "mg/dL", min: 0, max: 20, category: "orina" },
     hemoglobina_orina:   { name: "Hemoglobina (orina)", unit: "mg/dL", min: 0, max: 0.03, category: "orina" },
     hemoglobina_fecal:   { name: "Hemoglobina fecal (cribado CCR)", unit: "µg/L", min: 0, max: 50, category: "heces" },
+    tension_sistolica:   { name: "Tensión sistólica", unit: "mmHg", min: 90, max: 135, category: "constantes", important: true },
+    tension_diastolica:  { name: "Tensión diastólica", unit: "mmHg", min: 60, max: 85, category: "constantes", important: true },
+    pulso_reposo:        { name: "Pulso en reposo", unit: "lpm", min: 45, max: 90, category: "constantes" },
     vitamina_b12:        { name: "Vitamina B12", unit: "pg/mL", min: 197, max: 771, category: "bioquimica" },
     folato:              { name: "Folato", unit: "ng/mL", min: 2.8, max: 17, category: "bioquimica" },
     hematies:            { name: "Hematíes", unit: "×10⁶/µL", min: 4.5, max: 5.99, category: "hematologia" },
@@ -944,7 +962,8 @@ const CATEGORIES = {
     electrolitos: { name: "Electrolitos y Minerales", icon: "⚡", order: 8 },
     inmunologia:  { name: "Inmunología y Otros", icon: "🛡️", order: 9 },
     orina:        { name: "Orina", icon: "💧", order: 10 },
-    heces:        { name: "Heces", icon: "🟤", order: 11 }
+    heces:        { name: "Heces", icon: "🟤", order: 11 },
+    constantes:   { name: "Constantes Vitales", icon: "🫀", order: 12 }
 };
 
 const COLORS = ['#4C72B0','#DD8452','#55A868','#C44E52','#8172B3','#937860','#DA8BC3','#8C8C8C','#CCB974','#64B5CD'];
