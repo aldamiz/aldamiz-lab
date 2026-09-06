@@ -316,7 +316,7 @@
     <header class="dashboard-header">
         <div>
             <h1>Evolución Analíticas de Sangre</h1>
-            <div class="subtitle">Osakidetza — Carpeta de Salud | 2009 – 2025</div>
+            <div class="subtitle">Osakidetza — Carpeta de Salud | 2009 – 2026</div>
         </div>
         <div class="filters">
             <div class="filter-group">
@@ -366,7 +366,7 @@
     <div id="table-container"></div>
 
     <footer class="dashboard-footer">
-        Datos de Osakidetza Carpeta Berria + Laboratorio Axpe/Sanitas (abr 2023) · Última actualización: 30 Ago 2026 · Hecho con Claude Fable 5 (modelo: claude-fable-5)
+        Datos de Osakidetza Carpeta Berria + Laboratorio Axpe/Sanitas (abr 2023) · Última actualización: 6 Sep 2026 · Hecho con Claude Fable 5 (modelo: claude-fable-5)
         <br><button onclick="document.getElementById('recipe-modal').style.display='flex'" style="margin-top:8px;background:none;border:1px solid #a0aec0;border-radius:6px;padding:4px 14px;font-size:12px;color:#4a5568;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#2b6cb0';this.style.color='#2b6cb0'" onmouseout="this.style.borderColor='#a0aec0';this.style.color='#4a5568'">📋 View recipe</button>
     </footer>
 </div>
@@ -399,11 +399,37 @@
 //  · Entrada 2023-04-14 = Laboratorio Axpe/Sanitas (rangos de ese lab distintos: B12 191-943, TSH 0.30-4.70, folato 3.89-20 — su folato 19.0 es NORMAL en Axpe aunque el rango global lo marque alto).
 //  · homocisteína (2023, 2024), vitamina D (2023 Axpe, jun-2023), anti-TPO (2019, 2023), PSA (2024, 2025), T3L, reticulocitos/RetHe, basófilos — añadidos el 30-ago-2026 desde los PDFs.
 //  · PDFs fuente: Dropbox/06-salud/0. Análisis de sangre Gabi/ (hay más externos: dic-2022, jun-2023, ene-2024, mar-2025).
-//  · Contexto canónico: ~/Documents/salud/salud-cognitiva-contexto.md
+//  · Contexto canónico: Dropbox/06-salud/19. Salud cognitiva/salud-cognitiva-contexto.md
+//  · 6-sep-2026: añadida SEP 2026 (PDF "32. Anáisis de sangre 02:09:2026.pdf") con parámetros nuevos:
+//    Lipoproteína (a), HbA1c (NGSP + IFCC), albúmina y creatinina en orina. 25 analíticas de sangre.
 // Al regenerar o actualizar esta página: conservar/incorporar estos datos externos y NO tocar
 // el informe cifrado private/b12-etc.html, que se gestiona aparte.
 // ═══════════════════════════════════════════════════════════
 const ANALÍTICAS = [
+    {
+        date: "2026-09-02",
+        label: "SEP 2026",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia). Petición 52371617, diagnóstico 'astenia'. Toma 8:00. Lp(a), HbA1c y vitamina D pedidas expresamente (31-ago-2026). Filtración glomerular informada como >90 (se guarda 90). Albúmina en orina <0,3 (se guarda 0.3); cociente albúmina/creatinina no calculable. Sedimento normal. T4 libre y anti-TPO NO incluidos esta vez.",
+        doctor: "Dra. Leyre Márquez Martínez (petición) — cabecera Dra. Lecube Angulo",
+        values: {
+            glucosa: 89, creatinina: 0.89, filtracion_glomerular: 90,
+            colesterol: 192, trigliceridos: 41, hdl: 81, ldl: 103, colesterol_no_hdl: 111,
+            alt: 31, ggt: 12, fosfatasa_alcalina: 70, bilirrubina: 0.7,
+            albumina: 4.6, sodio: 143, potasio: 4.9, cloruro: 105,
+            hierro: 121, transferrina: 272, sat_transferrina: 32, ferritina: 42,
+            tsh: 6.56, psa: 1.19,
+            lipoproteina_a: 19, vitamina_d: 32,
+            vitamina_b12: 371, folato: 6.4,
+            hba1c: 5.5, hba1c_ifcc: 36,
+            hematies: 4.81, hemoglobina: 15.4, hematocrito: 45.4, vcm: 94.4,
+            chcm: 33.9, hcm: 32.0, ade: 13.6, plaquetas: 253, vpm: 9.6,
+            leucocitos: 4.84, neutrofilos_pct: 44.9, neutrofilos: 2.17, linfocitos_pct: 43.6, linfocitos: 2.11,
+            monocitos_pct: 9.7, monocitos: 0.47, eosinofilos_pct: 1.4, eosinofilos: 0.07,
+            basofilos_pct: 0.4, basofilos: 0.02, granulocitos_inmaduros_pct: 0.0, granulocitos_inmaduros: 0.0,
+            eritroblastos_pct: 0.20,
+            densidad_orina: 1.025, ph_orina: 5.0, albumina_orina: 0.3, creatinina_orina: 179
+        }
+    },
     {
         date: "2026-09-02",
         label: "2 SEP 2026 (tensión, mañana)",
@@ -869,6 +895,7 @@ const PARAMS = {
     hdl:                 { name: "Colesterol HDL", unit: "mg/dL", min: 40, max: 999, category: "lipidos", important: true },
     ldl:                 { name: "Colesterol LDL (calc.)", unit: "mg/dL", min: 0, max: 130, category: "lipidos", important: true },
     colesterol_no_hdl:   { name: "Colesterol no-HDL", unit: "mg/dL", min: 0, max: 160, category: "lipidos" },
+    lipoproteina_a:      { name: "Lipoproteína (a)", unit: "mg/dL", min: 0, max: 50, category: "lipidos", important: true },
     ast:                 { name: "AST / GOT", unit: "U/L", min: 5, max: 37, category: "hepatico", important: true },
     alt:                 { name: "ALT / GPT", unit: "U/L", min: 5, max: 41, category: "hepatico", important: true },
     ggt:                 { name: "GGT", unit: "U/L", min: 11, max: 71, category: "hepatico" },
@@ -893,6 +920,8 @@ const PARAMS = {
     t4_libre:            { name: "T4 Libre", unit: "ng/dL", min: 0.8, max: 1.8, category: "tiroides", important: true },
     t3_libre:            { name: "T3 Libre", unit: "pg/mL", min: 2.0, max: 4.4, category: "tiroides" },
     anti_tpo:            { name: "Anti-TPO (Ac. tiroperoxidasa)", unit: "UI/mL", min: 0, max: 34, category: "tiroides", important: true },
+    hba1c:               { name: "Hemoglobina glicada (HbA1c, NGSP)", unit: "%", min: 4, max: 6, category: "bioquimica", important: true },
+    hba1c_ifcc:          { name: "HbA1c (IFCC)", unit: "mmol/mol", min: 20, max: 42, category: "bioquimica" },
     homocisteina:        { name: "Homocisteína", unit: "µmol/L", min: 5, max: 15, category: "bioquimica", important: true },
     vitamina_d:          { name: "Vitamina D (25-OH)", unit: "ng/mL", min: 20, max: 100, category: "bioquimica" },
     psa:                 { name: "PSA", unit: "ng/mL", min: 0, max: 4, category: "bioquimica" },
@@ -918,6 +947,8 @@ const PARAMS = {
     ph_orina:            { name: "pH (orina)", unit: "", min: 5, max: 7, category: "orina" },
     proteinas_orina:     { name: "Proteínas (orina)", unit: "mg/dL", min: 0, max: 20, category: "orina" },
     hemoglobina_orina:   { name: "Hemoglobina (orina)", unit: "mg/dL", min: 0, max: 0.03, category: "orina" },
+    albumina_orina:      { name: "Albúmina (orina)", unit: "mg/dL", min: 0, max: 2, category: "orina" },
+    creatinina_orina:    { name: "Creatinina (orina)", unit: "mg/dL", min: 20, max: 300, category: "orina" },
     hemoglobina_fecal:   { name: "Hemoglobina fecal (cribado CCR)", unit: "µg/L", min: 0, max: 50, category: "heces" },
     tension_sistolica:   { name: "Tensión sistólica", unit: "mmHg", min: 90, max: 135, category: "constantes", important: true },
     tension_diastolica:  { name: "Tensión diastólica", unit: "mmHg", min: 60, max: 85, category: "constantes", important: true },
