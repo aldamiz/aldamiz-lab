@@ -88,6 +88,21 @@
             cursor: pointer;
         }
 
+        .filter-group input[type="search"] {
+            padding: 6px 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-on-dark);
+            font-size: 14px;
+            width: 210px;
+            -webkit-appearance: none;
+        }
+        .filter-group input[type="search"]::placeholder { color: rgba(255,255,255,0.55); }
+        .filter-group input[type="search"]:focus { outline: none; border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.18); }
+        body.searching #kpi-row, body.searching .summary-note { display: none; }
+        .no-results { background: var(--bg-card); border-radius: var(--radius); padding: 24px; color: var(--text-secondary); text-align: center; }
+
         .filter-group select option {
             background: var(--bg-header);
             color: var(--text-on-dark);
@@ -302,6 +317,9 @@
 
         @media (max-width: 768px) {
             .dashboard-header { flex-direction: column; align-items: flex-start; }
+            .filters { width: 100%; }
+            .filter-group.search { width: 100%; }
+            .filter-group.search input[type="search"] { width: 100%; font-size: 16px; }
             .kpi-row { grid-template-columns: repeat(2, 1fr); }
             .chart-row { grid-template-columns: 1fr; }
         }
@@ -340,6 +358,9 @@
                     <option value="heces">Heces</option>
                     <option value="constantes">Constantes Vitales</option>
                 </select>
+            </div>
+            <div class="filter-group search">
+                <input id="search-var" type="search" placeholder="🔍 Buscar variable (B12, TSH, ferritina…)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="dashboard.onSearch()">
             </div>
             <div class="filter-group">
                 <label>Ir a</label>
@@ -1077,6 +1098,8 @@ class Dashboard {
         if (!el) {
             document.getElementById('filter-category').value = 'all';
             document.getElementById('filter-status').value = 'all';
+            document.getElementById('search-var').value = '';
+            document.body.classList.remove('searching');
             this.applyFilters();
             el = document.getElementById(`var-${key}`);
         }
@@ -1110,11 +1133,37 @@ class Dashboard {
         this.renderTable();
     }
 
+    norm(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    getSearchQuery() {
+        return this.norm(document.getElementById('search-var').value.trim());
+    }
+
+    // Buscador: filtra en vivo por nombre, clave o categoría (sin tildes, sin mayúsculas)
+    onSearch() {
+        clearTimeout(this._searchTimer);
+        this._searchTimer = setTimeout(() => {
+            document.body.classList.toggle('searching', this.getSearchQuery() !== '');
+            this.applyFilters();
+            if (this.getSearchQuery() && !document.querySelector('#charts-container .chart-container')) {
+                document.getElementById('charts-container').innerHTML =
+                    '<div class="no-results">Ninguna variable coincide. Prueba con otro nombre (ej. B12, TSH, ferritina).</div>';
+            }
+        }, 120);
+    }
+
     getFilteredParams() {
         const cat = document.getElementById('filter-category').value;
         const stat = document.getElementById('filter-status').value;
+        const q = this.getSearchQuery();
 
         return Object.entries(PARAMS).filter(([key, p]) => {
+            if (q) {
+                const hay = this.norm(`${p.name} ${key.replace(/_/g, ' ')} ${CATEGORIES[p.category]?.name || ''}`);
+                if (!hay.includes(q)) return false;
+            }
             if (cat !== 'all' && p.category !== cat) return false;
             if (stat !== 'all') {
                 // Check latest value
@@ -1313,6 +1362,7 @@ class Dashboard {
         // Add summary note
         if (this.data.length > 0) {
             const note = document.createElement('div');
+            note.className = 'summary-note';
             note.style.cssText = 'background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:16px;margin-bottom:16px;font-size:13px;color:#2a4365;';
             note.innerHTML = `<strong>📊 Datos extraídos:</strong> ${this.data.length} analíticas (${this.data.map(d=>d.label).join(', ')}).
                 <br>Evolución de 16 años (2009–2025). Hallazgos clave:
@@ -1391,7 +1441,9 @@ Never delete external data or the separate encrypted report private/b12-etc.html
 Visualizes the evolution of blood test parameters over time using Chart.js.
 Each parameter gets its own line chart with a shaded reference range band.
 KPI cards highlight abnormal values. Filters allow slicing by category and
-status. An "Ir a" dropdown (built by buildGotoSelect from PARAMS, grouped by
+status. A live search box (#search-var, accent/case-insensitive over name, key and
+category) narrows the page to matching variables and hides the KPI row while
+active. An "Ir a" dropdown (built by buildGotoSelect from PARAMS, grouped by
 category) jumps to any variable's chart; each chart card has id `var-<key>`
 and the URL hash `#<key>` deep-links to it (e.g. #vitamina_b12).
 A summary table shows all values across all dates.
