@@ -185,6 +185,10 @@
             max-height: 300px;
         }
 
+        .chart-container { scroll-margin-top: 12px; transition: box-shadow .3s; }
+        .chart-container.hl { box-shadow: 0 0 0 3px var(--accent); }
+        #goto-var { max-width: 260px; }
+
         /* Category sections */
         .category-section {
             margin-bottom: calc(var(--gap) * 1.5);
@@ -335,6 +339,12 @@
                     <option value="orina">Orina</option>
                     <option value="heces">Heces</option>
                     <option value="constantes">Constantes Vitales</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Ir a</label>
+                <select id="goto-var" onchange="dashboard.gotoVar(this.value); this.value='';">
+                    <option value="">Variable…</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -1024,9 +1034,57 @@ class Dashboard {
     }
 
     init() {
+        this.buildGotoSelect();
         this.renderKPIs();
         this.renderCharts();
         this.renderTable();
+        const h = decodeURIComponent(location.hash.slice(1));
+        if (PARAMS[h]) setTimeout(() => this.gotoVar(h), 50);
+    }
+
+    hasData(key) {
+        return this.data.some(d => d.values[key] !== undefined);
+    }
+
+    // Desplegable "Ir a": todas las variables con datos, agrupadas por categoría
+    buildGotoSelect() {
+        const sel = document.getElementById('goto-var');
+        const byCat = {};
+        Object.entries(PARAMS).forEach(([key, p]) => {
+            if (!this.hasData(key)) return;
+            (byCat[p.category] ||= []).push([key, p]);
+        });
+        Object.entries(byCat)
+            .sort((a, b) => (CATEGORIES[a[0]]?.order || 99) - (CATEGORIES[b[0]]?.order || 99))
+            .forEach(([catKey, params]) => {
+                const cat = CATEGORIES[catKey] || { name: catKey, icon: '' };
+                const og = document.createElement('optgroup');
+                og.label = `${cat.icon} ${cat.name}`;
+                params.sort((a, b) => a[1].name.localeCompare(b[1].name, 'es'))
+                    .forEach(([key, p]) => {
+                        const o = document.createElement('option');
+                        o.value = key; o.textContent = p.name;
+                        og.appendChild(o);
+                    });
+                sel.appendChild(og);
+            });
+    }
+
+    // Salta al gráfico de una variable; si los filtros la ocultan, los resetea
+    gotoVar(key) {
+        if (!PARAMS[key]) return;
+        let el = document.getElementById(`var-${key}`);
+        if (!el) {
+            document.getElementById('filter-category').value = 'all';
+            document.getElementById('filter-status').value = 'all';
+            this.applyFilters();
+            el = document.getElementById(`var-${key}`);
+        }
+        if (!el) return;
+        history.replaceState(null, '', `#${key}`);
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.classList.add('hl');
+        setTimeout(() => el.classList.remove('hl'), 1800);
     }
 
     getStatus(key, value) {
@@ -1154,6 +1212,7 @@ class Dashboard {
 
                 const div = document.createElement('div');
                 div.className = 'chart-container';
+                div.id = `var-${key}`;
                 const canvasId = `chart-${key}`;
                 div.innerHTML = `
                     <h3>${p.name} <span class="badge ${badgeClass}">${this.getStatusLabel(status)}</span></h3>
@@ -1332,7 +1391,10 @@ Never delete external data or the separate encrypted report private/b12-etc.html
 Visualizes the evolution of blood test parameters over time using Chart.js.
 Each parameter gets its own line chart with a shaded reference range band.
 KPI cards highlight abnormal values. Filters allow slicing by category and
-status. A summary table shows all values across all dates.
+status. An "Ir a" dropdown (built by buildGotoSelect from PARAMS, grouped by
+category) jumps to any variable's chart; each chart card has id `var-<key>`
+and the URL hash `#<key>` deep-links to it (e.g. #vitamina_b12).
+A summary table shows all values across all dates.
 
 ## Architecture
 
