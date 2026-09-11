@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="/guard.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolución Analíticas — Osakidetza</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/analiticas-apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/analiticas-favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/analiticas-icon-192.png">
+    <meta name="apple-mobile-web-app-title" content="Sangre">
+    <meta name="theme-color" content="#1b365d">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --bg-primary: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-header: #1b365d;
+            --text-primary: #1a202c;
+            --text-secondary: #718096;
+            --text-on-dark: #ffffff;
+            --accent: #2b6cb0;
+            --positive: #38a169;
+            --negative: #e53e3e;
+            --warning: #dd6b20;
+            --neutral: #718096;
+            --gap: 16px;
+            --radius: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--gap);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--bg-header), #2a4a7f);
+            color: var(--text-on-dark);
+            padding: 24px 28px;
+            border-radius: var(--radius);
+            margin-bottom: var(--gap);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .dashboard-header h1 { font-size: 22px; font-weight: 700; }
+        .dashboard-header .subtitle { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .filter-group select {
+            padding: 6px 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-on-dark);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .filter-group select option {
+            background: var(--bg-header);
+            color: var(--text-on-dark);
+        }
+
+        /* KPI Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--accent);
+        }
+
+        .kpi-card.alert { border-left-color: var(--negative); }
+        .kpi-card.warning { border-left-color: var(--warning); }
+        .kpi-card.ok { border-left-color: var(--positive); }
+
+        .kpi-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .kpi-range {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .kpi-status {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .status-normal { color: var(--positive); }
+        .status-high { color: var(--negative); }
+        .status-low { color: var(--warning); }
+
+        /* Charts */
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .chart-container.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-container h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-container h3 .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .badge-normal { background: #c6f6d5; color: #276749; }
+        .badge-alert { background: #fed7d7; color: #9b2c2c; }
+        .badge-warning { background: #feebc8; color: #9c4221; }
+
+        .chart-container canvas {
+            max-height: 300px;
+        }
+
+        /* Category sections */
+        .category-section {
+            margin-bottom: calc(var(--gap) * 1.5);
+        }
+
+        .category-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--bg-header);
+            padding: 10px 0;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: var(--gap);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-title .icon { font-size: 20px; }
+
+        /* Data table */
+        .table-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            overflow-x: auto;
+            margin-bottom: var(--gap);
+        }
+
+        .table-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table thead th {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 2px solid #e2e8f0;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table thead th:hover { color: var(--text-primary); background: #f7fafc; }
+
+        .data-table tbody td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tbody tr:hover { background: #f7fafc; }
+
+        .val-high { color: var(--negative); font-weight: 600; }
+        .val-low { color: var(--warning); font-weight: 600; }
+        .val-normal { color: var(--positive); }
+
+        /* Footer */
+        .dashboard-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Legend for reference ranges */
+        .legend-bar {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 10px 16px;
+            background: #edf2f7;
+            border-radius: 6px;
+            margin-bottom: var(--gap);
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-normal { background: var(--positive); }
+        .dot-high { background: var(--negative); }
+        .dot-low { background: var(--warning); }
+        .dot-range { background: #cbd5e0; }
+
+        /* Tooltip area for reference range info */
+        .ref-range-band {
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; align-items: flex-start; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .filters { display: none; }
+            .chart-container { break-inside: avoid; }
+        }
+    </style>
+    <link rel="stylesheet" href="/chat-widget.css">
+</head>
+<body>
+<div class="dashboard-container">
+
+    <header class="dashboard-header">
+        <div>
+            <h1>Evolución Analíticas de Sangre</h1>
+            <div class="subtitle">Osakidetza — Carpeta de Salud | 2009 – 2026</div>
+        </div>
+        <div class="filters">
+            <div class="filter-group">
+                <label>Categoría</label>
+                <select id="filter-category" onchange="dashboard.applyFilters()">
+                    <option value="all">Todas</option>
+                    <option value="bioquimica">Bioquímica General</option>
+                    <option value="lipidos">Perfil Lipídico</option>
+                    <option value="hepatico">Perfil Hepático</option>
+                    <option value="renal">Función Renal</option>
+                    <option value="tiroides">Tiroides</option>
+                    <option value="hematologia">Hematología</option>
+                    <option value="hierro">Metabolismo Hierro</option>
+                    <option value="electrolitos">Electrolitos</option>
+                    <option value="inmunologia">Inmunología y Otros</option>
+                    <option value="orina">Orina</option>
+                    <option value="heces">Heces</option>
+                    <option value="constantes">Constantes Vitales</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Valor fuera de rango</label>
+                <select id="filter-status" onchange="dashboard.applyFilters()">
+                    <option value="all">Todos</option>
+                    <option value="abnormal">Solo alterados</option>
+                    <option value="normal">Solo normales</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <div class="legend-bar">
+        <span style="font-weight:600;">Leyenda:</span>
+        <div class="legend-item"><div class="legend-dot dot-normal"></div> Dentro de rango</div>
+        <div class="legend-item"><div class="legend-dot dot-high"></div> Por encima del rango</div>
+        <div class="legend-item"><div class="legend-dot dot-low"></div> Por debajo del rango</div>
+        <div class="legend-item"><div class="legend-dot dot-range"></div> Rango de referencia (área sombreada en gráficos)</div>
+    </div>
+
+    <!-- KPI Summary Cards -->
+    <div id="kpi-row" class="kpi-row"></div>
+
+    <!-- Charts rendered dynamically -->
+    <div id="charts-container"></div>
+
+    <!-- Detailed data table -->
+    <div id="table-container"></div>
+
+    <footer class="dashboard-footer">
+        Datos de Osakidetza Carpeta Berria + Laboratorio Axpe/Sanitas (abr 2023) · Última actualización: 6 Sep 2026 · Hecho con Claude Fable 5 (modelo: claude-fable-5)
+        <br><button onclick="document.getElementById('recipe-modal').style.display='flex'" style="margin-top:8px;background:none;border:1px solid #a0aec0;border-radius:6px;padding:4px 14px;font-size:12px;color:#4a5568;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#2b6cb0';this.style.color='#2b6cb0'" onmouseout="this.style.borderColor='#a0aec0';this.style.color='#4a5568'">📋 View recipe</button>
+    </footer>
+</div>
+
+<!-- Recipe modal -->
+<div id="recipe-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:24px;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:12px;max-width:800px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid #e2e8f0;">
+            <div>
+                <h2 style="font-size:18px;font-weight:700;color:#1b365d;margin:0;">📋 Recipe — Blood Test Evolution Dashboard</h2>
+                <p style="font-size:12px;color:#718096;margin:4px 0 0;">The seed to reproduce this dashboard with your own data</p>
+            </div>
+            <button onclick="document.getElementById('recipe-modal').style.display='none'" style="background:none;border:none;font-size:24px;cursor:pointer;color:#a0aec0;padding:0 4px;line-height:1;" title="Close">&times;</button>
+        </div>
+        <div id="recipe-content" style="padding:24px;overflow-y:auto;font-family:'SF Mono',Monaco,Consolas,'Liberation Mono',monospace;font-size:12.5px;line-height:1.7;color:#2d3748;white-space:pre-wrap;word-wrap:break-word;"></div>
+        <div style="padding:12px 24px;border-top:1px solid #e2e8f0;display:flex;gap:8px;justify-content:flex-end;">
+            <button onclick="navigator.clipboard.writeText(document.getElementById('recipe-content').textContent).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy recipe',1500)})" style="padding:6px 16px;border:1px solid #e2e8f0;border-radius:6px;background:#f7fafc;font-size:12px;cursor:pointer;color:#4a5568;">Copy recipe</button>
+            <button onclick="document.getElementById('recipe-modal').style.display='none'" style="padding:6px 16px;border:none;border-radius:6px;background:#2b6cb0;font-size:12px;cursor:pointer;color:#fff;">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA: Each analítica is a date entry with measured values
+// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// ⚠️ REGLA AL REGENERAR ESTA PÁGINA (añadida 30-ago-2026):
+// Este array YA INCLUYE datos externos a Osakidetza que NO deben perderse al regenerar:
+//  · Entrada 2023-04-14 = Laboratorio Axpe/Sanitas (rangos de ese lab distintos: B12 191-943, TSH 0.30-4.70, folato 3.89-20 — su folato 19.0 es NORMAL en Axpe aunque el rango global lo marque alto).
+//  · homocisteína (2023, 2024), vitamina D (2023 Axpe, jun-2023), anti-TPO (2019, 2023), PSA (2024, 2025), T3L, reticulocitos/RetHe, basófilos — añadidos el 30-ago-2026 desde los PDFs.
+//  · PDFs fuente: Dropbox/06-salud/0. Análisis de sangre Gabi/ (hay más externos: dic-2022, jun-2023, ene-2024, mar-2025).
+//  · Contexto canónico: Dropbox/06-salud/19. Salud cognitiva/salud-cognitiva-contexto.md
+//  · 6-sep-2026: añadida SEP 2026 (PDF "32. Anáisis de sangre 02:09:2026.pdf") con parámetros nuevos:
+//    Lipoproteína (a), HbA1c (NGSP + IFCC), albúmina y creatinina en orina. 25 analíticas de sangre.
+// Al regenerar o actualizar esta página: conservar/incorporar estos datos externos y NO tocar
+// el informe cifrado private/b12-etc.html, que se gestiona aparte.
+// ═══════════════════════════════════════════════════════════
+const ANALÍTICAS = [
+    {
+        date: "2026-09-09",
+        label: "9 SEP 2026 (tensión)",
+        source: "Tensiómetro de farmacia — 14:50, tras noche de poco sueño",
+        doctor: "",
+        values: { tension_sistolica: 126, tension_diastolica: 82, pulso_reposo: 56 }
+    },
+    {
+        date: "2026-09-02",
+        label: "SEP 2026",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia). Petición 52371617, diagnóstico 'astenia'. Toma 8:00. Lp(a), HbA1c y vitamina D pedidas expresamente (31-ago-2026). Filtración glomerular informada como >90 (se guarda 90). Albúmina en orina <0,3 (se guarda 0.3); cociente albúmina/creatinina no calculable. Sedimento normal. T4 libre y anti-TPO NO incluidos esta vez.",
+        doctor: "Dra. Leyre Márquez Martínez (petición) — cabecera Dra. Lecube Angulo",
+        values: {
+            glucosa: 89, creatinina: 0.89, filtracion_glomerular: 90,
+            colesterol: 192, trigliceridos: 41, hdl: 81, ldl: 103, colesterol_no_hdl: 111,
+            alt: 31, ggt: 12, fosfatasa_alcalina: 70, bilirrubina: 0.7,
+            albumina: 4.6, sodio: 143, potasio: 4.9, cloruro: 105,
+            hierro: 121, transferrina: 272, sat_transferrina: 32, ferritina: 42,
+            tsh: 6.56, psa: 1.19,
+            lipoproteina_a: 19, vitamina_d: 32,
+            vitamina_b12: 371, folato: 6.4,
+            hba1c: 5.5, hba1c_ifcc: 36,
+            hematies: 4.81, hemoglobina: 15.4, hematocrito: 45.4, vcm: 94.4,
+            chcm: 33.9, hcm: 32.0, ade: 13.6, plaquetas: 253, vpm: 9.6,
+            leucocitos: 4.84, neutrofilos_pct: 44.9, neutrofilos: 2.17, linfocitos_pct: 43.6, linfocitos: 2.11,
+            monocitos_pct: 9.7, monocitos: 0.47, eosinofilos_pct: 1.4, eosinofilos: 0.07,
+            basofilos_pct: 0.4, basofilos: 0.02, granulocitos_inmaduros_pct: 0.0, granulocitos_inmaduros: 0.0,
+            eritroblastos_pct: 0.20,
+            densidad_orina: 1.025, ph_orina: 5.0, albumina_orina: 0.3, creatinina_orina: 179
+        }
+    },
+    {
+        date: "2026-09-02",
+        label: "2 SEP 2026 (tensión, mañana)",
+        source: "Tensiómetro de farmacia — media de 2 tomas seguidas (10:50-10:52), condiciones válidas: 5 min sentado, café 2h antes, sueño previo 6h40",
+        doctor: "",
+        values: { tension_sistolica: 133, tension_diastolica: 85, pulso_reposo: 60 }
+    },
+    {
+        date: "2026-08-31",
+        label: "31 AGO 2026 (tensión)",
+        source: "Tensiómetro de farmacia — Bilbao",
+        doctor: "",
+        values: { tension_sistolica: 124, tension_diastolica: 75, pulso_reposo: 53 }
+    },
+    {
+        date: "2026-08-30",
+        label: "30 AGO 2026 (tensión)",
+        source: "Tensiómetro de farmacia — Bilbao",
+        doctor: "",
+        values: { tension_sistolica: 127, tension_diastolica: 76, pulso_reposo: 52 }
+    },
+    {
+        date: "2025-07-08",
+        label: "JUL 2025",
+        source: "Medicina Interna CEX — Hospital Basurto",
+        doctor: "Dr. Ramírez Navarro",
+        values: {
+            glucosa: 85, urea: 43, creatinina: 1.08, filtracion_glomerular: 77, urato: 5.1,
+            colesterol: 182, trigliceridos: 41, hdl: 78, ldl: 96, colesterol_no_hdl: 104,
+            ast: 30, alt: 32, ggt: 12, fosfatasa_alcalina: 68, bilirrubina: 0.3,
+            calcio: 9.2, fosfato: 2.4, magnesio: 2.23, proteinas: 6.7, albumina: 4.1,
+            sodio: 143, potasio: 4.4, cloruro: 102, pcr: 0.95, ck: 275, ldh: 195,
+            hierro: 99, transferrina: 281, sat_transferrina: 25, ferritina: 32,
+            tsh: 7.43, t4_libre: 0.97,
+            vitamina_b12: 391, folato: 6.7,
+            hematies: 4.59, hemoglobina: 14.7, hematocrito: 43.4, vcm: 94.6,
+            chcm: 33.9, hcm: 32.0, ade: 14.6, plaquetas: 233, vpm: 9.7,
+            leucocitos: 5.49, neutrofilos_pct: 46.5, linfocitos_pct: 42.8,
+            monocitos_pct: 8.7, eosinofilos_pct: 1.5, vsg: 5,
+            basofilos_pct: 0.5,
+            alfa1_globulina: 0.23, alfa2_globulina: 0.52, beta1_globulina: 0.45, beta2_globulina: 0.37, gamma_globulina: 1.02, ratio_alb_glob: 1.57,
+            monocitos: 0.48, eosinofilos: 0.08, basofilos: 0.03, granulocitos_inmaduros_pct: 0.4, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2025-04-10",
+        label: "ABR 2025 (heces)",
+        source: "Osakidetza — C.S. Albia (estudio por astenia)",
+        doctor: "",
+        values: { hemoglobina_fecal: 0 }
+    },
+    {
+        date: "2025-03-28",
+        label: "MAR 2025",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Lecube Angulo, Cristina",
+        values: {
+            glucosa: 87, creatinina: 0.96, filtracion_glomerular: 89,
+            colesterol: 195, trigliceridos: 34, hdl: 92, ldl: 97, colesterol_no_hdl: 103,
+            alt: 29, ggt: 12, fosfatasa_alcalina: 76, bilirrubina: 0.6,
+            albumina: 4.8, sodio: 138, potasio: 4.6, cloruro: 101,
+            pcr: 0.8, ck: 171,
+            hierro: 93, transferrina: 305, sat_transferrina: 22, ferritina: 25,
+            tsh: 6.62,
+            hematies: 5.10, hemoglobina: 16.1, hematocrito: 47.7, vcm: 93.5,
+            chcm: 33.8, hcm: 31.6, ade: 13.6, plaquetas: 256,
+            leucocitos: 5.08, neutrofilos_pct: 44.8, linfocitos_pct: 44.7,
+            monocitos_pct: 8.7, eosinofilos_pct: 1.4, vsg: 4,
+            psa: 1.34, vpm: 9.9, neutrofilos: 2.28, linfocitos: 2.27, basofilos_pct: 0.4,
+            monocitos: 0.44, eosinofilos: 0.07, basofilos: 0.02, granulocitos_inmaduros_pct: 0.2, granulocitos_inmaduros: 0.01, eritroblastos_pct: 0.0, densidad_orina: 1.026, ph_orina: 6.0
+        }
+    },
+    {
+        date: "2024-05-31",
+        label: "MAY 2024",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            creatinina: 1.04, filtracion_glomerular: 82,
+            alt: 24,
+            hierro: 117, transferrina: 271, sat_transferrina: 31, ferritina: 41,
+            tsh: 4.01, t4_libre: 1.28,
+            vitamina_b12: 409, folato: 11.5,
+            hematies: 4.49, hemoglobina: 14.7, hematocrito: 44.0, vcm: 98.0,
+            chcm: 33.4, hcm: 32.7, ade: 13.2, plaquetas: 206,
+            leucocitos: 4.34, neutrofilos_pct: 49.7, linfocitos_pct: 39.9,
+            monocitos_pct: 7.6, eosinofilos_pct: 2.1,
+            homocisteina: 12.5, reticulocitos: 1.36, rethe: 36.1, basofilos_pct: 0.7, neutrofilos: 2.16, linfocitos: 1.73,
+            monocitos: 0.33, eosinofilos: 0.09, basofilos: 0.03, granulocitos_inmaduros_pct: 0.2, granulocitos_inmaduros: 0.01, eritroblastos_pct: 0.0, ret_lfr: 90.2, ret_mfr: 8.1, ret_hfr: 1.7
+        }
+    },
+    {
+        date: "2024-01-16",
+        label: "ENE 2024",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dr. Miranda García, Iñigo",
+        values: {
+            glucosa: 80, creatinina: 1.07, filtracion_glomerular: 79,
+            colesterol: 211, trigliceridos: 46, hdl: 84, ldl: 118, colesterol_no_hdl: 127,
+            alt: 25, ggt: 12,
+            hierro: 173, transferrina: 273, sat_transferrina: 45, ferritina: 48,
+            tsh: 7.46, t4_libre: 1.18,
+            hematies: 5.16, hemoglobina: 16.7, hematocrito: 48.0, vcm: 93.0,
+            chcm: 34.8, hcm: 32.4, ade: 13.0, plaquetas: 269,
+            leucocitos: 5.49, neutrofilos_pct: 41.1, linfocitos_pct: 47.5,
+            monocitos_pct: 9.1, eosinofilos_pct: 1.6,
+            psa: 1.50, basofilos_pct: 0.7,
+            monocitos: 0.50, eosinofilos: 0.09, basofilos: 0.04, granulocitos_inmaduros_pct: 0.2, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2023-09-21",
+        label: "SEP 2023 (heces)",
+        source: "Osakidetza — cribado cáncer colorrectal",
+        doctor: "",
+        values: { hemoglobina_fecal: 0 }
+    },
+    {
+        date: "2023-06-19",
+        label: "JUN 2023",
+        source: "Medicina Familiar (AP) — C.S. Balmaseda",
+        doctor: "Dr. Campayo Pérez, Juan Miguel",
+        values: {
+            tsh: 6.48,
+            vitamina_d: 38
+        }
+    },
+    {
+        date: "2023-04-14",
+        label: "ABR 2023",
+        source: "Laboratorio Axpe (Sanitas) — Ercilla 18, Bilbao",
+        doctor: "Dr. Martín Axpe Fernández (validación)",
+        values: {
+            homocisteina: 12.5, vitamina_d: 32.9,
+            hierro: 86, ferritina: 69,
+            tsh: 7.28, t4_libre: 1.14, t3_libre: 2.58, anti_tpo: 186,
+            vitamina_b12: 418, folato: 19.0,
+            hematies: 5.05, hemoglobina: 16.0, hematocrito: 45.3, vcm: 89.7,
+            chcm: 35.3, hcm: 31.7, plaquetas: 255, vpm: 9.0,
+            leucocitos: 6.82, neutrofilos_pct: 61.9, neutrofilos: 4.22, linfocitos_pct: 31.1, linfocitos: 2.12,
+            monocitos_pct: 6.0, eosinofilos_pct: 0.6, basofilos_pct: 0.4,
+            monocitos: 0.41, eosinofilos: 0.04, basofilos: 0.03
+        }
+    },
+    {
+        date: "2022-12-01",
+        label: "DIC 2022",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            glucosa: 74, creatinina: 0.76, filtracion_glomerular: 90, urato: 4.8,
+            colesterol: 189, trigliceridos: 98, hdl: 73, ldl: 96, colesterol_no_hdl: 116,
+            ast: 19, alt: 18, ggt: 9, fosfatasa_alcalina: 69,
+            albumina: 4.1, sodio: 141, potasio: 4.3, cloruro: 102,
+            pcr: 0.61, hierro: 63, transferrina: 248, sat_transferrina: 18, ferritina: 51,
+            tsh: 9.72, vitamina_b12: 265, folato: 5.4,
+            hematies: 5.12, hemoglobina: 15.8, hematocrito: 47.7, vcm: 93.2,
+            chcm: 33.1, hcm: 30.9, ade: 14.4, plaquetas: 231,
+            leucocitos: 5.22, neutrofilos_pct: 46.0, linfocitos_pct: 43.3,
+            monocitos_pct: 8.4, eosinofilos_pct: 1.7,
+            reticulocitos: 0.88, rethe: 36.5, basofilos_pct: 0.6,
+            amilasa: 79, ttpa: 33, tiempo_protrombina: 89, inr: 1.1, alfa1_globulina: 0.28, alfa2_globulina: 0.47, beta1_globulina: 0.43, beta2_globulina: 0.36, gamma_globulina: 1.14, ratio_alb_glob: 1.53,
+            monocitos: 0.44, eosinofilos: 0.09, basofilos: 0.03, granulocitos_inmaduros_pct: 0.6, eritroblastos_pct: 0.0, ret_lfr: 92.7, ret_mfr: 6.5, ret_hfr: 0.8
+        }
+    },
+    {
+        date: "2021-06-15",
+        label: "JUN 2021 (heces)",
+        source: "Osakidetza — sangre oculta en heces",
+        doctor: "",
+        values: { hemoglobina_fecal: 23 }
+    },
+    {
+        date: "2021-06-04",
+        label: "JUN 2021",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            glucosa: 87, creatinina: 0.80, filtracion_glomerular: 90,
+            colesterol: 165, trigliceridos: 83, hdl: 73, ldl: 75, colesterol_no_hdl: 92,
+            alt: 24, ggt: 11,
+            hierro: 37, transferrina: 285, sat_transferrina: 9, ferritina: 21,
+            tsh: 8.58, vitamina_b12: 152, folato: 5.3,
+            hematies: 4.74, hemoglobina: 14.5, hematocrito: 44.5, vcm: 93.9,
+            chcm: 32.6, hcm: 30.6, ade: 14.4, plaquetas: 257, vpm: 10.1,
+            leucocitos: 7.84, neutrofilos_pct: 53.50, linfocitos_pct: 36.90,
+            monocitos_pct: 7.80, eosinofilos_pct: 1.30,
+            reticulocitos: 1.15, rethe: 34.6, basofilos_pct: 0.5,
+            monocitos: 0.61, eosinofilos: 0.10, basofilos: 0.04, granulocitos_inmaduros_pct: 0.3, eritroblastos_pct: 0.0, ret_lfr: 89.6, ret_mfr: 8.8, ret_hfr: 1.6
+        }
+    },
+    {
+        date: "2020-06-08",
+        label: "JUN 2020",
+        source: "Urgencias Traumatología (URG) — Hospital Galdakao-Usansolo",
+        doctor: "Dra. Ela Santiago, María Auxiliadora",
+        values: {
+            glucosa: 99, urea: 28, creatinina: 0.92, sodio: 142, potasio: 4.4,
+            hematies: 4.78, hemoglobina: 14.2, hematocrito: 43.5, vcm: 91.0,
+            hcm: 29.7, chcm: 32.6, ade: 13.9, plaquetas: 263, vpm: 9.5,
+            leucocitos: 11.84, neutrofilos_pct: 82.60, linfocitos_pct: 11.70,
+            monocitos_pct: 5.30, eosinofilos_pct: 0.10
+        }
+    },
+    {
+        date: "2019-09-30",
+        label: "SEP 2019",
+        source: "Medicina Familiar (AP) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Andicoechea Agorria, Miren Aintzane",
+        values: {
+            hierro: 79, transferrina: 283, sat_transferrina: 20, ferritina: 40,
+            tsh: 8.78
+        }
+    },
+    {
+        date: "2019-07-04",
+        label: "JUL 2019",
+        source: "Medicina Familiar + Aparato Digestivo — C.S. Albia / Amb. Dr. Areilza",
+        doctor: "Dra. Moraga Loinaz / Dr. Ruiz Eguiluz Pablo",
+        values: {
+            tsh: 10.90, t4_libre: 0.96,
+            pcr: 2.70, hierro: 61, transferrina: 274, sat_transferrina: 16, ferritina: 33,
+            hematies: 5.25, hemoglobina: 16.5, hematocrito: 49.7, vcm: 94.7,
+            chcm: 33.2, hcm: 31.4, ade: 13.2, plaquetas: 260, vpm: 9.5,
+            leucocitos: 8.00, neutrofilos_pct: 51.3, linfocitos_pct: 38.4,
+            monocitos_pct: 8.8, eosinofilos_pct: 1.1,
+            anti_tpo: 305, basofilos_pct: 0.4,
+            monocitos: 0.70, eosinofilos: 0.09, basofilos: 0.03, granulocitos_inmaduros_pct: 0.1, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2019-03-13",
+        label: "MAR 2019",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. Pérez de Arenaza López de Subijana, Aitor",
+        values: {
+            glucosa: 84, urea: 24, creatinina: 0.91, filtracion_glomerular: 90, urato: 5.2,
+            colesterol: 191, trigliceridos: 97, hdl: 50, ldl: 122, colesterol_no_hdl: 141,
+            ast: 20, alt: 36, ggt: 25, fosfatasa_alcalina: 78, bilirrubina: 0.5,
+            calcio: 9.2, fosfato: 3.1, albumina: 4.3, sodio: 144, potasio: 4.1,
+            pcr: 2.32, hierro: 102, transferrina: 256, sat_transferrina: 28, ferritina: 34,
+            vitamina_b12: 199, folato: 4.5,
+            hematies: 5.35, hemoglobina: 16.6, hematocrito: 47.9, vcm: 89.5,
+            chcm: 34.7, hcm: 31.0, ade: 13.5, plaquetas: 264, vpm: 9.3,
+            leucocitos: 7.79, neutrofilos_pct: 52.4, linfocitos_pct: 35.8,
+            monocitos_pct: 9.2, eosinofilos_pct: 2.1, vsg: 5,
+            basofilos_pct: 0.5,
+            monocitos: 0.72, eosinofilos: 0.16, basofilos: 0.04, granulocitos_inmaduros_pct: 0.4, granulocitos_inmaduros: 0.03, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2018-10-02",
+        label: "OCT 2018",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            glucosa: 94, creatinina: 1.03, filtracion_glomerular: 86, urato: 6.00,
+            colesterol: 195, hdl: 51, ldl: 128, colesterol_no_hdl: 144, trigliceridos: 81,
+            albumina: 4.41, bilirrubina: 0.38, ast: 22, alt: 38, ggt: 26, fosfatasa_alcalina: 85,
+            tsh: 9.94, hematies: 5.58, hemoglobina: 16.2, hematocrito: 50.0, vcm: 89.6,
+            hcm: 29.0, chcm: 32.4, ade: 15.4, plaquetas: 257, vpm: 9.5,
+            leucocitos: 6.4, neutrofilos_pct: 50.1, linfocitos_pct: 40.1,
+            monocitos_pct: 7.6, eosinofilos_pct: 1.6, vsg: 5,
+            monocitos: 0.5, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.3, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2018-03-06",
+        label: "MAR 2018",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. Ruiz Eguiluz Pablo",
+        values: {
+            pcr: 0.28, ferritina: 15,
+            hematies: 5.92, hemoglobina: 13.4, hematocrito: 45.2, vcm: 76.4,
+            hcm: 22.6, chcm: 29.6, ade: 23.6, plaquetas: 388, vpm: 9.3,
+            leucocitos: 8.2, neutrofilos_pct: 51.7, linfocitos_pct: 37.7,
+            monocitos_pct: 8.3, eosinofilos_pct: 1.7,
+            monocitos: 0.7, eosinofilos: 0.1, basofilos: 0.1, granulocitos_inmaduros_pct: 0.2, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2018-01-12",
+        label: "ENE 2018",
+        source: "Aparato Digestivo — Hospital Universitario Basurto",
+        doctor: "Dra. Deiss Pascual, Laura",
+        values: {
+            hierro: 26, ferritina: 9, transferrina: 308, sat_transferrina: 7,
+            hematies: 5.12, hemoglobina: 10.8, hematocrito: 36.4, vcm: 71.1,
+            hcm: 21.1, chcm: 29.7, ade: 17.9, plaquetas: 365, vpm: 9.5,
+            leucocitos: 5.4, neutrofilos_pct: 54.2, linfocitos_pct: 34.7,
+            monocitos_pct: 8.8, eosinofilos_pct: 1.7,
+            monocitos: 0.5, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.2, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2017-03-06",
+        label: "MAR 2017",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. Ruiz Eguiluz Pablo",
+        values: {
+            pcr: 0.3, ferritina: 3, folato: 3.1, vitamina_b12: 248.1,
+            hematies: 5.19, hemoglobina: 11.6, hematocrito: 38.6, vcm: 74.4,
+            hcm: 22.4, chcm: 30.1, ade: 18.6, plaquetas: 384, vpm: 9.4,
+            leucocitos: 6.9, neutrofilos_pct: 51.4, linfocitos_pct: 38,
+            monocitos_pct: 8.1, eosinofilos_pct: 1.9,
+            monocitos: 0.6, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.3, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2016-11-14",
+        label: "NOV 2016",
+        source: "Aparato Digestivo Gral. (CEX) — Hospital Universitario Basurto",
+        doctor: "Dr. De Eguia Fernández de Agu",
+        values: {
+            glucosa: 97, urea: 33, creatinina: 1.06, filtracion_glomerular: 84, urato: 5.80,
+            colesterol: 174, albumina: 4.36, bilirrubina: 0.42,
+            ast: 20, alt: 26, ggt: 23, fosfatasa_alcalina: 72,
+            fosfato: 2.80, calcio: 9.53, sodio: 149.0, potasio: 4.68,
+            hierro: 34, ferritina: 7, folato: 4.8, vitamina_b12: 282.5,
+            tsh: 8.12, t4_libre: 1.03,
+            hematies: 5.36, hemoglobina: 11.9, hematocrito: 40.4, vcm: 75.4,
+            hcm: 22.2, chcm: 29.5, ade: 18.5, plaquetas: 370, vpm: 9.8,
+            leucocitos: 7.1, neutrofilos_pct: 45.7, linfocitos_pct: 43.1,
+            monocitos_pct: 9.2, eosinofilos_pct: 1.4,
+            igg: 1230, iga: 313, igm: 105, anti_transglutaminasa: 0.9, fibrinogeno: 380, tiempo_protrombina: 80, ttpa: 37.3, inr: 1.15, monocitos: 0.7, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.1, eritroblastos_pct: 0.0
+        }
+    },
+    {
+        date: "2016-05-11",
+        label: "MAY 2016",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            hierro: 35, ferritina: 6, folato: 2.2, vitamina_b12: 248.9,
+            hematies: 5.35, hemoglobina: 12.0, hematocrito: 39.8, vcm: 74.4,
+            hcm: 22.4, chcm: 30.2, ade: 17.6, plaquetas: 368, vpm: 9.6,
+            ret_lfr: 75.2, ret_mfr: 15.1, ret_hfr: 9.7, monocitos: 0.8, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.3
+        }
+    },
+    {
+        date: "2016-04-25",
+        label: "ABR 2016",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            glucosa: 95, creatinina: 0.92, filtracion_glomerular: 90, urato: 4.90,
+            colesterol: 170, trigliceridos: 97, hdl: 50, ldl: 101, colesterol_no_hdl: 120,
+            albumina: 4.16, proteinas: 6.95, alt: 23, ggt: 20, fosfatasa_alcalina: 75,
+            fosfato: 2.91, calcio: 9.05, sodio: 146, potasio: 4.58,
+            tsh: 8.42, t4_libre: 0.98,
+            hematies: 5.17, hemoglobina: 12.0, hematocrito: 39.0, vcm: 75.4,
+            hcm: 23.2, chcm: 30.8, ade: 17.2, plaquetas: 368, vpm: 9.8,
+            leucocitos: 7.3, neutrofilos_pct: 45.4, linfocitos_pct: 43.2,
+            monocitos_pct: 8.7, eosinofilos_pct: 2.2, vsg: 11,
+            monocitos: 0.6, eosinofilos: 0.2, basofilos: 0.0, granulocitos_inmaduros_pct: 0.1, densidad_orina: 1.029, ph_orina: 5.5, proteinas_orina: 10, hemoglobina_orina: 0.00
+        }
+    },
+    {
+        date: "2014-11-26",
+        label: "NOV 2014 (orina)",
+        source: "Osakidetza — C.S. Albia (orina + urocultivo negativo)",
+        doctor: "",
+        values: { densidad_orina: 1.032, hemoglobina_orina: 0.06 }
+    },
+    {
+        date: "2014-11-05",
+        label: "NOV 2014",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Sin médico codificado",
+        values: {
+            glucosa: 92, urea: 29, creatinina: 0.97, urato: 4.99,
+            colesterol: 180, trigliceridos: 87, hdl: 52, ldl: 111, colesterol_no_hdl: 128,
+            alt: 32, ggt: 22, sodio: 148, potasio: 5.18,
+            tsh: 7.90, t4_libre: 1.13,
+            hematies: 5.38, hemoglobina: 13.2, hematocrito: 43.6, vcm: 81.0,
+            chcm: 30.3, hcm: 24.5, ade: 16.6, plaquetas: 330, vpm: 10,
+            leucocitos: 8.4, neutrofilos_pct: 52.2, linfocitos_pct: 37.4,
+            monocitos_pct: 8.0, eosinofilos_pct: 1.9,
+            monocitos: 0.7, eosinofilos: 0.2, basofilos: 0.0, granulocitos_inmaduros_pct: 0.4, densidad_orina: 1.027, ph_orina: 6, proteinas_orina: 10, hemoglobina_orina: 0.03
+        }
+    },
+    {
+        date: "2012-11-30",
+        label: "NOV 2012",
+        source: "Otorrinolaringología (CEX) — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dr. Fernández-Lastr Romarateg",
+        values: {
+            glucosa: 87, urea: 30, creatinina: 0.84, filtracion_glomerular: 60, urato: 4.20,
+            colesterol: 176, albumina: 4.64, bilirrubina: 0.52,
+            ast: 19, alt: 29, ggt: 16, fosfatasa_alcalina: 88,
+            fosfato: 3.15, calcio: 9.73, sodio: 141, potasio: 4.53,
+            hierro: 87, pcr: 0.3,
+            hematies: 5.04, hemoglobina: 13.5, hematocrito: 41.8, vcm: 82.9,
+            hcm: 26.8, chcm: 32.3, ade: 15.5, plaquetas: 302, vpm: 9,
+            leucocitos: 9.3, neutrofilos_pct: 60.3, linfocitos_pct: 28.4,
+            monocitos_pct: 9.8, eosinofilos_pct: 1.2, vsg: 14,
+            factor_reumatoide: 8.5, aslo: 203, monocitos: 0.9, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.1
+        }
+    },
+    {
+        date: "2012-01-25",
+        label: "ENE 2012",
+        source: "Atención Primaria — C.S. Javier Sáenz de Buruaga (Albia)",
+        doctor: "Dra. Carcavilla Álvarez Begoña",
+        values: {
+            glucosa: 94, creatinina: 0.96, urato: 5.41,
+            colesterol: 177, trigliceridos: 60, hdl: 55, ldl: 110, colesterol_no_hdl: 122,
+            alt: 31, ggt: 18,
+            tsh: 6.29, t4_libre: 1.17,
+            vitamina_b12: 365.8, folato: 7.0,
+            hematies: 5.28, hemoglobina: 14.4, hematocrito: 43.9, vcm: 83.1,
+            chcm: 32.8, hcm: 27.3, ade: 15.7, plaquetas: 292, vpm: 10,
+            leucocitos: 6.2, neutrofilos_pct: 45.2, linfocitos_pct: 41.4,
+            monocitos_pct: 11.2, eosinofilos_pct: 1.9,
+            cortisol: 23.1, monocitos: 0.7, eosinofilos: 0.1, basofilos: 0.0, granulocitos_inmaduros_pct: 0.2
+        }
+    },
+    {
+        date: "2010-03-12",
+        label: "MAR 2010",
+        source: "Endocrinología (CEX) — Amb. Bombero Etxaniz",
+        doctor: "Dra. Isusquiza Echezarreta Ana",
+        values: {
+            glucosa: 81, creatinina: 0.74, filtracion_glomerular: 60, urato: 3.93,
+            colesterol: 172, hdl: 45, ldl: 103, colesterol_no_hdl: 127, trigliceridos: 118,
+            hematies: 4.94, hemoglobina: 15.1, hematocrito: 45.4, vcm: 91.9,
+            hcm: 30.6, chcm: 33.3, ade: 13.7, plaquetas: 290, vpm: 9.9,
+            leucocitos: 10.3, neutrofilos_pct: 56.5, linfocitos_pct: 33.9,
+            monocitos_pct: 8.1, eosinofilos_pct: 1.3,
+            monocitos: 0.8, eosinofilos: 0.1, basofilos: 0.0
+        }
+    },
+    {
+        date: "2009-05-29",
+        label: "MAY 2009",
+        source: "Atención Primaria — Amb. Bombero Etxaniz",
+        doctor: "Sin médico codificado",
+        values: {
+            glucosa: 98, creatinina: 0.88, urato: 4.14,
+            colesterol: 165, trigliceridos: 60, hdl: 50, ldl: 103, colesterol_no_hdl: 115,
+            alt: 30, ggt: 14,
+            tsh: 6.39, t4_libre: 1.22,
+            hematies: 4.99, hemoglobina: 15.1, hematocrito: 44.7, vcm: 89.6,
+            chcm: 33.8, hcm: 30.3, ade: 13.6, plaquetas: 271, vpm: 9.4,
+            leucocitos: 7.5, neutrofilos_pct: 43.2, linfocitos_pct: 40.5,
+            monocitos_pct: 13.3, eosinofilos_pct: 2.6, vsg: 7,
+            monocitos: 1.0, eosinofilos: 0.2, basofilos: 0.0
+        }
+    }
+];
+
+// ═══════════════════════════════════════════════════════════
+// REFERENCE RANGES & METADATA for each parameter
+// ═══════════════════════════════════════════════════════════
+const PARAMS = {
+    glucosa:             { name: "Glucosa", unit: "mg/dL", min: 70, max: 110, category: "bioquimica", important: true },
+    urea:                { name: "Urea", unit: "mg/dL", min: 10, max: 50, category: "renal" },
+    creatinina:          { name: "Creatinina", unit: "mg/dL", min: 0.4, max: 1.2, category: "renal", important: true },
+    filtracion_glomerular: { name: "Filtración Glomerular (CKD-EPI)", unit: "mL/min/1.73m²", min: 70, max: 120, category: "renal", important: true },
+    urato:               { name: "Urato (Ácido Úrico)", unit: "mg/dL", min: 3.4, max: 7.0, category: "bioquimica" },
+    colesterol:          { name: "Colesterol Total", unit: "mg/dL", min: 100, max: 200, category: "lipidos", important: true },
+    trigliceridos:       { name: "Triglicéridos", unit: "mg/dL", min: 20, max: 150, category: "lipidos", important: true },
+    hdl:                 { name: "Colesterol HDL", unit: "mg/dL", min: 40, max: 999, category: "lipidos", important: true },
+    ldl:                 { name: "Colesterol LDL (calc.)", unit: "mg/dL", min: 0, max: 130, category: "lipidos", important: true },
+    colesterol_no_hdl:   { name: "Colesterol no-HDL", unit: "mg/dL", min: 0, max: 160, category: "lipidos" },
+    lipoproteina_a:      { name: "Lipoproteína (a)", unit: "mg/dL", min: 0, max: 50, category: "lipidos", important: true },
+    ast:                 { name: "AST / GOT", unit: "U/L", min: 5, max: 37, category: "hepatico", important: true },
+    alt:                 { name: "ALT / GPT", unit: "U/L", min: 5, max: 41, category: "hepatico", important: true },
+    ggt:                 { name: "GGT", unit: "U/L", min: 11, max: 71, category: "hepatico" },
+    fosfatasa_alcalina:  { name: "Fosfatasa Alcalina", unit: "U/L", min: 40, max: 129, category: "hepatico" },
+    bilirrubina:         { name: "Bilirrubina", unit: "mg/dL", min: 0, max: 1.2, category: "hepatico" },
+    calcio:              { name: "Calcio", unit: "mg/dL", min: 8.4, max: 10.4, category: "electrolitos" },
+    fosfato:             { name: "Fosfato", unit: "mg/dL", min: 2.7, max: 4.5, category: "electrolitos" },
+    magnesio:            { name: "Magnesio", unit: "mg/dL", min: 1.7, max: 2.55, category: "electrolitos" },
+    proteinas:           { name: "Proteínas Totales", unit: "g/dL", min: 6.5, max: 8.3, category: "bioquimica" },
+    albumina:            { name: "Albúmina", unit: "g/dL", min: 3.5, max: 5.5, category: "bioquimica" },
+    sodio:               { name: "Sodio", unit: "mEq/L", min: 135, max: 145, category: "electrolitos" },
+    potasio:             { name: "Potasio", unit: "mEq/L", min: 3.5, max: 5.1, category: "electrolitos", important: true },
+    cloruro:             { name: "Cloruro", unit: "mEq/L", min: 95, max: 106, category: "electrolitos" },
+    pcr:                 { name: "PCR (Proteína C Reactiva)", unit: "mg/L", min: 0, max: 5, category: "bioquimica" },
+    ck:                  { name: "CK (Creatina Quinasa)", unit: "U/L", min: 0, max: 195, category: "bioquimica" },
+    ldh:                 { name: "LDH", unit: "U/L", min: 135, max: 250, category: "bioquimica" },
+    hierro:              { name: "Hierro", unit: "µg/dL", min: 59, max: 158, category: "hierro" },
+    transferrina:        { name: "Transferrina", unit: "mg/dL", min: 200, max: 380, category: "hierro" },
+    sat_transferrina:    { name: "Sat. Transferrina", unit: "%", min: 20, max: 40, category: "hierro" },
+    ferritina:           { name: "Ferritina", unit: "ng/mL", min: 30, max: 400, category: "hierro", important: true },
+    tsh:                 { name: "TSH", unit: "mU/L", min: 0.27, max: 4.2, category: "tiroides", important: true },
+    t4_libre:            { name: "T4 Libre", unit: "ng/dL", min: 0.8, max: 1.8, category: "tiroides", important: true },
+    t3_libre:            { name: "T3 Libre", unit: "pg/mL", min: 2.0, max: 4.4, category: "tiroides" },
+    anti_tpo:            { name: "Anti-TPO (Ac. tiroperoxidasa)", unit: "UI/mL", min: 0, max: 34, category: "tiroides", important: true },
+    hba1c:               { name: "Hemoglobina glicada (HbA1c, NGSP)", unit: "%", min: 4, max: 6, category: "bioquimica", important: true },
+    hba1c_ifcc:          { name: "HbA1c (IFCC)", unit: "mmol/mol", min: 20, max: 42, category: "bioquimica" },
+    homocisteina:        { name: "Homocisteína", unit: "µmol/L", min: 5, max: 15, category: "bioquimica", important: true },
+    vitamina_d:          { name: "Vitamina D (25-OH)", unit: "ng/mL", min: 20, max: 100, category: "bioquimica" },
+    psa:                 { name: "PSA", unit: "ng/mL", min: 0, max: 4, category: "bioquimica" },
+    amilasa:             { name: "Amilasa", unit: "U/L", min: 28, max: 100, category: "bioquimica" },
+    ttpa:                { name: "TTPA", unit: "sg", min: 25, max: 40, category: "bioquimica" },
+    tiempo_protrombina:  { name: "Tiempo de Protrombina", unit: "%", min: 65, max: 120, category: "bioquimica" },
+    inr:                 { name: "INR", unit: "ratio", min: 0.9, max: 1.2, category: "bioquimica" },
+    alfa1_globulina:     { name: "Alfa-1 globulina", unit: "g/dL", min: 0.20, max: 0.46, category: "bioquimica" },
+    alfa2_globulina:     { name: "Alfa-2 globulina", unit: "g/dL", min: 0.52, max: 1.05, category: "bioquimica" },
+    beta1_globulina:     { name: "Beta-1 globulina", unit: "g/dL", min: 0.32, max: 0.60, category: "bioquimica" },
+    beta2_globulina:     { name: "Beta-2 globulina", unit: "g/dL", min: 0.20, max: 0.51, category: "bioquimica" },
+    gamma_globulina:     { name: "Gamma globulina", unit: "g/dL", min: 0.67, max: 1.51, category: "bioquimica" },
+    ratio_alb_glob:      { name: "Ratio Albúmina/Globulina", unit: "ratio", min: 1.2, max: 1.9, category: "bioquimica" },
+    cortisol:            { name: "Cortisol (8h)", unit: "µg/dL", min: 5, max: 25, category: "bioquimica" },
+    factor_reumatoide:   { name: "Factor Reumatoide", unit: "U/mL", min: 0, max: 14, category: "inmunologia" },
+    aslo:                { name: "ASLO", unit: "UI/mL", min: 0, max: 200, category: "inmunologia" },
+    igg:                 { name: "Inmunoglobulina G", unit: "mg/dL", min: 690, max: 1400, category: "inmunologia" },
+    iga:                 { name: "Inmunoglobulina A", unit: "mg/dL", min: 70, max: 410, category: "inmunologia" },
+    igm:                 { name: "Inmunoglobulina M", unit: "mg/dL", min: 34, max: 240, category: "inmunologia" },
+    anti_transglutaminasa: { name: "Ac. anti-transglutaminasa IgA", unit: "U/mL", min: 0, max: 7, category: "inmunologia" },
+    fibrinogeno:         { name: "Fibrinógeno funcional", unit: "mg/dL", min: 200, max: 450, category: "bioquimica" },
+    densidad_orina:      { name: "Densidad (orina)", unit: "", min: 1.005, max: 1.030, category: "orina" },
+    ph_orina:            { name: "pH (orina)", unit: "", min: 5, max: 7, category: "orina" },
+    proteinas_orina:     { name: "Proteínas (orina)", unit: "mg/dL", min: 0, max: 20, category: "orina" },
+    hemoglobina_orina:   { name: "Hemoglobina (orina)", unit: "mg/dL", min: 0, max: 0.03, category: "orina" },
+    albumina_orina:      { name: "Albúmina (orina)", unit: "mg/dL", min: 0, max: 2, category: "orina" },
+    creatinina_orina:    { name: "Creatinina (orina)", unit: "mg/dL", min: 20, max: 300, category: "orina" },
+    hemoglobina_fecal:   { name: "Hemoglobina fecal (cribado CCR)", unit: "µg/L", min: 0, max: 50, category: "heces" },
+    tension_sistolica:   { name: "Tensión sistólica", unit: "mmHg", min: 90, max: 135, category: "constantes", important: true },
+    tension_diastolica:  { name: "Tensión diastólica", unit: "mmHg", min: 60, max: 85, category: "constantes", important: true },
+    pulso_reposo:        { name: "Pulso en reposo", unit: "lpm", min: 45, max: 90, category: "constantes" },
+    vitamina_b12:        { name: "Vitamina B12", unit: "pg/mL", min: 197, max: 771, category: "bioquimica" },
+    folato:              { name: "Folato", unit: "ng/mL", min: 2.8, max: 17, category: "bioquimica" },
+    hematies:            { name: "Hematíes", unit: "×10⁶/µL", min: 4.5, max: 5.99, category: "hematologia" },
+    hemoglobina:         { name: "Hemoglobina", unit: "g/dL", min: 13, max: 18, category: "hematologia", important: true },
+    hematocrito:         { name: "Hematocrito", unit: "%", min: 39, max: 53, category: "hematologia" },
+    vcm:                 { name: "VCM", unit: "fL", min: 80, max: 99, category: "hematologia" },
+    chcm:                { name: "CHCM", unit: "g/dL", min: 32, max: 36, category: "hematologia" },
+    hcm:                 { name: "HCM", unit: "pg", min: 27, max: 32, category: "hematologia" },
+    ade:                 { name: "ADE (Ancho Distr. Eritr.)", unit: "%", min: 11, max: 15.1, category: "hematologia" },
+    plaquetas:           { name: "Plaquetas", unit: "×10³/µL", min: 135, max: 450, category: "hematologia", important: true },
+    vpm:                 { name: "VPM", unit: "fL", min: 9, max: 13, category: "hematologia" },
+    leucocitos:          { name: "Leucocitos", unit: "×10³/µL", min: 4.5, max: 11, category: "hematologia", important: true },
+    neutrofilos_pct:     { name: "Neutrófilos %", unit: "%", min: 43, max: 65, category: "hematologia" },
+    neutrofilos:         { name: "Neutrófilos", unit: "×10³/µL", min: 1.5, max: 7, category: "hematologia" },
+    linfocitos_pct:      { name: "Linfocitos %", unit: "%", min: 20.5, max: 45.5, category: "hematologia" },
+    linfocitos:          { name: "Linfocitos", unit: "×10³/µL", min: 1, max: 4, category: "hematologia" },
+    monocitos_pct:       { name: "Monocitos %", unit: "%", min: 0, max: 15, category: "hematologia" },
+    eosinofilos_pct:     { name: "Eosinófilos %", unit: "%", min: 0, max: 5, category: "hematologia" },
+    vsg:                 { name: "VSG", unit: "mm", min: 0, max: 30, category: "hematologia" },
+    basofilos_pct:       { name: "Basófilos %", unit: "%", min: 0, max: 1.5, category: "hematologia" },
+    reticulocitos:       { name: "Reticulocitos", unit: "%", min: 1.0, max: 2.1, category: "hematologia" },
+    rethe:               { name: "RetHe (Hb reticulocitaria)", unit: "pg", min: 28, max: 99, category: "hematologia" },
+    ret_lfr:             { name: "Reticulocitos LFR (baja fluor.)", unit: "%", min: 75, max: 95, category: "hematologia" },
+    ret_mfr:             { name: "Reticulocitos MFR (media fluor.)", unit: "%", min: 5, max: 20, category: "hematologia" },
+    ret_hfr:             { name: "Reticulocitos HFR (alta fluor.)", unit: "%", min: 0.1, max: 2.5, category: "hematologia" },
+    monocitos:           { name: "Monocitos", unit: "×10³/µL", min: 0, max: 0.8, category: "hematologia" },
+    eosinofilos:         { name: "Eosinófilos", unit: "×10³/µL", min: 0, max: 0.5, category: "hematologia" },
+    basofilos:           { name: "Basófilos", unit: "×10³/µL", min: 0, max: 0.2, category: "hematologia" },
+    granulocitos_inmaduros_pct: { name: "Granulocitos inmaduros %", unit: "%", min: 0, max: 2, category: "hematologia" },
+    granulocitos_inmaduros: { name: "Granulocitos inmaduros", unit: "×10³/µL", min: 0, max: 0.2, category: "hematologia" },
+    eritroblastos_pct:   { name: "Eritroblastos (eritr. nucleados) %", unit: "%", min: 0, max: 0.1, category: "hematologia" }
+};
+
+// ═══════════════════════════════════════════════════════════
+// CATEGORY metadata
+// ═══════════════════════════════════════════════════════════
+const CATEGORIES = {
+    bioquimica:   { name: "Bioquímica General", icon: "🧪", order: 1 },
+    lipidos:      { name: "Perfil Lipídico", icon: "❤️", order: 2 },
+    hepatico:     { name: "Perfil Hepático", icon: "🫁", order: 3 },
+    renal:        { name: "Función Renal", icon: "🫘", order: 4 },
+    tiroides:     { name: "Tiroides", icon: "🦋", order: 5 },
+    hematologia:  { name: "Hematología", icon: "🩸", order: 6 },
+    hierro:       { name: "Metabolismo del Hierro", icon: "⚙️", order: 7 },
+    electrolitos: { name: "Electrolitos y Minerales", icon: "⚡", order: 8 },
+    inmunologia:  { name: "Inmunología y Otros", icon: "🛡️", order: 9 },
+    orina:        { name: "Orina", icon: "💧", order: 10 },
+    heces:        { name: "Heces", icon: "🟤", order: 11 },
+    constantes:   { name: "Constantes Vitales", icon: "🫀", order: 12 }
+};
+
+const COLORS = ['#4C72B0','#DD8452','#55A868','#C44E52','#8172B3','#937860','#DA8BC3','#8C8C8C','#CCB974','#64B5CD'];
+
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD CLASS
+// ═══════════════════════════════════════════════════════════
+class Dashboard {
+    constructor() {
+        this.data = ANALÍTICAS;
+        this.charts = {};
+        this.init();
+    }
+
+    init() {
+        this.renderKPIs();
+        this.renderCharts();
+        this.renderTable();
+    }
+
+    getStatus(key, value) {
+        const p = PARAMS[key];
+        if (!p) return 'normal';
+        if (value > p.max) return 'high';
+        if (value < p.min) return 'low';
+        return 'normal';
+    }
+
+    getStatusLabel(status) {
+        if (status === 'high') return '↑ Alto';
+        if (status === 'low') return '↓ Bajo';
+        return '✓ Normal';
+    }
+
+    applyFilters() {
+        // Destroy existing charts
+        Object.values(this.charts).forEach(c => c.destroy());
+        this.charts = {};
+        this.renderKPIs();
+        this.renderCharts();
+        this.renderTable();
+    }
+
+    getFilteredParams() {
+        const cat = document.getElementById('filter-category').value;
+        const stat = document.getElementById('filter-status').value;
+
+        return Object.entries(PARAMS).filter(([key, p]) => {
+            if (cat !== 'all' && p.category !== cat) return false;
+            if (stat !== 'all') {
+                // Check latest value
+                const latest = this.data[0];
+                if (!latest || latest.values[key] === undefined) return false;
+                const s = this.getStatus(key, latest.values[key]);
+                if (stat === 'abnormal' && s === 'normal') return false;
+                if (stat === 'normal' && s !== 'normal') return false;
+            }
+            return true;
+        });
+    }
+
+    renderKPIs() {
+        const container = document.getElementById('kpi-row');
+        if (!this.data.length) { container.innerHTML = '<p>No hay datos</p>'; return; }
+
+        const latest = this.data[0]; // Most recent
+        // Show KPIs for important/abnormal values
+        const alertValues = [];
+        const importantValues = [];
+
+        Object.entries(PARAMS).forEach(([key, p]) => {
+            const val = latest.values[key];
+            if (val === undefined) return;
+            const status = this.getStatus(key, val);
+            if (status !== 'normal') alertValues.push({ key, ...p, val, status });
+            else if (p.important) importantValues.push({ key, ...p, val, status });
+        });
+
+        let html = '';
+
+        // Alert values first
+        alertValues.forEach(v => {
+            const cssClass = v.status === 'high' ? 'alert' : 'warning';
+            html += `
+                <div class="kpi-card ${cssClass}">
+                    <div class="kpi-label">${v.name}</div>
+                    <div class="kpi-value">${v.val} <span style="font-size:13px;font-weight:400;">${v.unit}</span></div>
+                    <div class="kpi-range">Ref: ${v.min} – ${v.max}</div>
+                    <div class="kpi-status status-${v.status}">${this.getStatusLabel(v.status)}</div>
+                </div>`;
+        });
+
+        // Then important normal values (up to 6)
+        importantValues.slice(0, 6).forEach(v => {
+            html += `
+                <div class="kpi-card ok">
+                    <div class="kpi-label">${v.name}</div>
+                    <div class="kpi-value">${v.val} <span style="font-size:13px;font-weight:400;">${v.unit}</span></div>
+                    <div class="kpi-range">Ref: ${v.min} – ${v.max}</div>
+                    <div class="kpi-status status-normal">${this.getStatusLabel('normal')}</div>
+                </div>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+    renderCharts() {
+        const container = document.getElementById('charts-container');
+        container.innerHTML = '';
+
+        const filteredParams = this.getFilteredParams();
+        const dates = this.data.map(d => d.date).reverse();
+        const labels = this.data.map(d => d.label).reverse();
+
+        // Group by category
+        const grouped = {};
+        filteredParams.forEach(([key, p]) => {
+            if (!grouped[p.category]) grouped[p.category] = [];
+            grouped[p.category].push([key, p]);
+        });
+
+        // Sort categories by order
+        const sortedCats = Object.entries(grouped).sort((a, b) =>
+            (CATEGORIES[a[0]]?.order || 99) - (CATEGORIES[b[0]]?.order || 99)
+        );
+
+        sortedCats.forEach(([catKey, params]) => {
+            const cat = CATEGORIES[catKey];
+
+            const section = document.createElement('div');
+            section.className = 'category-section';
+            section.innerHTML = `<div class="category-title"><span class="icon">${cat.icon}</span> ${cat.name}</div>`;
+
+            const chartRow = document.createElement('div');
+            chartRow.className = 'chart-row';
+
+            params.forEach(([key, p]) => {
+                const values = this.data.map(d => d.values[key]).reverse();
+                if (values.every(v => v === undefined)) return;
+
+                const status = this.getStatus(key, values[values.length - 1]);
+                const badgeClass = status === 'normal' ? 'badge-normal' : status === 'high' ? 'badge-alert' : 'badge-warning';
+
+                const div = document.createElement('div');
+                div.className = 'chart-container';
+                const canvasId = `chart-${key}`;
+                div.innerHTML = `
+                    <h3>${p.name} <span class="badge ${badgeClass}">${this.getStatusLabel(status)}</span></h3>
+                    <canvas id="${canvasId}"></canvas>`;
+                chartRow.appendChild(div);
+
+                // Render chart after DOM insertion
+                setTimeout(() => {
+                    const ctx = document.getElementById(canvasId);
+                    if (!ctx) return;
+
+                    // Build reference range band
+                    const refMin = new Array(labels.length).fill(p.min);
+                    const refMax = new Array(labels.length).fill(p.max);
+
+                    this.charts[canvasId] = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Rango máx.',
+                                    data: refMax,
+                                    borderColor: 'transparent',
+                                    backgroundColor: 'rgba(203,213,224,0.3)',
+                                    fill: '+1',
+                                    pointRadius: 0,
+                                    borderWidth: 0,
+                                    order: 2
+                                },
+                                {
+                                    label: 'Rango mín.',
+                                    data: refMin,
+                                    borderColor: 'rgba(160,174,192,0.5)',
+                                    borderDash: [4, 4],
+                                    backgroundColor: 'transparent',
+                                    fill: false,
+                                    pointRadius: 0,
+                                    borderWidth: 1,
+                                    order: 2
+                                },
+                                {
+                                    label: p.name,
+                                    data: values,
+                                    borderColor: status === 'normal' ? '#38a169' : status === 'high' ? '#e53e3e' : '#dd6b20',
+                                    backgroundColor: (status === 'normal' ? '#38a169' : status === 'high' ? '#e53e3e' : '#dd6b20') + '20',
+                                    borderWidth: 2.5,
+                                    fill: false,
+                                    tension: 0.3,
+                                    pointRadius: values.length === 1 ? 6 : 4,
+                                    pointHoverRadius: 7,
+                                    pointBackgroundColor: status === 'normal' ? '#38a169' : status === 'high' ? '#e53e3e' : '#dd6b20',
+                                    order: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (ctx) => {
+                                            if (ctx.datasetIndex < 2) return null;
+                                            return `${p.name}: ${ctx.parsed.y} ${p.unit} (ref: ${p.min}–${p.max})`;
+                                        }
+                                    },
+                                    filter: (item) => item.datasetIndex >= 2
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 11 } }
+                                },
+                                y: {
+                                    beginAtZero: false,
+                                    suggestedMin: p.min * 0.8,
+                                    suggestedMax: p.max * 1.2,
+                                    ticks: {
+                                        font: { size: 11 },
+                                        callback: (v) => `${v} ${p.unit}`
+                                    },
+                                    grid: { color: '#f0f0f0' }
+                                }
+                            }
+                        }
+                    });
+                }, 0);
+            });
+
+            section.appendChild(chartRow);
+            container.appendChild(section);
+        });
+
+        // Add summary note
+        if (this.data.length > 0) {
+            const note = document.createElement('div');
+            note.style.cssText = 'background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:16px;margin-bottom:16px;font-size:13px;color:#2a4365;';
+            note.innerHTML = `<strong>📊 Datos extraídos:</strong> ${this.data.length} analíticas (${this.data.map(d=>d.label).join(', ')}).
+                <br>Evolución de 16 años (2009–2025). Hallazgos clave:
+                <br>• <strong>TSH elevada sostenida</strong>: 6.39→6.29→7.90→8.42→<strong>10.90</strong>→7.43 mU/L — hipotiroidismo subclínico crónico (Hashimoto, Anti-TPO 305-498 UI/mL).
+                <br>• <strong>Anemia ferropénica severa</strong> en 2016-2018: hemoglobina 12.0→10.8, VCM 75.4→71.1, ferritina 9 ng/mL, hierro 26 µg/dL. Recuperada en 2025 (Hb 14.7, VCM 94.6).`;
+            container.insertBefore(note, container.firstChild);
+        }
+    }
+
+    renderTable() {
+        const container = document.getElementById('table-container');
+        const filteredParams = this.getFilteredParams();
+
+        if (!filteredParams.length) { container.innerHTML = ''; return; }
+
+        const dates = this.data.map(d => d.label);
+
+        let html = `<div class="table-section"><h3>Tabla Completa de Valores</h3>
+            <table class="data-table">
+            <thead><tr>
+                <th>Parámetro</th>
+                <th>Unidad</th>
+                <th>Ref. Mín.</th>
+                <th>Ref. Máx.</th>`;
+        dates.forEach(d => html += `<th>${d}</th>`);
+        html += `<th>Estado</th></tr></thead><tbody>`;
+
+        filteredParams.forEach(([key, p]) => {
+            html += `<tr><td style="font-weight:500;">${p.name}</td><td>${p.unit}</td><td>${p.min}</td><td>${p.max}</td>`;
+            this.data.forEach(d => {
+                const v = d.values[key];
+                if (v === undefined) {
+                    html += '<td>—</td>';
+                } else {
+                    const s = this.getStatus(key, v);
+                    const cls = s === 'high' ? 'val-high' : s === 'low' ? 'val-low' : 'val-normal';
+                    html += `<td class="${cls}">${v}</td>`;
+                }
+            });
+            const latestVal = this.data[0]?.values[key];
+            const latestStatus = latestVal !== undefined ? this.getStatus(key, latestVal) : 'normal';
+            const statusLabel = this.getStatusLabel(latestStatus);
+            html += `<td class="${latestStatus === 'high' ? 'val-high' : latestStatus === 'low' ? 'val-low' : 'val-normal'}">${statusLabel}</td>`;
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+    }
+}
+
+const dashboard = new Dashboard();
+</script>
+
+<script id="recipe-source" type="text/plain">
+╔══════════════════════════════════════════════════════════════════════════╗
+║  RECIPE — Blood Test Evolution Dashboard                               ║
+║  Version: 1.0 · Created: 2026-03-25                                   ║
+║                                                                        ║
+║  This block is the "seed" of this dashboard. It contains everything    ║
+║  needed to reproduce it from scratch with different data, or to        ║
+║  extend it with new blood test results. Think of it as a Dockerfile    ║
+║  for this HTML — the blueprint lives inside the artifact itself.       ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+## ⚠️ Rule when regenerating (2026-08-30)
+
+External (non-Osakidetza) blood tests exist and MUST be preserved when updating this page:
+Axpe/Sanitas lab 2023-04-14 (homocysteine 12.5, vitamin D 32.9, anti-TPO 186, folate 19, B12 418,
+ferritin 69, TSH 7.28) and the may-2024 Osakidetza homocysteine 12.50 (not extracted into the array).
+Source PDFs: Dropbox/06-salud/0. Análisis de sangre Gabi/. Canonical context: ~/Documents/salud/salud-cognitiva-contexto.md.
+Never delete external data or the separate encrypted report private/b12-etc.html.
+
+## What this dashboard does
+
+Visualizes the evolution of blood test parameters over time using Chart.js.
+Each parameter gets its own line chart with a shaded reference range band.
+KPI cards highlight abnormal values. Filters allow slicing by category and
+status. A summary table shows all values across all dates.
+
+## Architecture
+
+Single self-contained HTML file. No build step, no server.
+
+Dependencies (loaded from CDN):
+  - Chart.js 4.5.1:
+    https://cdn.jsdelivr.net/npm/chart.js@4.5.1
+    integrity: sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ
+  - chartjs-adapter-date-fns 3.0.0:
+    https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0
+    integrity: sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws
+
+## Data format
+
+The dashboard reads from a single JS constant: `const ANALÍTICAS = [...]`
+
+Each entry is one blood test report:
+
+    {
+        date: "YYYY-MM-DD",          // ISO date, used for sorting
+        label: "MMM YYYY",           // Display label (e.g. "JUL 2025")
+        source: "Service — Location", // Where the test was done
+        doctor: "Dr./Dra. Name",     // Requesting physician
+        values: {
+            glucosa: 85,             // Only include parameters present in that report
+            creatinina: 1.08,        // Missing parameters render as "—" in the table
+            tsh: 7.43,              // and are simply skipped in charts
+            // ... any subset of the ~50 defined parameters
+        }
+    }
+
+IMPORTANT: The array must be sorted by date DESCENDING (newest first).
+Entries with partial data are fine — e.g. a thyroid-only panel with just
+{tsh: 10.90, t4_libre: 0.96} works perfectly.
+
+## Parameter registry
+
+Each parameter is defined in `const PARAMS = {...}` with:
+
+    key: {
+        name: "Display Name",      // Shown in charts and table
+        unit: "unit",               // Shown on Y-axis and tooltips
+        min: number,                // Reference range lower bound
+        max: number,                // Reference range upper bound
+        category: "category_key",   // Groups parameters in the UI
+        important: true|false       // If true, shown as KPI card when normal
+    }
+
+Current parameters (~50):
+
+  bioquimica:   glucosa, urea, proteinas, albumina, pcr, ck, ldh,
+                vitamina_b12, folato, urato
+  lipidos:      colesterol, trigliceridos, hdl, ldl, colesterol_no_hdl
+  hepatico:     ast, alt, ggt, fosfatasa_alcalina, bilirrubina
+  renal:        creatinina, filtracion_glomerular, urato
+  tiroides:     tsh, t4_libre
+  hematologia:  hematies, hemoglobina, hematocrito, vcm, chcm, hcm, ade,
+                plaquetas, vpm, leucocitos, neutrofilos_pct, linfocitos_pct,
+                monocitos_pct, eosinofilos_pct, vsg
+  hierro:       hierro, transferrina, sat_transferrina, ferritina
+  electrolitos: calcio, fosfato, magnesio, sodio, potasio, cloruro
+
+To add a new parameter: add it to PARAMS, then include its values in the
+ANALÍTICAS entries. The dashboard auto-discovers and renders it.
+
+## Categories
+
+Defined in `const CATEGORIES = {...}`. Each has a name, icon, and sort order.
+To add a category: add it to CATEGORIES and assign its `order`, then set
+`category: "your_key"` on the relevant parameters in PARAMS.
+
+## How the dashboard renders
+
+1. KPI cards: Scans the MOST RECENT entry. Parameters outside reference
+   range get red/orange "alert" cards. Important in-range parameters get
+   green "ok" cards (up to 6).
+
+2. Charts: Groups parameters by category, sorted by category order.
+   Each parameter gets a Chart.js line chart with:
+   - Shaded band between ref min and max (gray, 30% opacity)
+   - Dashed line at ref min
+   - Value line colored by status of the LATEST value:
+     green (#38a169) = normal, red (#e53e3e) = high, orange (#dd6b20) = low
+   - Tension 0.3 for smooth curves
+   - Y-axis auto-scaled to 80%-120% of reference range
+
+3. Clinical info box: Inserted at the top of the charts container.
+   Manually written summary of key findings. Update this when adding data.
+
+4. Table: Full matrix of all parameters × all dates, color-coded per cell.
+
+## How to reproduce with your own data
+
+1. Copy this entire HTML file.
+2. Replace the ANALÍTICAS array with your own blood test data.
+   - Use the key names from PARAMS for each value.
+   - Include date, label, source, doctor for each entry.
+   - Sort newest-first.
+3. If your lab uses different reference ranges, update PARAMS min/max.
+4. If your lab reports parameters not in PARAMS, add new entries.
+5. Update the clinical findings info box (search for "Hallazgos clave"
+   in the renderCharts method) with your own interpretation.
+6. Update the header subtitle date range and footer update date.
+
+## Unit conversion notes
+
+Some labs change units over time for the same parameter. Normalize before
+inserting into ANALÍTICAS. Known conversions:
+
+  T4 Libre: pmol/L → ng/dL: divide by 12.87
+            (ref [10.3-26.0 pmol/L] ≈ [0.8-2.0 ng/dL])
+
+  Glucose:  mmol/L → mg/dL: multiply by 18.018
+
+  Creatinine: µmol/L → mg/dL: divide by 88.42
+
+  Cholesterol: mmol/L → mg/dL: multiply by 38.67
+
+  Triglycerides: mmol/L → mg/dL: multiply by 88.57
+
+Always store values in the units specified in PARAMS.
+
+## Extraction from Osakidetza (Basque public health portal)
+
+If the data source is Osakidetza's Carpeta Berria portal:
+
+  URL: https://micarpetasaludberria.osakidetza.eus/informes-y-analiticas
+
+  Portal navigation:
+  - Results are paginated (8 per page). Use > and >> buttons.
+  - Each item is a tab. Click to expand → eye icon opens PDF in new tab.
+  - Only items labeled "Analítica" contain blood data.
+
+  PDF reading (Chrome viewer):
+  - Chrome's PDF viewer does NOT support text extraction (get_page_text).
+    Read values visually from screenshots.
+  - Scrolling doesn't work. Navigate pages via the page number input:
+    triple-click → type number → Enter.
+  - Zoom out (click - button 2-3x) to see more content per screenshot.
+  - Two PDF formats exist:
+    (A) "layout" — older, Laboratorios. Bilingual Euskera/Castellano.
+    (B) "BAS_INFORME RESULTADOS" — newer, Hospital format.
+
+  Lab name mapping (Spanish/Basque → JS key):
+    Glukosa/Glucosa → glucosa
+    Kreatinina/Creatinina → creatinina
+    Azido urikoa/Ácido úrico → urato
+    Kolesterol totala/Colesterol total → colesterol
+    ALT/GPT → alt
+    AST/GOT → ast
+    Srm-Tirotropina (TSH) → tsh
+    Srm-Tiroxina libre (T4L) → t4_libre
+    Hematieak/Hematíes → hematies
+    Leukozitoak/Leucocitos → leucocitos
+    Plaketak/Plaquetas → plaquetas
+    Burdina/Hierro → hierro
+    Sodioa/Sodio → sodio
+    Potasioa/Potasio → potasio
+    Kaltzoa guztira/Calcio total → calcio
+    Fosforoa/Fósforo → fosfato
+    V.S.G. → vsg
+
+## Extending this dashboard
+
+To add new features, the Dashboard class in the script block has three
+render methods: renderKPIs(), renderCharts(), renderTable(). Each reads
+from this.data (= ANALÍTICAS) and PARAMS. Adding a trend indicator,
+sparklines, or PDF export would go here.
+
+## License
+
+This dashboard template is free to use and modify.
+</script>
+
+<script>
+// Populate recipe modal from the inline text/plain block
+document.getElementById('recipe-content').textContent =
+    document.getElementById('recipe-source').textContent;
+</script>
+<script src="/chat-widget.js" defer
+  data-page="analiticas-osakidetza"
+  data-accent="#2B6CB0"
+  data-title="Asistente de analíticas"
+  data-greeting="Pregúntame qué significa cada valor o cómo ha evolucionado."
+  data-suggest='["¿Algo fuera de rango?","Explica mi ferritina","Resume los cambios desde la última"]'></script>
+</body>
+</html>
