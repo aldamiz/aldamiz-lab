@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo se vigila la arritmia</title>
+<script src="/guard.js"></script>
+<style>
+  :root{ --bg:#faf8f5; --card:#fff; --ink:#1c1a17; --soft:#6b6560; --line:#e6e0d8;
+         --hi:#a3271b; --ok:#12634a; --chip:#f2ede6; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#141311; --card:#1d1b18; --ink:#f0ece6; --soft:#a49d94; --line:#312e2a;
+    --hi:#ef7a6c; --ok:#4fc49b; --chip:#262320; } }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16.5px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+       -webkit-text-size-adjust:100%}
+  .w{max-width:720px;margin:0 auto;padding:38px 16px 80px}
+  h1{font-size:31px;line-height:1.15;margin:0 0 8px;letter-spacing:-.022em}
+  .sub{color:var(--soft);margin:0 0 30px;font-size:16px}
+  h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--soft);
+     margin:34px 0 12px;font-weight:600}
+  p{margin:0 0 13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+        padding:20px 20px 8px;margin:0 0 14px}
+  .card h3{font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
+  .when{color:var(--hi);font-size:13.5px;font-weight:600;margin:0 0 10px}
+  ul{margin:0 0 13px;padding-left:20px} li{margin-bottom:7px}
+  .flow{display:flex;flex-direction:column;gap:0;margin:4px 0 20px}
+  .step{display:flex;gap:13px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:none}
+  .num{flex:none;width:25px;height:25px;border-radius:50%;background:var(--hi);color:#fff;
+       font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;
+       -webkit-print-color-adjust:exact}
+  .step div strong{display:block;font-size:15.5px}
+  .step div span{color:var(--soft);font-size:14.5px}
+  .tag{display:inline-block;background:var(--chip);border-radius:999px;padding:2px 10px;
+       font-size:12.5px;color:var(--soft);margin:0 5px 5px 0}
+  .box{background:var(--chip);border-left:3px solid var(--ink);padding:13px 15px;margin:0 0 16px;
+       border-radius:0 8px 8px 0}
+  .box p:last-child{margin-bottom:0}
+  .yo{border-left-color:var(--hi)}
+  .note{font-size:14.5px;color:var(--soft)}
+  a{color:var(--hi)}
+  footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);
+         color:var(--soft);font-size:13.5px}
+</style>
+</head>
+<body><div class="w">
+
+<h1>Cómo se vigila la arritmia</h1>
+<p class="sub">El sistema que mide, detecta y avisa sin que yo tenga que acordarme de nada.</p>
+
+<div class="box yo">
+  <p><strong>Lo único que hago yo:</strong> llevar el reloj puesto y enchufar el móvil por la noche, con el portátil abierto. Nada más.</p>
+</div>
+
+<h2>Qué pasa, en orden</h2>
+<div class="flow">
+  <div class="step"><span class="num">1</span><div>
+    <strong>El reloj mide solo</strong>
+    <span>Unas catorce veces al día toma la variabilidad del latido, y guarda los latidos uno a uno. También durante los entrenamientos. Yo no toco nada.</span></div></div>
+  <div class="step"><span class="num">2</span><div>
+    <strong>El iPhone deja los datos en Dropbox</strong>
+    <span>A las 8, 13, 18 y 23. Un fichero pequeño con las medidas y su hora.</span></div></div>
+  <div class="step"><span class="num">3</span><div>
+    <strong>El iPhone me avisa del valor</strong>
+    <span>A las 9, 14, 19 y 24 me llega una notificación con la última medida.</span></div></div>
+  <div class="step"><span class="num">4</span><div>
+    <strong>El portátil vigila cada media hora</strong>
+    <span>Lee el fichero y decide si hay algo que contarme.</span></div></div>
+  <div class="step"><span class="num">5</span><div>
+    <strong>Por la noche, copia del iPhone</strong>
+    <span>Mientras carga en casa. Trae los electrocardiogramas y el histórico entero, que el atajo no puede sacar.</span></div></div>
+  <div class="step"><span class="num">6</span><div>
+    <strong>Copia nueva, análisis nuevo</strong>
+    <span>El portátil la descifra, recalcula todo con el método bueno, publica la página y me avisa con las cifras.</span></div></div>
+</div>
+
+<h2>Cuándo suena el teléfono</h2>
+<p>Cuatro cosas disparan un aviso por Telegram. Si no suena, no hay nada que mirar.</p>
+
+<div class="card">
+  <h3>Empieza un episodio</h3>
+  <p class="when">En cuanto la variabilidad pasa de 100 ms</p>
+  <p>Mi suelo normal está entre 30 y 37. Por encima de 100 es arritmia.</p>
+</div>
+
+<div class="card">
+  <h3>Termina un episodio</h3>
+  <p class="when">Éste es el importante</p>
+  <p>Avisa para que grabe el electrocardiograma de cierre, que es el dato que casi nunca se tiene: documenta cuándo se fue. Hace falta que tres medidas seguidas bajen de 60 — un bajón suelto no cuenta, porque un valle de 97 sigue siendo arritmia.</p>
+</div>
+
+<div class="card">
+  <h3>El reloj lleva horas sin medir</h3>
+  <p class="when">Más de cinco horas en blanco</p>
+  <p>El silencio también es una señal. Un domingo entero pasó desapercibido que el reloj había dejado de medir.</p>
+</div>
+
+<div class="card">
+  <h3>La copia del iPhone se ha parado</h3>
+  <p class="when">Más de cuarenta horas sin copia nueva</p>
+  <p>Sin copia no hay electrocardiogramas ni análisis fino.</p>
+</div>
+
+<h2>Cómo se cuenta un episodio</h2>
+<p>El reloj tiene su propio aviso de ritmo irregular, pero llega tarde —hasta cuatro horas— y se pierde episodios enteros. Por eso el cálculo se hace aparte, sobre los datos crudos.</p>
+<ul>
+  <li><strong>Abre</strong> con tres medidas seguidas por encima de 100 ms.</li>
+  <li><strong>Cierra</strong> con tres medidas seguidas por debajo de 60 ms.</li>
+  <li><strong>Descarta</strong> los valores por encima de 400 ms: son ruido del sensor, no latidos.</li>
+</ul>
+<p class="note">Sobre los latidos uno a uno hay un criterio más fino —porcentaje de latidos dispares y dispersión— validado contra los electrocardiogramas que confirman fibrilación y contra los años limpios. Da quince veces menos falsas alarmas.</p>
+
+<div class="box">
+  <p><strong>Toda carga medida es un mínimo, nunca una cifra exacta.</strong> El reloj no mide la variabilidad mientras uno se mueve, así que las horas de ejercicio quedan sin muestrear. Lo único que taparía ese hueco es una cinta pectoral.</p>
+</div>
+
+<h2>Lo que hay al final</h2>
+<p><a href="arritmia.html">El historial</a> se rehace solo con cada copia: episodios con su hora de inicio, fin y duración, la carga mes a mes, y todos los electrocardiogramas con su clasificación y su pulso.</p>
+<p><span class="tag">Aviso en el móvil</span><span class="tag">Aviso por Telegram</span><span class="tag">Historial publicado</span><span class="tag">Registro de todo</span></p>
+
+<h2>Dónde se rompe</h2>
+<ul>
+  <li><strong>Si el portátil duerme</strong>, no vigila y no hay copia. Por eso queda abierto y enchufado por las noches.</li>
+  <li><strong>Mientras me muevo</strong>, el reloj no mide. Es el hueco que ningún programa arregla.</li>
+  <li><strong>Los electrocardiogramas</strong> solo llegan por la copia del iPhone, nunca por los atajos: Apple no lo permite.</li>
+</ul>
+
+<footer>
+  Montado el 27 y 28 de septiembre de 2026. Los datos no salen del iPhone, del portátil y de Dropbox; la copia del teléfono va cifrada.
+</footer>
+
+</div></body></html>
