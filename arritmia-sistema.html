@@ -1,127 +1,54 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cómo se vigila la arritmia</title>
-<script src="/guard.js"></script>
-<style>
-  :root{ --bg:#faf8f5; --card:#fff; --ink:#1c1a17; --soft:#6b6560; --line:#e6e0d8;
-         --hi:#a3271b; --ok:#12634a; --chip:#f2ede6; }
-  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-    --bg:#141311; --card:#1d1b18; --ink:#f0ece6; --soft:#a49d94; --line:#312e2a;
-    --hi:#ef7a6c; --ok:#4fc49b; --chip:#262320; } }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-       font:16.5px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
-       -webkit-text-size-adjust:100%}
-  .w{max-width:720px;margin:0 auto;padding:38px 16px 80px}
-  h1{font-size:31px;line-height:1.15;margin:0 0 8px;letter-spacing:-.022em}
-  .sub{color:var(--soft);margin:0 0 30px;font-size:16px}
-  h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--soft);
-     margin:34px 0 12px;font-weight:600}
-  p{margin:0 0 13px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
-        padding:20px 20px 8px;margin:0 0 14px}
-  .card h3{font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
-  .when{color:var(--hi);font-size:13.5px;font-weight:600;margin:0 0 10px}
-  ul{margin:0 0 13px;padding-left:20px} li{margin-bottom:7px}
-  .flow{display:flex;flex-direction:column;gap:0;margin:4px 0 20px}
-  .step{display:flex;gap:13px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
-  .step:last-child{border-bottom:none}
-  .num{flex:none;width:25px;height:25px;border-radius:50%;background:var(--hi);color:#fff;
-       font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;
-       -webkit-print-color-adjust:exact}
-  .step div strong{display:block;font-size:15.5px}
-  .step div span{color:var(--soft);font-size:14.5px}
-  .tag{display:inline-block;background:var(--chip);border-radius:999px;padding:2px 10px;
-       font-size:12.5px;color:var(--soft);margin:0 5px 5px 0}
-  .box{background:var(--chip);border-left:3px solid var(--ink);padding:13px 15px;margin:0 0 16px;
-       border-radius:0 8px 8px 0}
-  .box p:last-child{margin-bottom:0}
-  .yo{border-left-color:var(--hi)}
-  .note{font-size:14.5px;color:var(--soft)}
-  a{color:var(--hi)}
-  footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);
-         color:var(--soft);font-size:13.5px}
-</style>
-</head>
-<body><div class="w">
-
-<h1>Cómo se vigila la arritmia</h1>
-<p class="sub">Qué mide, qué detecta y cuándo avisa.</p>
-
-<div class="box yo">
-  <p><strong>Lo único que hago yo:</strong> llevar el reloj, y ponerme la cinta cuando quiero medir un entrenamiento o una noche. Ni exporto, ni aviso, ni enchufo nada a horas.</p>
-</div>
-
-<h2>Qué mide</h2>
-<div class="card">
-  <h3>El reloj, siempre</h3>
-  <p>Unas catorce veces al día toma la variabilidad del latido, y guarda los latidos uno a uno. Solo en reposo: mientras me muevo no mide.</p>
-</div>
-<div class="card">
-  <h3>La cinta del pecho, cuando quiero</h3>
-  <p>Todos los latidos seguidos, también en movimiento y de noche. Cubre el hueco del ejercicio. El botón de exportar de su app no funciona, así que las grabaciones se sacan de su propia base de datos.</p>
-</div>
-
-<h2>Cómo llegan los datos</h2>
-<p>El portátil pide una copia del iPhone cada diez minutos. Si el móvil no está en la red, calla y vuelve a probar; en cuanto aparece, la coge. Sin cable y sin desbloquear nada.</p>
-<p>Esa copia trae todo: la variabilidad, los latidos crudos, los electrocardiogramas y las grabaciones de la cinta. Con cada copia nueva se recalcula el historial, se publica y llega un aviso con las cifras.</p>
-
-<h2>Cuándo suena el teléfono</h2>
-<p>Cuatro cosas disparan un aviso por Telegram. Si no suena, no hay nada que mirar.</p>
-
-<div class="card">
-  <h3>Empieza un episodio</h3>
-  <p class="when">La variabilidad pasa de 100 ms</p>
-  <p>El suelo normal está entre 30 y 37.</p>
-</div>
-
-<div class="card">
-  <h3>Termina un episodio</h3>
-  <p class="when">Este es el importante</p>
-  <p>Avisa para grabar el electrocardiograma de cierre, que es el dato que casi nunca se tiene. Hacen falta tres medidas seguidas por debajo de 60: un bajón suelto no cuenta, porque un valle de 97 sigue siendo arritmia.</p>
-</div>
-
-<div class="card">
-  <h3>El reloj lleva horas sin medir</h3>
-  <p class="when">Más de cinco horas en blanco</p>
-  <p>El silencio también es una señal.</p>
-</div>
-
-<div class="card">
-  <h3>La copia se ha parado</h3>
-  <p class="when">Más de cuarenta horas sin copia nueva</p>
-  <p>Sin copia no hay electrocardiogramas ni análisis fino.</p>
-</div>
-
-<h2>Cómo se cuenta un episodio</h2>
-<p>El aviso del propio reloj llega tarde —hasta cuatro horas— y se pierde episodios enteros, así que el cálculo se hace aparte sobre los datos crudos.</p>
-<ul>
-  <li><strong>Abre</strong> con tres medidas seguidas por encima de 100 ms.</li>
-  <li><strong>Cierra</strong> con tres medidas seguidas por debajo de 60 ms.</li>
-  <li><strong>Descarta</strong> lo que pase de 400 ms: ruido del sensor, no latidos.</li>
-</ul>
-<p class="note">Sobre los latidos uno a uno el criterio es más fino —porcentaje de latidos dispares y dispersión— y está contrastado contra los electrocardiogramas que confirman fibrilación y contra los años limpios.</p>
-
-<div class="box">
-  <p><strong>Toda carga medida es un mínimo.</strong> El reloj no mide mientras uno se mueve, así que las horas de ejercicio quedan sin muestrear. Solo la cinta tapa ese hueco, y solo si me la he puesto.</p>
-</div>
-
-<h2>Qué sale</h2>
-<p><a href="arritmia.html">El historial</a>, rehecho con cada copia: episodios con hora de inicio, fin y duración, carga mes a mes, y todos los electrocardiogramas con su clasificación y su pulso. Cada grabación nueva de la cinta llega resumida por Telegram.</p>
-
-<h2>Dónde se rompe</h2>
-<ul>
-  <li><strong>Si el portátil duerme</strong>, no vigila ni pide copias. Por eso queda abierto y enchufado.</li>
-  <li><strong>Si el iPhone y el portátil no comparten wifi</strong>, no hay copia nueva. No se pierde nada: se recupera en cuanto vuelven a verse.</li>
-  <li><strong>Mientras me muevo</strong>, el reloj no mide.</li>
-  <li><strong>Los electrocardiogramas</strong> solo llegan por la copia, nunca por atajos: Apple no lo permite.</li>
-</ul>
-
-<footer>
-  Los datos no salen del iPhone, del portátil y de Dropbox; la copia del teléfono va cifrada.
-</footer>
-
+<!doctype html><html lang=es><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Arritmia: el sistema, paso a paso</title>
+<script src="/guard.js"></script><style>
+:root{--tinta:#1a1a1a;--suave:#666;--linea:#e5e5e5;--fondo:#fff}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--tinta:#ececec;--suave:#9a9a9a;--linea:#2e2e2e;--fondo:#141414}}
+:root[data-theme=dark]{--tinta:#ececec;--suave:#9a9a9a;--linea:#2e2e2e;--fondo:#141414}
+*{box-sizing:border-box}body{margin:0;background:var(--fondo);color:var(--tinta);
+font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.caja{max-width:760px;margin:0 auto;padding:40px 16px 72px}
+h1{font-size:1.7rem;margin:0 0 .3rem;letter-spacing:-.02em}
+.sub{color:var(--suave);margin:0 0 1.8rem;font-size:.95rem}
+.aviso{border-radius:10px;padding:14px 16px;margin:0 0 2rem;font-size:.95rem}
+.ok{background:rgba(31,138,76,.1);border:1px solid rgba(31,138,76,.3)}
+.mal{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.35)}
+h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--suave);
+margin:2.2rem 0 .7rem;font-weight:600}
+.paso{display:flex;gap:14px;padding:13px 0;border-top:1px solid var(--linea)}
+.num{flex:0 0 30px;height:30px;border-radius:50%;display:flex;align-items:center;
+justify-content:center;font-weight:600;font-size:.85rem;color:#fff}
+.cuerpo{flex:1;min-width:0}
+.titulo{font-weight:500}
+.detalle{color:var(--suave);font-size:.88rem;margin-top:2px}
+.pie{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--linea);
+color:var(--suave);font-size:.85rem}
+@media(max-width:480px){.caja{padding:28px 16px 56px}h1{font-size:1.4rem}}</style></head><body><div class=caja>
+<h1>El sistema, paso a paso</h1>
+<p class=sub>Cada paso lleva numero. Cuando algo no llega, el numero dice donde se ha cortado.</p>
+<div class="aviso mal"><strong>Ahora mismo falla el paso 2.</strong> ultima linea 03-Oct 17:16, hace 15 h (deberia escribir cada 5 h)</div>
+<h2>Las medidas del reloj</h2>
+<div class=paso><div class=num style="background:#1f8a4c">1</div><div class=cuerpo><div class=titulo>El reloj mide la variabilidad y la guarda en el iPhone</div><div class=detalle>&#10003; ultima medida 03-Oct 17:16, hace 15 h</div></div></div>
+<div class=paso><div class=num style="background:#c0392b">2</div><div class=cuerpo><div class=titulo>El atajo del iPhone escribe las medidas en Dropbox</div><div class=detalle>&#10007; ultima linea 03-Oct 17:16, hace 15 h (deberia escribir cada 5 h)</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">3</div><div class=cuerpo><div class=titulo>Dropbox trae ese fichero al Mac</div><div class=detalle>&#10003; Dropbox en marcha, fichero del 03-Oct 18:02</div></div></div>
+<h2>La copia del iPhone</h2>
+<div class=paso><div class=num style="background:#1f8a4c">4</div><div class=cuerpo><div class=titulo>El iPhone aparece en la wifi de casa</div><div class=detalle>&#10003; accesible ahora mismo</div></div></div>
+<div class=paso><div class=num style="background:#b7791f">5</div><div class=cuerpo><div class=titulo>El Mac le pide la copia cifrada al iPhone</div><div class=detalle>&#9679; ultima copia 01-Oct 10:44, hace 69 h</div></div></div>
+<div class=paso><div class=num style="background:#b7791f">6</div><div class=cuerpo><div class=titulo>El Mac descifra la copia y saca la base de salud</div><div class=detalle>&#9679; el dato mas nuevo que trae es del 01-Oct 06:16</div></div></div>
+<h2>La cinta del pecho</h2>
+<div class=paso><div class=num style="background:#1f8a4c">7</div><div class=cuerpo><div class=titulo>La cinta graba y su aplicacion lo guarda en el iPhone</div><div class=detalle>&#10003; base de la cinta del 01-Oct 10:26</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">8</div><div class=cuerpo><div class=titulo>El Mac se trae la base de la cinta sin esperar a la copia</div><div class=detalle>&#10003; ultima vez el 03-Oct 09:03, hace 23 h</div></div></div>
+<h2>La cena</h2>
+<div class=paso><div class=num style="background:#1f8a4c">9</div><div class=cuerpo><div class=titulo>Gabi responde &#x27;cena&#x27; al bot de Telegram</div><div class=detalle>&#10003; 1 cena(s) apuntada(s)</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">10</div><div class=cuerpo><div class=titulo>El Mac lee el chat y apunta la cena</div><div class=detalle>&#10003; ultima lectura 04-Oct 08:09</div></div></div>
+<h2>El analisis</h2>
+<div class=paso><div class=num style="background:#1f8a4c">11</div><div class=cuerpo><div class=titulo>El Mac junta las medidas de los dos caminos</div><div class=detalle>&#10003; 521 medidas recientes, la ultima 03-Oct 17:16</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">12</div><div class=cuerpo><div class=titulo>Busca episodios y redacta el parte</div><div class=detalle>&#10003; Ahora: ritmo normal. Último dato de las 17:16.</div></div></div>
+<div class=paso><div class=num style="background:#b7791f">13</div><div class=cuerpo><div class=titulo>Rehace la pagina del historial</div><div class=detalle>&#9679; hecha el 01-Oct 10:47</div></div></div>
+<h2>Lo que te llega</h2>
+<div class=paso><div class=num style="background:#1f8a4c">14</div><div class=cuerpo><div class=titulo>La publica en lab.aldamiz.com</div><div class=detalle>&#10003; la pagina responde 200</div></div></div>
+<div class=paso><div class=num style="background:#667">15</div><div class=cuerpo><div class=titulo>Manda el parte del dia por Telegram, a las 9</div><div class=detalle>&#8230; aun no son las 9</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">16</div><div class=cuerpo><div class=titulo>Avisa en cuanto empieza o termina un episodio</div><div class=detalle>&#10003; ahora mismo: ritmo normal</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">17</div><div class=cuerpo><div class=titulo>Avisa si alguno de los pasos de arriba lleva parado demasiado</div><div class=detalle>&#10003; avisando de los pasos 2</div></div></div>
+<p class=pie>Esta pagina se rehace sola. Ultima comprobacion: 04-Oct-2026 08:12. <a href="/arritmia.html">Historial de episodios</a></p>
 </div></body></html>
