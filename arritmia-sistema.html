@@ -27,15 +27,31 @@ justify-content:center;font-weight:600;font-size:.85rem;color:#fff}
 background:rgba(127,127,127,.09);color:var(--suave)}
 .depende ul{margin:4px 0 0;padding-left:17px}
 .depende li{margin:2px 0}
+.canales{margin:0 0 2rem;padding:16px 18px;border-radius:10px;
+background:rgba(127,127,127,.07);border:1px solid var(--linea);font-size:.93rem}
+.canales p{margin:0 0 .85rem}
+.canales p:last-child{margin-bottom:0}
 .pie{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--linea);
 color:var(--suave);font-size:.85rem}
 @media(max-width:480px){.caja{padding:28px 16px 56px}h1{font-size:1.4rem}}</style></head><body><div class=caja>
-<h1>El sistema, paso a paso</h1>
-<p class=sub>Cada paso lleva numero. Cuando algo no llega, el numero dice donde se ha cortado.</p>
+<h1>Como se capturan tus datos del corazon</h1>
+<p class=sub>Esto no analiza nada: solo recoge. Los datos llegan por tres caminos distintos, y abajo esta cada paso con su numero, para que cuando algo no llegue se vea exactamente donde se ha cortado.</p>
+<div class=canales>
+<p><b>El atajo del iPhone</b> &rarr; la variabilidad, que es lo que delata un episodio. Cuatro
+veces al dia, aunque el movil este bloqueado en el bolsillo: va por la nube, no necesita ni el
+Mac ni la wifi de casa. Es el canal rapido, y el que dispara los avisos.</p>
+<p><b>La copia del iPhone</b> &rarr; los electrocardiogramas, la cinta del pecho y la base de
+salud entera. Entra sola en cuanto el Mac ve que estas usando el movil. Puede tardar unas horas
+sin que importe, porque lo urgente ya ha llegado por el atajo.</p>
+<p><b>La exportacion de Salud</b> &rarr; los latidos uno a uno, los unicos que ven los episodios
+cortos: de 125 episodios, 48 duraron menos de una hora y por la variabilidad son invisibles. No
+vienen en la copia, y el boton de exportar no se puede disparar en remoto, asi que este es el
+unico paso que necesita a Gabi: una vez al mes, dejar el zip en Dropbox. Lo demas va solo.</p>
+</div>
 <div class="aviso ok"><strong>Ahora mismo no falla ningun paso.</strong></div>
 <h2>Las medidas del reloj</h2>
-<div class=paso><div class=num style="background:#1f8a4c">1</div><div class=cuerpo><div class=titulo>El reloj mide la variabilidad y la guarda en el iPhone</div><div class=detalle>&#10003; ultima medida que ha llegado: 28-Oct 02:13, hace 0 h.</div><div class=ritmo>cada 15 min, mientras lleves el reloj puesto &middot; corre en: iPhone</div></div></div>
-<div class=paso><div class=num style="background:#1f8a4c">2</div><div class=cuerpo><div class=titulo>El atajo del iPhone escribe las medidas en Dropbox</div><div class=detalle>&#10003; ultima linea 28-Oct 02:13, hace 0 h</div><div class=ritmo>cuatro veces al dia: 8:00, 13:00, 18:00 y 23:00 &middot; corre en: iPhone</div><div class=depende>Necesita:<ul><li>el atajo se llama Export HRV; el otro, Log HRV, solo avisa y no escribe</li><li>sus cuatro automatizaciones de hora (8, 13, 18 y 23) siguen activadas</li><li>cada una tiene puesto ejecutar sin preguntar</li><li>el iPhone esta encendido y con internet a esa hora</li><li>Dropbox sigue con la sesion iniciada en el movil</li><li>NO necesita el Mac ni estar en la misma red: va por la nube de Dropbox</li></ul></div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">1</div><div class=cuerpo><div class=titulo>El reloj mide la variabilidad y la guarda en el iPhone</div><div class=detalle>&#10003; ultima medida que ha llegado: 28-Oct 02:13, hace 1 h.</div><div class=ritmo>cada 15 min, mientras lleves el reloj puesto &middot; corre en: iPhone</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">2</div><div class=cuerpo><div class=titulo>El atajo del iPhone escribe las medidas en Dropbox</div><div class=detalle>&#10003; ultima linea 28-Oct 02:13, hace 1 h</div><div class=ritmo>cuatro veces al dia: 8:00, 13:00, 18:00 y 23:00 &middot; corre en: iPhone</div><div class=depende>Necesita:<ul><li>el atajo se llama Export HRV; el otro, Log HRV, solo avisa y no escribe</li><li>sus cuatro automatizaciones de hora (8, 13, 18 y 23) siguen activadas</li><li>cada una tiene puesto ejecutar sin preguntar</li><li>el iPhone esta encendido y con internet a esa hora</li><li>Dropbox sigue con la sesion iniciada en el movil</li><li>NO necesita el Mac ni estar en la misma red: va por la nube de Dropbox</li></ul></div></div></div>
 <div class=paso><div class=num style="background:#1f8a4c">3</div><div class=cuerpo><div class=titulo>Dropbox trae ese fichero al Mac</div><div class=detalle>&#10003; Dropbox en marcha, fichero del 28-Oct 02:24</div><div class=ritmo>en cuanto el fichero cambia en el movil &middot; corre en: Mac</div></div></div>
 <h2>La copia del iPhone</h2>
 <div class=paso><div class=num style="background:#1f8a4c">4</div><div class=cuerpo><div class=titulo>El iPhone y el Mac estan en la misma red</div><div class=detalle>&#10003; se ven el uno al otro ahora mismo</div><div class=ritmo>el Mac pregunta cada 2 min &middot; corre en: entre los dos</div><div class=depende>Necesita:<ul><li>el iPhone esta despierto y en la wifi de casa</li><li>bloqueado y quieto apaga la wifi para ahorrar bateria, y entonces desaparece para el Mac</li></ul></div></div></div>
@@ -46,7 +62,7 @@ color:var(--suave);font-size:.85rem}
 <div class=paso><div class=num style="background:#1f8a4c">8</div><div class=cuerpo><div class=titulo>El Mac copia esa base del iPhone, en segundos y sin la copia grande</div><div class=detalle>&#10003; la base del Mac llega hasta la grabacion de 27-Oct 08:19, que es la ultima que hay</div><div class=ritmo>cada 2 min &middot; corre en: Mac</div><div class=depende>Necesita:<ul><li>el paso 4</li></ul></div></div></div>
 <h2>La cena</h2>
 <div class=paso><div class=num style="background:#1f8a4c">9</div><div class=cuerpo><div class=titulo>Gabi responde &#x27;cena&#x27; al bot de Telegram</div><div class=detalle>&#10003; 2 cena(s) apuntada(s)</div><div class=ritmo>cuando cenas &middot; corre en: Gabi</div></div></div>
-<div class=paso><div class=num style="background:#1f8a4c">10</div><div class=cuerpo><div class=titulo>El Mac lee el chat y apunta la cena</div><div class=detalle>&#10003; ultima lectura 28-Oct 02:28</div><div class=ritmo>cada 2 min &middot; corre en: Mac</div></div></div>
+<div class=paso><div class=num style="background:#1f8a4c">10</div><div class=cuerpo><div class=titulo>El Mac lee el chat y apunta la cena</div><div class=detalle>&#10003; ultima lectura 28-Oct 02:45</div><div class=ritmo>cada 2 min &middot; corre en: Mac</div></div></div>
 <h2>El analisis</h2>
 <div class=paso><div class=num style="background:#1f8a4c">11</div><div class=cuerpo><div class=titulo>El Mac junta las medidas de los dos caminos</div><div class=detalle>&#10003; 486 medidas recientes, la ultima 28-Oct 02:13</div><div class=ritmo>cada vez que algo necesita las medidas &middot; corre en: Mac</div></div></div>
 <div class=paso><div class=num style="background:#1f8a4c">12</div><div class=cuerpo><div class=titulo>Busca episodios y redacta el parte</div><div class=detalle>&#10003; Ahora: ritmo normal. Último dato de las 02:13.</div><div class=ritmo>cada 2 min para la alarma, y una vez al dia para el parte &middot; corre en: Mac</div></div></div>
@@ -56,5 +72,8 @@ color:var(--suave);font-size:.85rem}
 <div class=paso><div class=num style="background:#667">15</div><div class=cuerpo><div class=titulo>Manda el parte del dia por Telegram, a las 9 de la manana</div><div class=detalle>&#8230; aun no le toca: sale a las 9</div><div class=ritmo>una vez al dia, a partir de las 9 de la manana &middot; corre en: Mac</div></div></div>
 <div class=paso><div class=num style="background:#1f8a4c">16</div><div class=cuerpo><div class=titulo>Avisa en cuanto empieza o termina un episodio</div><div class=detalle>&#10003; ahora mismo: ritmo normal</div><div class=ritmo>cada 2 min &middot; corre en: Mac</div></div></div>
 <div class=paso><div class=num style="background:#1f8a4c">17</div><div class=cuerpo><div class=titulo>Avisa si alguno de los pasos de arriba lleva parado demasiado</div><div class=detalle>&#10003; nada que avisar</div><div class=ritmo>una vez al dia &middot; corre en: Mac</div></div></div>
-<p class=pie>Esta pagina se rehace sola. Ultima comprobacion: 28-Oct-2026 02:28. <a href="/arritmia.html">Historial de episodios</a></p>
+<div class=paso><div class=num style="background:#1f8a4c">18</div><div class=cuerpo><div class=titulo>El Mac copia cuando ve el movil en uso, y tu puedes pedirlo</div><div class=detalle>&#10003; ultimo aviso 22-Oct 07:16, hace 139 h</div><div class=ritmo>el Mac mira el chat y el aviso cada 15 s &middot; corre en: Gabi</div><div class=depende>Necesita:<ul><li>normalmente no hace falta: el Mac mira si tienes la pantalla encendida y copia solo, como mucho una vez cada cinco minutos</li><li>si hace dias que no entra, escribe &#x27;copia&#x27; al bot de Telegram</li><li>el Mac lee el chat cada 15 s y arranca en el acto</li><li>deja la pantalla encendida un par de minutos despues</li><li>tambien vale un atajo que escriba en Dropbox/copia-ahora.txt</li></ul></div></div></div>
+<h2>La exportacion mensual</h2>
+<div class=paso><div class=num style="background:#667">19</div><div class=cuerpo><div class=titulo>Gabi exporta Salud y el Mac la convierte sola</div><div class=detalle>&#8230; hay una exportacion sin convertir; la ultima base es del 2026-09-25</div><div class=ritmo>se mira cada 2 min; la exportacion la hace Gabi una vez al mes &middot; corre en: Gabi</div><div class=depende>Necesita:<ul><li>que Gabi haga la exportacion completa en Salud: Perfil, Exportar todos los datos de salud. La de solo electros no trae los latidos</li><li>que deje el zip tal cual en la carpeta de arritmias de Dropbox, sin descomprimir ni renombrar</li><li>que Dropbox termine de subirlo: hasta que no esta entero no se toca</li></ul></div></div></div>
+<p class=pie>Esta pagina se rehace sola. Ultima comprobacion: 28-Oct-2026 02:45. <a href="/arritmia.html">Historial de episodios</a></p>
 </div></body></html>
