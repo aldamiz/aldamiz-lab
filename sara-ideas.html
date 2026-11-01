@@ -1,0 +1,227 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>body{margin:0}img{max-width:100%}</style></head><body>
+<title>Sara ideas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: una columna de lectura; arriba la ficha, luego una línea de tiempo con los plazos, luego bloques sin plazo */
+:root{
+  --bg:#f5f8f8; --surface:#ffffff; --fg:#17262a; --muted:#5a6d71; --line:#d5e0e1;
+  --accent:#0d6b67; --accent-soft:#e0efee; --warn:#a2541a; --warn-soft:#f7ebe0;
+  --display:"Familjen Grotesk",system-ui,sans-serif;
+  --body:"Literata",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#162124; --fg:#e4eeee; --muted:#93a8ab; --line:#2a3a3d;
+  --accent:#5cc2bb; --accent-soft:#17312f; --warn:#e3a06a; --warn-soft:#33241a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#162124; --fg:#e4eeee; --muted:#93a8ab; --line:#2a3a3d;
+  --accent:#5cc2bb; --accent-soft:#17312f; --warn:#e3a06a; --warn-soft:#33241a; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--body);}
+.wrap{max-width:760px;margin:0 auto;padding-block:40px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,6vw,2.9rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0;max-width:65ch}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.eyebrow{font:500 .74rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px}
+.lede{font-size:1.1rem;color:var(--fg)}
+.chart{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.chart div{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.chart b{font:700 1.3rem var(--display);font-variant-numeric:tabular-nums}
+.chart span{font-size:.86rem;color:var(--muted);line-height:1.35}
+section{display:flex;flex-direction:column;gap:18px}
+.intro{color:var(--muted)}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-left:2px solid var(--line);margin-left:6px}
+.timeline li{position:relative;padding:0 0 26px 24px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.timeline li.now::before{background:var(--accent)}
+.when{font:500 .82rem var(--mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font:500 .72rem var(--mono);padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.item p{font-size:.95rem}
+.plain{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:8px;max-width:65ch}
+.plain li{font-size:.96rem}
+.plain li span{color:var(--muted)}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Veranos y estancias · curso 2026-27 · actualizado el 1 nov 2026, 17:55</span>
+    <h1>Sara ideas</h1>
+    <p class="lede">Sitios donde una estudiante de 4º de Medicina puede pasar un verano o un curso aprendiendo fuera de clase: laboratorios de primer nivel, organismos internacionales y empresas de salud con inteligencia artificial.</p>
+    <div class="chart" aria-label="Lo que ya tiene">
+      <div><b>4º</b><span>de Medicina, UPV/EHU, en el Hospital de Basurto</span></div>
+      <div><b>10,00</b><span>de media en Bachillerato, con matrícula de honor</span></div>
+      <div><b>4,0 / 4</b><span>en el diploma americano, Honor Roll dos años</span></div>
+      <div><b>3 idiomas</b><span>castellano, inglés y euskera</span></div>
+    </div>
+  </header>
+
+  <section>
+    <span class="eyebrow">Lo primero</span>
+    <h2>Los plazos de aquí a marzo</h2>
+    <p class="intro">Donde pone "como el año pasado", la fecha de 2027 aún no está publicada y sale de la convocatoria anterior.</p>
+    <ol class="timeline">
+      <li class="now">
+        <span class="when">Noviembre 2026</span>
+        <h3>Clinicum Digitale, Dresde</h3>
+        <p>Diez días de inteligencia artificial clínica para estudiantes de Medicina, del 15 al 24 de marzo de 2027, en el centro donde trabaja Jakob Kather, uno de los grupos de Europa que más publica sobre modelos de lenguaje en oncología. Talleres para principiantes y un proyecto en equipo. Es gratis y dan hasta 400 € para viaje y alojamiento. La web dice que está abierto a estudiantes de otras universidades; las condiciones exactas salen con la convocatoria, que abre este mes. No publican el idioma de las clases: se puede preguntar en clinicum.digitale@mailbox.tu-dresden.de.</p>
+        <div class="tags"><span class="tag">inscripción abre en noviembre</span><span class="tag">sin programar</span></div>
+        <a href="https://digitalhealth.tu-dresden.de/career-education/students/clinicum-digitale/">Clinicum Digitale</a>
+        <p class="intro"><strong>Pregunta a Sara: ¿enviamos el email?</strong> El borrador para preguntar si admiten estudiantes de fuera de Alemania ya está escrito.</p>
+        <p class="intro">Quien lo ha hecho: en LinkedIn lo ponen unas 30 personas, casi todas de universidades alemanas; ningún español. La única de fuera es Laura Nikolova, de Medicina en la Universidad de Southampton, en 2026 (<a href="https://www.linkedin.com/in/lauranikolova/">su perfil</a>), aunque esa carrera se cursa en Kassel. Sara sería de las primeras de España.</p>
+      </li>
+      <li>
+        <span class="when">20 dic – 20 ene</span>
+        <h3>Instituto Weizmann, Israel</h3>
+        <p>Del 16 de junio al 12 de agosto de 2027 en un laboratorio de investigación. Pagan 1.100 dólares, hasta 400 de vuelo, alojamiento y seguro. Piden haber terminado 1º de una carrera de ciencias con una nota equivalente a 3,6 sobre 4.</p>
+        <div class="tags"><span class="tag">fecha confirmada</span><span class="tag">8 semanas</span></div>
+        <a href="https://info.weizmann.ac.il/kupcinet-getz-international-summer-program/">Kupcinet-Getz Summer Program</a>
+        <p class="intro">Quien lo ha hecho: Alejandra Rodríguez de la Rosa, de Barcelona, fue en 2018 al laboratorio de Jacob Hanna mientras estudiaba Biología Humana en la Pompeu Fabra. Hoy hace el doctorado en Harvard Medical School con beca de la Caixa. Tiene unos 30 años (<a href="https://becarios.fundacionlacaixa.org/es/alejandra-rodriguez-de-la-rosa-B004747">su ficha</a>). En LinkedIn lo ponen unas 60 personas y ningún otro español; la más cercana es Katarina Ninković, serbia, que lo hizo en 2023 y luego estudió un máster en la Pompeu Fabra; hoy, con unos 24 años, hace el doctorado en el Max Planck de Berlín (<a href="https://www.linkedin.com/in/katarina-ninkovi%C4%87-ba084533a/">su perfil</a>). De Medicina no aparece nadie.</p>
+      </li>
+      <li>
+        <span class="when">4 ene – 28 feb</span>
+        <h3>Biozentrum, Universidad de Basilea</h3>
+        <p>De 7 a 9 semanas entre julio y septiembre, con 1.736 francos suizos brutos al mes. Lo anuncian para Biología, Química y ciencias afines, así que antes de prepararlo hay que escribirles para preguntar si admiten Medicina.</p>
+        <div class="tags"><span class="tag">fecha confirmada</span><span class="tag warn">preguntar si admiten Medicina</span></div>
+        <a href="https://www.biozentrum.unibas.ch/summer-schools/biozentrum-research-summer">Biozentrum Research Summer</a>
+        <p class="intro"><strong>Pregunta a Sara: ¿enviamos el email?</strong> El borrador para preguntar si admiten Medicina ya está escrito.</p>
+        <p class="intro">Quien lo ha hecho: Carmen Ruiz Ruiz (Biotecnología, Politécnica de Madrid, 2025, unos 22 años, hoy en el Karolinska; <a href="https://www.linkedin.com/in/carmen-ruiz-ruiz-81423b372/">perfil</a>), Jordi Lagares Mir (Biotecnología, IQS Barcelona, 2025, unos 22, hoy en la ETH de Zúrich; <a href="https://www.biozentrum.unibas.ch/summer-schools/biozentrum-research-summer/testimonials/jordi-lagares-mir">su testimonio</a>) y Míriam Condeminas (Química, Universidad de Barcelona, 2018, unos 28; <a href="https://www.biozentrum.unibas.ch/summer-schools/biozentrum-research-summer/testimonials/miriam-condeminas-rodriguez">su testimonio</a>). Ninguno de Medicina.</p>
+      </li>
+      <li>
+        <span class="when">Febrero – marzo</span>
+        <h3>Centro Nacional de Investigaciones Cardiovasculares, Madrid</h3>
+        <p>Programa Cicerone: seis semanas en verano con 1.500 € de beca y hasta 300 € de viaje. Piden ser de la Unión Europea, tener aprobada la mitad de la carrera y una media de 8 o más. Ella cumple todo. El año pasado cerró el 16 de marzo.</p>
+        <div class="tags"><span class="tag warn">como el año pasado</span><span class="tag">encaja de lleno</span></div>
+        <a href="https://www.cnic.es/es/convocatoria/cicerone">Programa Cicerone</a>
+        <p class="intro">Quien lo ha hecho, todos con unos 21-23 años: Águeda Hernández (Biomedicina, Francisco de Vitoria, 2026; <a href="https://www.linkedin.com/in/%C3%A1gueda-hern%C3%A1ndez-91185a35a/">perfil</a>), Daniel Baratto (Bioquímica, Complutense, 2026; <a href="https://www.linkedin.com/in/daniel-baratto-valdivia-631843393/">perfil</a>), Òscar Ferrús (Bioquímica, Rovira i Virgili, 2025; <a href="https://www.linkedin.com/in/%C3%B2scar-ferr%C3%BAs-tuset-2300b0350/">perfil</a>) y Lucía Jódar (Biomedicina, Valladolid, 2025; <a href="https://www.linkedin.com/in/luc%C3%ADa-j%C3%B3dar-freire-4726b9356/">perfil</a>). Tampoco hay nadie de Medicina; una estudiante de Medicina con su expediente destacaría.</p>
+      </li>
+      <li>
+        <span class="when">Marzo</span>
+        <h3>Centro Nacional de Investigaciones Oncológicas y CIC biomaGUNE</h3>
+        <p>El de Oncológicas, en Madrid, ofrece unas ocho semanas a estudiantes de los últimos cursos de carreras biomédicas y paga el viaje; hubo cuatro plazas. CIC biomaGUNE, en Donostia, son ocho semanas en nanomedicina con 500 € al mes. Los dos cerraron en marzo el año pasado.</p>
+        <div class="tags"><span class="tag warn">como el año pasado</span></div>
+        <a href="https://www.cnio.es/en/education-and-career-development/career-development-programmes/undergraduate-students/">Oncológicas (CNIO)</a>
+        <a href="https://www.cicbiomagune.es/job-offer-detail?id=43197">CIC biomaGUNE</a>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">La revolución de los modelos de lenguaje</span>
+    <h2>Donde se está inventando la medicina con inteligencia artificial</h2>
+    <p class="intro">Ninguno exige saber programar. La mayoría de los laboratorios punteros (Stanford, Broad, Mount Sinai, Arc) no tienen hoy una vía para estudiantes de Medicina extranjeros; estas sí.</p>
+    <div class="list">
+      <div class="item">
+        <h3>Université Paris Cité</h3>
+        <p>Escuela de verano en inglés del 5 al 16 de julio de 2027: modelos de lenguaje, gemelos digitales y aplicaciones por especialidad, con visitas a los hospitales públicos de París. 40 plazas y 3.000 €. Se pide de diciembre a abril.</p>
+        <div class="tags"><span class="tag">2 semanas</span><span class="tag">para estudiantes de Medicina</span></div>
+        <a href="https://u-paris.fr/medecine/artificial-intelligence-and-digital-innovation-in-medicine-summer-school/">AI and Digital Innovation in Medicine</a>
+      </div>
+      <div class="item">
+        <h3>Hospital Universitario de Groningen</h3>
+        <p>Una semana, del 12 al 16 de julio de 2027, con un curso previo online y un hackathon al final. Abierta a cualquier carrera. Precio y plazo aún sin publicar.</p>
+        <div class="tags"><span class="tag">1 semana</span></div>
+        <a href="https://www.rug.nl/research/gradschool-medical-sciences/summerschools/data-science-and-ai">Data Science and AI in Health</a>
+      </div>
+      <div class="item">
+        <h3>Laboratorio van der Schaar, Cambridge</h3>
+        <p>Tres días online hechos para médicos y estudiantes de Medicina; la edición de 2026 fue sobre inteligencia artificial generativa. 150 libras para estudiantes. Suele ser en septiembre.</p>
+        <div class="tags"><span class="tag">online</span><span class="tag warn">fechas 2027 sin anunciar</span></div>
+        <a href="https://www.vanderschaar-lab.com/join-clinical-summer-school-2026/">Clinical AI Summer School</a>
+      </div>
+      <div class="item">
+        <h3>Laboratorio LiGHT, EPFL (Lausana)</h3>
+        <p>Han creado Meditron, un modelo de lenguaje médico abierto, y evalúan con médicos cómo responden estos modelos. No tienen programa para grado, pero su formulario admite proponerse; una estudiante de Medicina encaja como evaluadora clínica.</p>
+        <div class="tags"><span class="tag">escribiendo directamente</span></div>
+        <a href="https://www.light-laboratory.org/join-us">Unirse al LiGHT lab</a>
+      </div>
+      <div class="item">
+        <h3>Oxford Machine Learning Summer School</h3>
+        <p>Programa de inteligencia artificial biomédica del 10 al 12 de agosto de 2027, online o en Oxford: historia clínica, imagen, genómica y fármacos. Pensado para ingenieros, así que para ella sería para escuchar. Desde 400 libras.</p>
+        <div class="tags"><span class="tag">3 días</span></div>
+        <a href="https://www.oxfordml.school/2027/register">OxML 2027</a>
+      </div>
+      <div class="item">
+        <h3>Para empezar esta semana</h3>
+        <p>El curso de Stanford "AI in Healthcare" en Coursera, a su ritmo y pensado para sanitarios. Y dos citas gratis: el pódcast de la revista NEJM AI y las sesiones mensuales de Stanford.</p>
+        <a href="https://www.coursera.org/specializations/ai-healthcare">Stanford en Coursera</a>
+        <a href="https://ai-podcast.nejm.org">Pódcast NEJM AI</a>
+        <a href="https://events.stanford.edu/department/aimi">Sesiones de Stanford AIMI</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Sin plazo cerrado</span>
+    <h2>Para abrir la mirada</h2>
+    <div class="list">
+      <div class="item">
+        <h3>Organización Mundial de la Salud</h3>
+        <p>Prácticas en Ginebra de 6 a 24 semanas. Piden 20 años o más y estar matriculada en una carrera afín, y Medicina vale. Las plazas se publican durante todo el año.</p>
+        <a href="https://www.who.int/careers/internships">Prácticas en la OMS</a>
+      </div>
+      <div class="item">
+        <h3>Hackathons de salud con inteligencia artificial</h3>
+        <p>Dos días resolviendo un problema clínico con ingenieros. El de Harvard tiene sede en Madrid, y el del MIT es en Boston. Es la manera más rápida de ver por dentro cómo se construye la tecnología médica.</p>
+        <a href="https://hsph.harvard.edu/research/health-systems-innovation-lab/work/hsil-hackathon-2026-building-high-value-health-systems-leveraging-ai">Hackathon de Harvard</a>
+        <a href="https://hackingmedicine.mit.edu/events/upcoming-hacks">MIT Hacking Medicine</a>
+        <a href="https://hospitaltec.es/noticias/solucion-transforma-informes-urgencias-guias-personalizadas-pacientes-gana-genai-health-hack-2026">GenAI Health Hack, Hospital Clínic</a>
+        <p class="intro">Quien lo ha hecho: Leire María González Fleitas, estudiante de Medicina de la Complutense, logró una mención especial en el de Harvard en Madrid en abril de 2026 (<a href="https://tribuna.ucm.es/news/cuatro-complutenses-equipo-ganador-hackathon-universidad-harvard-celebrado-ucm">noticia</a>). Berta Rifà, Inés Clavero, Irene Rexach y Júlia de Mas, de 6º de Medicina en la Autónoma de Barcelona, ganaron un hackathon de salud en 2022 (<a href="https://www.uab.cat/web/sala-de-prensa/detalle-noticia/un-grupo-de-estudiantes-de-medicina-gana-el-hack-healtech-2030-1345830290069.html?detid=1345874336486">noticia</a>). El Hospital Clínic organiza cada año un hackathon de inteligencia artificial generativa: en 2026 ganó una herramienta que convierte los informes de urgencias en guías para el paciente.</p>
+      </div>
+      <div class="item">
+        <h3>Empresas españolas de inteligencia artificial clínica</h3>
+        <p>Idoven (cardiología), Tucuvi y Quibim (imagen médica) no publican prácticas, pero aceptan candidaturas espontáneas. Se haría como prácticas con convenio de la universidad.</p>
+        <a href="https://www.idoven.ai/careers">Idoven</a>
+        <a href="https://www.tucuvi.com/careers">Tucuvi</a>
+        <a href="https://quibim.ai/careers/">Quibim</a>
+      </div>
+      <div class="item">
+        <h3>Laboratorios, escribiendo directamente</h3>
+        <p>EMBL en Heidelberg, el Centro de Regulación Genómica de Barcelona, Biobizkaia en Cruces y Achucarro no tienen programa de verano para ella, pero aceptan a quien escribe a un jefe de grupo con interés concreto.</p>
+        <a href="https://www.embl.org/about/info/undergraduates/">EMBL, estudiantes de grado</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Más adelante</span>
+    <h2>Para 5º, 6º y después</h2>
+    <ul class="plain">
+      <li>BCG, la consultora, en Londres: siete semanas solo para estudiantes de Medicina en un proyecto de salud. Es para el penúltimo o el último curso; se pediría en verano de 2027. <a href="https://careers.bcg.com/students/medical-candidates">BCG Medical</a></li>
+      <li>Becas Ikasiker del Gobierno Vasco: colaboración en investigación en los dos últimos cursos. Plazo hacia septiembre. <a href="https://www.euskadi.eus/ayuda_subvencion/2026/ikasiker/web01-tramite/es/">Ikasiker</a></li>
+      <li>Programa JAE Intro del CSIC, en el último curso.</li>
+      <li>Rotaciones clínicas en Harvard o Mayo, solo en el último curso. <span>Harvard pide convenio con la universidad y cuesta unos 5.900 dólares.</span></li>
+      <li>Fulbright, la Caixa y Rafael del Pino, para un posgrado fuera con el título ya terminado.</li>
+      <li>Claude Campus, de Anthropic: beca de 3.600 dólares para estudiantes. El último plazo fue del 1 al 12 de septiembre.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow">Para no perder tiempo</span>
+    <h2>Lo que no encaja hoy</h2>
+    <ul class="plain">
+      <li>Google, DeepMind, Microsoft Research, OpenAI y Anthropic. <span>Sus prácticas piden informática, matemáticas o un posgrado. Si un día aprende a programar, las de investigación de Google se abren.</span></li>
+      <li>Amgen Scholars (Karolinska, Cambridge, Múnich, Zúrich). <span>Excluye a quien ya ha empezado la etapa clínica. Se puede confirmar escribiendo a amgenscholars@ki.se; el plazo es el 1 de febrero.</span></li>
+      <li>Institutos Nacionales de Salud de Estados Unidos, Stanford, Mayo, Broad Institute y el programa de verano de Harvard en informática biomédica. <span>Exigen residencia o universidad estadounidense, o son para alumnos de instituto.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Comprobado en las webs oficiales el 1 de noviembre de 2026. Última actualización: 1 de noviembre de 2026, 17:55 (hora de Bilbao).</span>
+    <span>Las fechas marcadas "como el año pasado" hay que confirmarlas cuando salga la convocatoria.</span>
+  </footer>
+</div>
+</body></html>
