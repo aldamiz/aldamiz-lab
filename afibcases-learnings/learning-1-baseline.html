@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning 1: Do AI assistants cite a small patient website at all?</title>
+<meta name="description" content="One measurement says nothing.">
+<link rel="canonical" href="https://lab.aldamiz.com/afibcases-learnings/learning-1-baseline.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+<style>
+:root{--bg:#f5f7f8;--s:#fff;--ink:#13181c;--mu:#5b6670;--ru:#dde3e7;--ac:#0e6e73;--soft:#e4f0f0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1013;--s:#161b20;--ink:#e7ebee;--mu:#98a3ad;--ru:#252c33;--ac:#5bd2d6;--soft:#11272a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1013;--s:#161b20;--ink:#e7ebee;--mu:#98a3ad;--ru:#252c33;--ac:#5bd2d6;--soft:#11272a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Georgia,serif;-webkit-font-smoothing:antialiased}
+.w{max-width:46rem;margin:0 auto;padding:2.2rem max(16px,env(safe-area-inset-left,0px)) 5rem}
+h1,h2,th,.eb,.st,.idx b,nav{font-family:system-ui,-apple-system,sans-serif}
+h1{font-size:clamp(1.55rem,4.4vw,2.15rem);line-height:1.14;letter-spacing:-.02em;margin:.4rem 0 1rem}
+h2{font-size:1.2rem;letter-spacing:-.01em;margin:2.4rem 0 .7rem;padding-top:1.1rem;border-top:1px solid var(--ru)}
+p,ul,ol{margin:.6rem 0} li{margin:.3rem 0}
+.eb{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);margin:0}
+.lede{font-size:1.12rem;color:var(--mu)}
+.mu{color:var(--mu);font-size:.92rem}
+.st{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.8rem;color:var(--mu);border-block:1px solid var(--ru);padding:.6rem 0}
+.st b{color:var(--ink);font-weight:600}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.85em;background:var(--soft);padding:.05em .3em;border-radius:3px}
+a{color:var(--ac);text-underline-offset:3px;overflow-wrap:anywhere}
+nav{font-size:.85rem;margin-bottom:1.4rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.idx{list-style:none;padding:0;margin:1.6rem 0;border-top:1px solid var(--ru)}
+.idx li{margin:0;padding:1rem 0;border-bottom:1px solid var(--ru)}
+.idx a{text-decoration:none;color:inherit;display:block}
+.idx b{display:block;font-size:1.05rem;line-height:1.3;color:var(--ac)}
+.idx a:hover b{text-decoration:underline}
+.idx span{display:block;font-size:.92rem;color:var(--mu);margin-top:.25rem}
+.idx em{font-style:normal;font-family:system-ui,sans-serif;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
+.scroller{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:30rem;background:var(--s)}
+th{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--ru)}
+td{padding:.45rem .6rem;border-bottom:1px solid var(--ru)}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.preg{font-size:.92rem}
+footer{margin-top:3rem;border-top:1px solid var(--ru);padding-top:1rem;font-size:.85rem;color:var(--mu)}
+</style></head><body><div class="w">
+<nav><a href="./">&larr; All learnings</a><a href="learning-2-answer-first.html">Learning 2 &rarr;</a></nav><p class="eb">Learning 1 · afibcases.com</p><h1>Do AI assistants cite a small patient website at all?</h1><div class="st"><span>Status <b>Measured, repeating weekly</b></span><span>Opened <b>2026-11-04</b></span><span>Next check <b>Every Wednesday</b></span></div><h2>Thesis</h2>
+<p>A new patient-run site about atrial fibrillation, with data nobody else has, should already show up when ChatGPT or Claude answer the questions patients ask. If it does not, we need to know who they cite instead, and whether the site is missing from their index or simply not chosen.</p>
+<h2>Defined process</h2>
+<ul>
+<li>20 patient questions in English, taken from 1,372 real search queries about atrial fibrillation collected on 27 October 2026. Eleven sit close to a published piece; nine are general questions with high demand.</li>
+<li>Each question goes to ChatGPT (gpt-5.5 with web search) three times and to Claude once, with web search on.</li>
+<li>For every answer we record the pages it cites, whether afibcases.com is among them, and whether the site is named.</li>
+<li>Same questions every Wednesday, so weeks can be compared.</li>
+</ul>
+<h2>Partial results</h2>
+<ul>
+<li>4 November 2026: 0 of 80 answers cite afibcases.com.</li>
+<li>Asked directly about afibcases.com, ChatGPT finds the home page and all six pieces and summarises them correctly. The site is in the index; it is just not chosen.</li>
+<li>On Apple Watch burden, ECG and own-data questions, answers cite Apple (support.apple.com) and the American Heart Association (heart.org). No one with a patient&#x27;s own data.</li>
+<li>On &quot;where can I read real experiences&quot;, answers cite forums and small sites: connect.mayoclinic.org, a-fib.com, offbeat.community, reddit.</li>
+<li>Asked the same question three times, ChatGPT cites a different set of sites each time. Of all the sites it cited in any of the three answers, only about 1 in 5 (21%) appeared in all three.</li>
+<li>Example: for &quot;Why does my AFib mostly happen at night?&quot; the three answers cited 6 different sites between them, and only heart.org was in all three. For &quot;Can alcohol trigger AFib episodes?&quot; no site appeared in all three answers.</li>
+<li>Claude cites 7.4 pages per answer, ChatGPT 4.0.</li>
+</ul>
+<h2>What we learn so far</h2>
+<p>One measurement says nothing. If ChatGPT cites afibcases once in a given week, it may be chance; a change has to hold across the three runs and over several weeks before it means anything. The questions where small sites already get cited are the most open door.</p><h2>Weekly measurement</h2>
+<p>Same 20 questions every Wednesday. "Overlap between runs": of all the sites an assistant cites for a question in any of its three answers, the share that appears in all three. At 21%, only about 1 site in 5 is cited every time; the rest come and go, so a single citation in a single week can be chance.</p>
+<div class="scroller"><table><thead><tr><th>Week</th><th>Assistant</th><th class="num">Answers</th><th class="num">Cite afibcases</th><th>Questions</th><th class="num">Overlap between runs</th></tr></thead><tbody>
+<tr><td>2026-11-04</td><td>Claude</td><td class="num">20</td><td class="num">0</td><td>—</td><td class="num">—</td></tr>
+<tr><td>2026-11-04</td><td>ChatGPT</td><td class="num">60</td><td class="num">0</td><td>—</td><td class="num">21%</td></tr>
+</tbody></table></div>
+<p class="mu">Most cited by Claude in the latest week (answers citing each site): pmc.ncbi.nlm.nih.gov 8, acc.org 7, apple.com 5, pubmed.ncbi.nlm.nih.gov 5, support.apple.com 4, ncbi.nlm.nih.gov 4, reliasmedia.com 3, esc365.escardio.org 3.</p>
+<p class="mu">Most cited by ChatGPT in the latest week (answers citing each site): heart.org 39, support.apple.com 16, pmc.ncbi.nlm.nih.gov 16, jacc.org 14, acc.org 11, apple.com 8, mayoclinic.org 8, professional.heart.org 7.</p>
+<h2>The 20 questions</h2><ol class="preg"><li><code>p01</code> What does the AFib burden percentage on my Apple Watch mean? <span class="mu">— piece: afib-burden-two-percent</span></li>
+<li><code>p02</code> My Apple Watch says my AFib burden is 2% or less. Should I worry? <span class="mu">— piece: afib-burden-two-percent</span></li>
+<li><code>p03</code> Does AFib burden change my stroke risk or whether I need blood thinners? <span class="mu">— piece: afib-burden-two-percent</span></li>
+<li><code>p04</code> Can AFib burden go down over time on its own, and what does that tell me? <span class="mu">— piece: afib-burden-two-percent</span></li>
+<li><code>p05</code> Why does my AFib mostly happen at night? <span class="mu">— piece: dinner-predicts-the-night</span></li>
+<li><code>p06</code> Can a late or heavy dinner trigger AFib during the night? <span class="mu">— piece: dinner-predicts-the-night</span></li>
+<li><code>p07</code> Why does my Apple Watch ECG keep saying inconclusive, and could it be hiding AFib? <span class="mu">— piece: fifty-four-without-a-verdict</span></li>
+<li><code>p08</code> How accurate is the Apple Watch ECG at detecting atrial fibrillation? <span class="mu">— piece: fifty-four-without-a-verdict</span></li>
+<li><code>p09</code> How can I export and analyze my own Apple Watch heart data to understand my AFib? <span class="mu">— piece: reading-your-own-heart-data</span></li>
+<li><code>p10</code> Does heart rate variability on Apple Watch tell me anything about my AFib? <span class="mu">— piece: one-record-two-watches</span></li>
+<li><code>p11</code> How can I tell from my watch data whether my beta blocker is working? <span class="mu">— piece: same-month-four-years-apart</span></li>
+<li><code>p12</code> Why do endurance athletes get atrial fibrillation?</li>
+<li><code>p13</code> Can I keep training for endurance sports if I have AFib?</li>
+<li><code>p14</code> Does an AFib episode go away on its own, and how long does it usually last?</li>
+<li><code>p15</code> What is the real success rate of AFib ablation?</li>
+<li><code>p16</code> Should I get an ablation for AFib or stay on medication?</li>
+<li><code>p17</code> Can alcohol trigger AFib episodes?</li>
+<li><code>p18</code> Does caffeine trigger AFib?</li>
+<li><code>p19</code> Is AFib linked to sleep apnea?</li>
+<li><code>p20</code> Where can I read real experiences from people living with AFib, with actual numbers?</li></ol>
+<footer>An open lab notebook kept on
+<a href="https://afibcases.com/">afibcases.com</a>. Each test is written down before its result is known.
+Updated 7 November 2026; the weekly measurement refreshes every Wednesday.</footer>
+</div></body></html>
